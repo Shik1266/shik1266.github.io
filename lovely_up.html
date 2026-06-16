@@ -465,16 +465,30 @@
     }
 
     // 3. 티맵(TMap) 호출 스키마 연동
-    function openNav(name, lng, lat) {
-      const encodedName = encodeURIComponent(name);
-      const tmapUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}&rCoordType=WGS84GEO`;
-      
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      const isAndroid = /Android/.test(navigator.userAgent);
-      
-      window.open(`https://map.naver.com/v5/?c=${lng},${lat},15,0,0,0,dh`, '_blank');
+   function openNav(name, lng, lat) {
+  // 📌 네이버 지도 공식 길찾기(목적지 자동 세팅) URL 규격
+  // dname: 목적지 이름, dlat: 목적지 위도, dlng: 목적지 경도
+  const naverMapUrl = `https://map.naver.com/v5/direction///${lat},${lng},${encodeURIComponent(name)}/-/carte`;
 
-    }
+  // 모바일 기기(아이폰/안드로이드)인지 체크
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // 폰에서 네이버 지도 앱을 바로 실행시키는 스키마 주소
+    const appUrl = `nmap://route/car?dlat=${lat}&dlng=${lng}&dname=${encodeURIComponent(name)}&appname=shik1266.github.io`;
+    
+    // 우선 앱 실행을 시도
+    window.location.href = appUrl;
+
+    // 만약 폰에 네이버 지도 앱이 없다면, 1.5초 후 웹 브라우저로 길찾기 페이지 열기
+    setTimeout(function() {
+      window.open(naverMapUrl, '_blank');
+    }, 1500);
+  } else {
+    // PC 브라우저일 경우 바로 네이버 지도 길찾기 웹사이트로 새 창 이동
+    window.open(naverMapUrl, '_blank');
+  }
+}
     
     // 4. 메인 프로필 이미지 로드 실패 시 디폴트 일러스트 아이콘 복원 로직
     function handleImageError() {
