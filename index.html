@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>어머니의 세 번째 스무 살, 환갑 축하 강릉 여행</title>
+  <title>길(Road) 따라 기분 UP! 박길업 여사님의 세 번째 스무 살</title>
+  
+  <!-- 카카오톡 및 SNS 공유용 오픈 그래프(OG) 태그 -->
+  <meta property="og:title" content="길(Road) 따라 기분 UP! 박길업 여사님의 세 번째 스무 살">
+  <meta property="og:description" content="6월 21일 ~ 22일, 텐션 길-업! 기분 길-업! 박길업 여사님 환갑 여행 일정표 💕">
+  <meta property="og:image" content="https://shik1266.github.io/Screenshot_20260616_094054_KakaoTalk.jpg">
+  <meta property="og:url" content="https://shik1266.github.io">
+  <meta property="og:type" content="website">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts (감성적인 명조체 및 고딕체) -->
@@ -21,9 +29,9 @@
     .font-serif-custom {
       font-family: 'Gowun Batang', serif;
     }
-    /* 스크롤바 숨기기 */
+    /* 고급스러운 스크롤바 커스텀 */
     ::-webkit-scrollbar {
-      width: 4px;
+      width: 5px;
     }
     ::-webkit-scrollbar-track {
       background: #f7f3f0;
@@ -37,7 +45,7 @@
 <body class="flex justify-center items-center min-h-screen">
 
   <!-- 모바일 프레임 컨테이너 (PC 뷰에서도 이쁜 모바일 화면비 유지) -->
-  <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col justify-between overflow-x-hidden">
+  <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col justify-between overflow-x-hidden border-x border-[#eed6cb]">
     
     <!-- 1. 메인 인트로 (로즈 골드 & 따뜻한 베이지 감성) -->
     <header class="relative bg-gradient-to-b from-[#f5eae3] to-[#ffffff] pt-12 pb-10 px-6 text-center border-b border-[#ebdcd3]">
@@ -45,15 +53,23 @@
         <span class="inline-block bg-[#d4a373] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">FAMILY TRAVEL</span>
       </div>
       <h1 class="font-serif-custom text-2xl md:text-3xl font-bold text-[#6f4e37] leading-relaxed mb-2">
-        어머니의 세 번째 스무 살,<br>환갑 축하 강릉 여행
+        길(Road) 따라 기분 UP! 💖<br>박길업 여사님의 세 번째 스무 살
       </h1>
       <p class="text-xs text-[#a08070] tracking-wider mb-6 font-medium">2026. 06. 21(일) ~ 2026. 06. 22(월) | 1박 2일</p>
       
-      <!-- 감성 일러스트 영역 -->
-      <div class="w-40 h-40 mx-auto rounded-full bg-gradient-to-tr from-[#eed6cb] to-[#f5eae3] flex items-center justify-center shadow-inner border-4 border-white mb-6 overflow-hidden">
-        <div class="text-center">
+      <!-- 사진 영역 (업로드 완료 시 연동, 업로드 전에는 기본 감성 일러스트 노출) -->
+      <div class="w-44 h-44 mx-auto rounded-full bg-gradient-to-tr from-[#eed6cb] to-[#f5eae3] flex items-center justify-center shadow-md border-4 border-white mb-6 overflow-hidden relative">
+        <!-- 깃허브에 지정된 이름으로 올릴 이미지 연동 -->
+        <img id="profile-img" 
+             src="Screenshot_20260616_094054_KakaoTalk.jpg" 
+             alt="박길업 여사님 환갑 축하 사진" 
+             class="w-full h-full object-cover"
+             onerror="handleImageError()">
+        
+        <!-- 사진 로딩 전/실패 시 보여주는 기본 일러스트 아이콘 -->
+        <div id="fallback-icon" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-tr from-[#eed6cb] to-[#f5eae3] hidden">
           <i class="fa-solid fa-cloud-sun-rain text-4xl text-[#d4a373] mb-1 animate-bounce"></i>
-          <p class="font-serif-custom text-sm font-bold text-[#6f4e37] mt-1">인생은 60부터!</p>
+          <p class="font-serif-custom text-xs font-bold text-[#6f4e37] mt-1">길UP! 기분UP!</p>
         </div>
       </div>
 
@@ -70,13 +86,13 @@
         <i class="fa-solid fa-quote-left text-2xl text-[#e3c1b1] mb-3"></i>
         <p class="font-serif-custom text-base text-[#6d5952] leading-relaxed mb-4">
           그동안 저희 가족을 위해<br>
-          아낌없는 헌신과 사랑을 주신 어머니.<br>
+          아낌없는 헌신과 사랑을 주신 박길업 여사님.<br>
           <span class="text-[#c77d55] font-bold">인생의 빛나는 세 번째 스무 살</span>을 맞이하여<br>
           사랑하는 가족들과 함께 떠나는<br>
           설레는 힐링 여행에 초대합니다.
         </p>
         <p class="font-serif-custom text-sm text-[#8a7268] font-bold">
-          - 사위 사위와 딸 가족 올림 -
+          - 사위와 딸 가족 올림 -
         </p>
         <i class="fa-solid fa-quote-right text-2xl text-[#e3c1b1] mt-3"></i>
       </div>
@@ -106,7 +122,7 @@
           <p class="text-sm text-[#7a6458] mt-1">고양시 행신동에서 기분 좋게 출발합니다. 안전 운전하세요!</p>
         </div>
 
-        <!-- 일정 2 (휴게소 - 네비 버튼 필요) -->
+        <!-- 일정 2 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-mug-hot"></i>
@@ -122,7 +138,7 @@
           </div>
         </div>
 
-        <!-- 일정 3 (점심 식사 - 네비 + 메뉴판 버튼 2개 세트) -->
+        <!-- 일정 3 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-utensils"></i>
@@ -142,14 +158,14 @@
           </div>
         </div>
 
-        <!-- 일정 4 (바다부채길 - 네비 버튼) -->
+        <!-- 일정 4 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-person-walking"></i>
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">14:00 - 16:00</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">정동심곡 바다부채길 산책 🌊</h3>
-          <p class="text-sm text-[#7a6458] mt-1">천혜의 비경을 지닌 해안 산책로를 걸으며, 장모님 단독 인생샷 및 행복한 가족사진을 촬영합니다.</p>
+          <p class="text-sm text-[#7a6458] mt-1">천혜의 비경을 지닌 해안 산책로를 걸으며, 우리 '길업 마마' 단독 인생샷 및 행복한 가족사진을 촬영합니다.</p>
           <div class="mt-3 flex space-x-2">
             <button onclick="openNav('정동심곡바다부채길', 129.049448, 37.674902)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
@@ -158,7 +174,7 @@
           </div>
         </div>
 
-        <!-- 일정 5 (중앙시장 - 네비 버튼) -->
+        <!-- 일정 5 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-basket-shopping"></i>
@@ -174,14 +190,14 @@
           </div>
         </div>
 
-        <!-- 일정 6 (펜션/저녁식사 - 네비 + 메뉴판/축하 파티 버튼 2개 세트) -->
+        <!-- 일정 6 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#6f4e37] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-cake-candles"></i>
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">18:30 - 24:00</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">숙소 입실 및 저녁식사 (환갑 파티!) 🏡🥩🎉</h3>
-          <p class="text-sm text-[#7a6458] mt-1">프리미엄 펜션 '강릉 풀빌라수'에 도착하여 짐을 풀고 온가족이 모여 감동적인 장모님의 환갑 파티를 시작합니다!</p>
+          <p class="text-sm text-[#7a6458] mt-1">프리미엄 펜션 '강릉 풀빌라수'에 도착하여 짐을 풀고 온가족이 모여 감동적인 '길업 여사님'의 환갑 파티를 시작합니다!</p>
           <div class="mt-3 flex space-x-2">
             <button onclick="openNav('강릉풀빌라수', 128.916738, 37.800547)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
@@ -219,7 +235,7 @@
           <p class="text-sm text-[#7a6458] mt-1">강릉의 맑은 바닷바람 소리와 함께 온가족이 상쾌하게 눈을 뜹니다.</p>
         </div>
 
-        <!-- 일정 2 (식사 - 라면 가이드 팝업 버튼 추가) -->
+        <!-- 일정 2 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#6f4e37] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-bowl-hot"></i>
@@ -262,8 +278,8 @@
     <section class="bg-white px-6 py-10 border-t border-b border-[#eed6cb]">
       <div class="text-center mb-6">
         <i class="fa-solid fa-heart text-[#c77d55] text-2xl mb-1 animate-pulse"></i>
-        <h2 class="font-serif-custom text-xl font-bold text-[#6f4e37]">축하 메시지 전달방</h2>
-        <p class="text-xs text-[#a08070] mt-1">장모님을 향한 소중한 진심을 남겨주세요 💕</p>
+        <h2 class="font-serif-custom text-xl font-bold text-[#6f4e37]">길업 마마 축하 메시지방</h2>
+        <p class="text-xs text-[#a08070] mt-1">여사님을 향한 소중한 진심을 남겨주세요 💕</p>
       </div>
 
       <!-- 방명록 리스트 공간 -->
@@ -274,10 +290,10 @@
       <!-- 방명록 작성 폼 -->
       <form id="guestbook-form" onsubmit="addMessage(event)" class="space-y-3">
         <div class="flex space-x-2">
-          <input id="writer-name" type="text" placeholder="보내는 분 (예: 사위)" required class="w-1/3 px-3 py-2 border border-[#ebdcd3] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c77d55]">
-          <input id="message-content" type="text" placeholder="어머님께 드리는 축하 멘트" required class="w-2/3 px-3 py-2 border border-[#ebdcd3] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c77d55]">
+          <input id="writer-name" type="text" placeholder="보내는 분 (예: 사위)" required class="w-1/3 px-3 py-2 border border-[#ebdcd3] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c77d55] text-gray-800 bg-[#fdfbf9]">
+          <input id="message-content" type="text" placeholder="길업 여사님께 드리는 축하 멘트" required class="w-2/3 px-3 py-2 border border-[#ebdcd3] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c77d55] text-gray-800 bg-[#fdfbf9]">
         </div>
-        <button type="submit" class="w-full bg-[#c77d55] hover:bg-[#b06740] text-white text-sm font-bold py-2 rounded-lg shadow-md transition duration-200">
+        <button type="submit" class="w-full bg-[#c77d55] hover:bg-[#b06740] text-white text-sm font-bold py-2.5 rounded-lg shadow-md transition duration-200">
           사랑의 한마디 남기기 <i class="fa-solid fa-paper-plane ml-1"></i>
         </button>
       </form>
@@ -285,7 +301,7 @@
 
     <!-- 5. 푸터 안내 -->
     <footer class="bg-[#6f4e37] text-[#e8ded7] py-8 px-6 text-center text-xs">
-      <p class="font-serif-custom text-sm font-bold mb-2 text-white">어머님의 세 번째 스무 살을 온 마음 다해 축하합니다.</p>
+      <p class="font-serif-custom text-sm font-bold mb-2 text-white">박길업 여사님의 세 번째 스무 살을 온 마음 다해 축하합니다.</p>
       <p class="opacity-80">이동 일정에 기재된 '티맵' 버튼을 누르시면 모바일 경로 안내로 즉시 연동됩니다.</p>
       <p class="mt-4 opacity-50">&copy; 2026 사랑하는 가족 일동. All rights reserved.</p>
     </footer>
@@ -337,12 +353,10 @@
 
     // 2. 탭 전환 기능
     function switchTab(day) {
-      // 탭 콘텐츠 토글
       document.getElementById("content-day1").classList.add("hidden");
       document.getElementById("content-day2").classList.add("hidden");
       document.getElementById(`content-${day}`).classList.remove("hidden");
 
-      // 버튼 디자인 토글
       const btn1 = document.getElementById("tab-day1");
       const btn2 = document.getElementById("tab-day2");
 
@@ -357,16 +371,10 @@
 
     // 3. 티맵(TMap) 호출 스키마 연동 (모바일 네이티브 대응 앱 구동 및 대체 웹 링크 구현)
     function openNav(destinationName, lon, lat) {
-      // 인코딩된 목적지 명
       const encodedName = encodeURIComponent(destinationName);
-      
-      // 모바일 티맵 앱 실행용 URL 스키마
       const appUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lon}&rGoY=${lat}`;
-      
-      // PC 및 웹 브라우저용 실시간 지도 대안 링크 (공식 API 게이트웨이 기반 또는 티맵 검색)
       const webUrl = `https://m.map.naver.com/search2/search.naver?query=${encodedName}`;
 
-      // 스키마 실행 시도 및 없을 시 브라우저 이동 처리 기법
       const start = Date.now();
       const iframe = document.createElement("iframe");
       iframe.style.display = "none";
@@ -375,14 +383,19 @@
 
       setTimeout(() => {
         document.body.removeChild(iframe);
-        // 앱이 없을 때 웹용 검색 지도로 다이렉팅
         if (Date.now() - start < 1500) {
           window.open(webUrl, "_blank");
         }
       }, 500);
     }
 
-    // 4. 동적 메뉴판 모달 열기 데이터 매핑
+    // 4. 이미지 엑박(로딩 실패) 시 처리 로직
+    function handleImageError() {
+      document.getElementById('profile-img').style.display = 'none';
+      document.getElementById('fallback-icon').classList.remove('hidden');
+    }
+
+    // 5. 동적 메뉴판 모달 열기 데이터 매핑
     const menuData = {
       lunch: {
         title: "🍴 동해의 맛, 삼척/강릉식 든든한 조개섭국 & 오감만족 해산물",
@@ -392,7 +405,7 @@
             <div class="border-l-2 border-[#d4a373] pl-3 space-y-2 text-xs">
               <div>
                 <p class="font-bold text-gray-800">1. 자연산 모듬 물회 (25,000원)</p>
-                <p class="text-gray-500">갓 잡은 자연산 가자미와 바다 해초가 어우러져 장모님이 상큼하게 기운낼 수 있는 별미!</p>
+                <p class="text-gray-500">갓 잡은 자연산 가자미와 바다 해초가 어우러져 길업 여사님이 상큼하게 기운낼 수 있는 별미!</p>
               </div>
               <div>
                 <p class="font-bold text-gray-800">2. 강릉 명물 섭국 (15,000원)</p>
@@ -408,14 +421,14 @@
         `
       },
       party: {
-        title: "🎉 어머니 환갑 축하 파티 만찬 리스트",
+        title: "🎉 박길업 여사님 환갑 축하 파티 만찬 리스트",
         content: `
           <div class="space-y-4">
             <p class="text-sm font-semibold text-[#6f4e37]">중앙시장에서 알차게 준비해 갈 파티 보따리 리스트</p>
             <div class="border-l-2 border-[#d4a373] pl-3 space-y-2 text-xs">
               <div>
                 <p class="font-bold text-gray-800">🐟 중앙시장 지하 수산시장 회 포장</p>
-                <p class="text-gray-500">당일 잡은 싱싱한 광어, 우럭 및 오징어회! (장모님 최애 스펙으로 구성)</p>
+                <p class="text-gray-500">당일 잡은 싱싱한 광어, 우럭 및 오징어회! (길업 여사님 최애 스펙으로 구성)</p>
               </div>
               <div>
                 <p class="font-bold text-gray-800">🍗 강릉 명물 닭강정</p>
@@ -471,13 +484,12 @@
       document.getElementById("menu-modal").classList.add("hidden");
     }
 
-    // 5. 방명록 로컬 저장 시스템 (새로고침해도 보존)
+    // 6. 방명록 로컬 저장 시스템 (새로고침해도 보존)
     let messages = [
-      { id: 1, name: "큰사위", content: "장모님, 늘 한결같이 사랑해 주셔서 감사합니다! 이번 강릉 여행 완벽히 모시겠습니다! 환갑 진심으로 축하드립니다. ❤️" },
+      { id: 1, name: "큰사위", content: "길업 여사님, 늘 한결같이 사랑해 주셔서 감사합니다! 이번 강릉 여행 완벽히 모시겠습니다! 환갑 진심으로 축하드립니다. ❤️" },
       { id: 2, name: "첫째딸", content: "엄마의 세 번째 스무 살을 너무 축하해! 우리 앞으로도 온 가족 건강하게 행복하고 이쁜 추억 많이 많이 쌓자!" }
     ];
 
-    // 초기 로드 시 기존 메시지 가져오기
     function initGuestbook() {
       const stored = localStorage.getItem("gongneung_trip_messages");
       if (stored) {
@@ -503,7 +515,6 @@
         listContainer.appendChild(item);
       });
       
-      // 자동 아래로 스크롤
       listContainer.scrollTop = listContainer.scrollHeight;
     }
 
