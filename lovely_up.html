@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>박길업 여사님의 세 번째 스무 살!</title>
+  <title>박길업 여사님의 세 번째 스무 살</title>
   
   <meta property="og:title" content="박길업 여사님의 세 번째 스무 살!">
   <meta property="og:description" content="6월 21일 ~ 22일, 사랑하는 박길업 여사님의 환갑 여행 일정표 💕">
@@ -42,15 +42,17 @@
 
   <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col justify-between overflow-x-hidden">
     
+    <!-- 헤더 영역 -->
     <header class="relative bg-gradient-to-b from-[#f5eae3] to-[#ffffff] pt-12 pb-10 px-6 text-center border-b border-[#ebdcd3]">
       <div class="mb-4">
-        <span class="inline-block bg-[#d4a373] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">FAMILY TRAVEL</span>
+        <span class="inline-block bg-[#d4a373] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest animate-pulse">FAMILY TRAVEL</span>
       </div>
       <h1 class="font-serif-custom text-2xl md:text-3xl font-bold text-[#6f4e37] leading-relaxed mb-2">
         💖박길업 여사님의💖<br>세 번째 스무 살!
       </h1>
       <p class="text-xs text-[#a08070] tracking-wider mb-6 font-medium">2026. 06. 21(일) ~ 2026. 06. 22(월) | 1박 2일</p>
       
+      <!-- 프로필 이미지 -->
       <div class="w-44 h-44 mx-auto rounded-full bg-gradient-to-tr from-[#eed6cb] to-[#f5eae3] flex items-center justify-center shadow-md border-4 border-white mb-6 overflow-hidden relative">
         <img id="profile-img" src="https://shik1266.github.io/Screenshot_20260616_094054_KakaoTalk.jpg" alt="박길업 여사님 환갑 축하 사진" 
              class="w-full h-full object-cover"
@@ -62,12 +64,14 @@
         </div>
       </div>
 
+      <!-- 디데이 배지 -->
       <div class="bg-white/80 backdrop-blur-sm rounded-xl py-3 px-4 shadow-sm inline-flex items-center space-x-3 border border-[#ebdcd3]">
         <span class="text-sm font-medium text-[#8d6e63]">여행 출발까지</span>
         <span id="d-day-display" class="font-serif-custom text-lg font-bold text-[#c77d55] animate-pulse">D-Day</span>
       </div>
     </header>
 
+    <!-- 헌사 문구 -->
     <section class="px-6 py-10 text-center bg-white border-b border-dashed border-[#eed6cb]">
       <div class="max-w-xs mx-auto">
         <i class="fa-solid fa-quote-left text-2xl text-[#e3c1b1] mb-3"></i>
@@ -82,8 +86,10 @@
       </div>
     </section>
 
+    <!-- 실시간 날씨 및 일정 영역 -->
     <section class="bg-[#faf7f5] px-4 py-8 border-b border-[#eed6cb]">
       
+      <!-- 날씨 카드 -->
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-[#ebdcd3] mb-6 transition-all duration-300 hover:shadow-md">
         <div class="flex justify-between items-center mb-3 border-b border-[#f7f3f0] pb-2">
           <h4 class="font-serif-custom text-xs font-bold text-[#6f4e37] flex items-center gap-1.5">
@@ -115,6 +121,7 @@
         </div>
       </div>
 
+      <!-- 일정 전환 탭 -->
       <div class="flex justify-center space-x-4 mb-8">
         <button onclick="switchTab('day1')" id="tab-day1" class="tab-btn w-1/2 py-3 rounded-xl font-bold transition-all duration-300 shadow-md bg-[#6f4e37] text-white">
           첫째 날 (6/21 일)
@@ -124,6 +131,7 @@
         </button>
       </div>
 
+      <!-- 첫째 날 일정 리스트 -->
       <div id="content-day1" class="tab-content space-y-6 relative border-l-2 border-[#eed6cb] ml-4 pl-6 pr-2">
         
         <div class="relative mb-8">
@@ -171,7 +179,7 @@
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 2:05 - 2:40</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">이마트 장보기🛒</h3>
-          <p class="text-sm text-[#7a6458] mt-1">장보는것도 여행의 재미!<br>저녁 식사, 아침식사, 주류 등 필요용품 구매💵</p>
+          <p class="text-sm text-[#7a6458] mt-1">장보는 것도 여행의 재미!<br>저녁 식사, 아침 식사, 주류 등 필요용품 구매💵</p>
           <div class="mt-3 flex space-x-2">
             <button onclick="openNav('강릉 이마트', 128.9225318, 37.7706543)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
@@ -186,7 +194,7 @@
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 3:00 - 5:00</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">숙소 입실 및 수영! 🏊🥽🛟</h3>
-          <p class="text-sm text-[#7a6458] mt-1">프리미엄 펜션 '강릉 풀빌라수'에 도착하여 짐을 풀고<br>시아&연두 공주님들과 함께 물놀이를 합시다~</p>
+          <p class="text-sm text-[#7a6458] mt-1">프리미엄 펜션 '강릉 풀빌라수'에 도착하여 짐을 풀고<br>시아 & 연두 공주님들과 함께 신나는 물놀이를 합시다~</p>
           <div class="mt-3 flex space-x-2">
             <button onclick="openNav('강릉풀빌라수', 128.8949337, 37.8132596)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
@@ -201,7 +209,7 @@
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 5:00</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">저녁 식사 준비 및 음주가무🧑‍🎤</h3>
-          <p class="text-sm text-[#7a6458] mt-1">맛있는 저녁식사 시간!!<br>펜션의 부대시설인 노래방에서 노래도 한곡!🎤🎵</p>
+          <p class="text-sm text-[#7a6458] mt-1">맛있는 바비큐 저녁 식사 시간!!<br>펜션의 부대시설인 노래방에서 신나게 노래도 한 곡!🎤🎵</p>
           <div class="mt-3 flex space-x-2">
             <button onclick="openNav('강릉풀빌라수', 128.8949337, 37.8132596)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
@@ -221,6 +229,7 @@
 
       </div>
 
+      <!-- 둘째 날 일정 리스트 (보완 추가 완료) -->
       <div id="content-day2" class="tab-content space-y-6 hidden relative border-l-2 border-[#eed6cb] ml-4 pl-6 pr-2">
         
         <div class="relative mb-8">
@@ -229,7 +238,7 @@
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">09:00</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">기분 좋은 아침 기상 ☀️</h3>
-          <p class="text-sm text-[#7a6458] mt-1">강릉의 맑은 바닷바람 소리와 함께 온가족이 상쾌하게 눈을 뜹니다.</p>
+          <p class="text-sm text-[#7a6458] mt-1">강릉의 맑은 바닷바람 소리와 함께 온 가족이 상쾌하게 눈을 뜹니다.</p>
         </div>
 
         <div class="relative mb-8">
@@ -238,7 +247,7 @@
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오전 09:00 - 11:00</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">조식 (사랑이 담긴 라면?) 🍜</h3>
-          <p class="text-sm text-[#7a6458] mt-1">해안가 펜션 최고의 아침 별미!<br>마법의 라면으로 식사합니다.<br>퇴실 준비도 같이 합시다~</p>
+          <p class="text-sm text-[#7a6458] mt-1">해안가 펜션 최고의 아침 별미!<br>마법의 해물라면으로 식사합니다.<br>퇴실 준비도 같이 차근차근 합시다~</p>
           <div class="mt-3">
             <button onclick="openMenuModal('ramen')" class="flex items-center space-x-1 bg-[#6f4e37] hover:bg-[#4e3629] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-fire-burner"></i>
@@ -252,28 +261,97 @@
             <i class="fa-solid fa-door-open"></i>
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오전 11:00 - 12:00</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">펜션 퇴실 & 부채길 이동</h3>
-          <p class="text-sm text-[#7a6458] mt-1">수고하셨습니다! 둘째 날은 강릉 부채길을 걸어요!<br>편도 1시간 코스이니편한 신발 필수!</p>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">펜션 퇴실 & 부채길 이동 🚗</h3>
+          <p class="text-sm text-[#7a6458] mt-1">정리 정돈 후 퇴실 완료! 둘째 날 첫 코스인 바다부채길 주차장으로 이동합니다.</p>
         </div>
 
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#6f4e37] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-map-pin"></i>
           </div>
-          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 12:00 - 2:00</span>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 12:00 - 1:30</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">정동심곡바다부채길 탐방 🌊</h3>
-          <p class="text-sm text-[#7a6458] mt-1">시원하게 트인 동해 바다 해안 데크길을 가족들과 함께 오순도순 걸어봅니다.</p>
+          <p class="text-sm text-[#7a6458] mt-1">동해의 비경을 간직한 푸른 해안 데크길!<br>편도 약 1시간 코스이므로 편한 신발 필수!</p>
           <div class="mt-3 flex space-x-2">
-            <button onclick="openNav('심곡항 화장실', 129.0536762, 37.6658689)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
+            <button onclick="openNav('심곡항 주차장', 129.0536762, 37.6658689)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
               <span>티맵 네비 실행</span>
             </button>
           </div>
         </div>
 
+        <!-- 둘째 날 추가: 점심 식사 -->
+        <div class="relative mb-8">
+          <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 1:40 - 2:40</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">강릉의 맛! 점심 식사 🍲</h3>
+          <p class="text-sm text-[#7a6458] mt-1">바다 바람을 쐰 후 먹는 고소한 초당두부전골 또는 새콤달콤 시원한 물회 맛집으로 이동합니다.</p>
+          <div class="mt-3 flex space-x-2">
+            <button onclick="openNav('강릉 초당두부마을', 128.916518, 37.789178)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <span>초당마을 티맵 실행</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 둘째 날 추가: 감성 카페 타임 -->
+        <div class="relative mb-8">
+          <div class="absolute -left-[35px] top-1 bg-[#6f4e37] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
+            <i class="fa-solid fa-mug-hot"></i>
+          </div>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 2:50 - 3:50</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">안목해변 오션뷰 카페거리 ☕</h3>
+          <p class="text-sm text-[#7a6458] mt-1">강릉 여행의 마지막 코스! 끝없는 바다를 바라보며 커피와 달콤한 디저트로 힐링을 마무리합니다.</p>
+          <div class="mt-3 flex space-x-2">
+            <button onclick="openNav('안목해변 커피거리 주차장', 128.948256, 37.771415)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <span>커피거리 티맵 실행</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 둘째 날 추가: 안전 귀가 -->
+        <div class="relative">
+          <div class="absolute -left-[35px] top-1 bg-[#9c8070] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
+            <i class="fa-solid fa-house-chimney"></i>
+          </div>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 4:00 ~</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">집으로 출발 및 여행 마무리 🏡</h3>
+          <p class="text-sm text-[#7a6458] mt-1">추억을 가득 품고 집으로 안전하게 출발합니다. 함께해 주셔서 고맙고 사랑합니다!</p>
+        </div>
+
       </div>
     </section>
 
+    <!-- 아기자기한 여행 체크리스트 추가 섹션 -->
+    <section class="bg-white py-8 px-6 border-b border-[#eed6cb]">
+      <div class="text-center mb-4">
+        <h2 class="font-serif-custom text-lg font-bold text-[#6f4e37]">🎒 여행 준비 체크리스트</h2>
+        <p class="text-[11px] text-[#a08070] mt-0.5">즐거운 여행을 위해 꼼꼼하게 챙겨보아요!</p>
+      </div>
+      <div class="bg-[#faf7f5] rounded-xl p-4 border border-[#ebdcd3] space-y-2.5">
+        <label class="flex items-center space-x-3 text-xs text-[#6d5952] cursor-pointer">
+          <input type="checkbox" class="rounded text-[#c77d55] focus:ring-[#c77d55] w-4 h-4 border-[#ebdcd3]" checked>
+          <span>물놀이용 수영복, 튜브, 비치타올 🏊</span>
+        </label>
+        <label class="flex items-center space-x-3 text-xs text-[#6d5952] cursor-pointer">
+          <input type="checkbox" class="rounded text-[#c77d55] focus:ring-[#c77d55] w-4 h-4 border-[#ebdcd3]">
+          <span>정동심곡바다부채길용 편안한 운동화 👟</span>
+        </label>
+        <label class="flex items-center space-x-3 text-xs text-[#6d5952] cursor-pointer">
+          <input type="checkbox" class="rounded text-[#c77d55] focus:ring-[#c77d55] w-4 h-4 border-[#ebdcd3]">
+          <span>자외선 차단용 선크림 & 모자 & 선글라스 😎</span>
+        </label>
+        <label class="flex items-center space-x-3 text-xs text-[#6d5952] cursor-pointer">
+          <input type="checkbox" class="rounded text-[#c77d55] focus:ring-[#c77d55] w-4 h-4 border-[#ebdcd3]">
+          <span>개인 세면도구 및 상비약 💊</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 소중한 순간들 (갤러리 캐러셀) -->
     <section class="bg-gradient-to-b from-[#ffffff] to-[#faf7f5] py-10 border-b border-[#eed6cb] relative">
       <div class="text-center mb-6 px-4">
         <span class="inline-block bg-[#eed6cb] text-[#6f4e37] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-widest mb-1">MEMORIES</span>
@@ -285,7 +363,8 @@
 
       <div class="relative w-full overflow-hidden px-1 py-2" id="carousel-viewport">
         <div id="gallery-track" class="flex transition-transform duration-300 ease-out cursor-grab active:cursor-grabbing select-none">
-          </div>
+          <!-- JS에서 동적 로드 -->
+        </div>
 
         <button id="gallery-prev-btn" class="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-[#ebdcd3] text-[#6f4e37] flex items-center justify-center shadow-md hover:bg-white active:scale-95 transition z-10 focus:outline-none">
           <i class="fa-solid fa-chevron-left text-xs"></i>
@@ -296,9 +375,30 @@
       </div>
 
       <div id="gallery-dots" class="flex justify-center items-center space-x-2 mt-4">
-        </div>
+        <!-- JS에서 동적 로드 -->
+      </div>
     </section>
 
+    <!-- 러브레터 / 편지 섹션 추가 -->
+    <section class="bg-white py-12 px-6 border-b border-[#eed6cb]">
+      <div class="text-center mb-6">
+        <span class="inline-block bg-[#f5eae3] text-[#c77d55] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-widest mb-1">LOVE LETTER</span>
+        <h2 class="font-serif-custom text-lg font-bold text-[#6f4e37]">가족들이 드리는 편지 💌</h2>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="bg-[#faf7f5] rounded-2xl p-5 border border-[#ebdcd3] relative shadow-sm">
+          <i class="fa-solid fa-heart absolute right-4 top-4 text-rose-300 animate-pulse text-lg"></i>
+          <p class="font-serif-custom text-xs font-bold text-[#c77d55] mb-2">To. 사랑하는 엄마께</p>
+          <p class="text-xs text-[#6d5952] leading-relaxed">
+            언제나 저희를 가장 먼저 생각하시고 든든한 버팀목이 되어주셔서 고맙습니다. 엄마의 세 번째 스무 살, 그 어느 때보다 빛나고 행복만 가득할 수 있도록 저희가 늘 곁에서 지켜드릴게요. 환갑을 진심으로 축하드려요! 늘 건강하고 사랑합니다. ❤️
+          </p>
+          <p class="text-[10px] text-right text-[#a08070] font-bold mt-3">- 자녀 일동 올림 -</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 푸터 영역 -->
     <footer class="bg-[#6f4e37] text-[#e8ded7] py-10 px-6 text-center text-xs border-t border-[#ebdcd3]">
       <p class="font-serif-custom text-sm font-bold mb-2 text-white">박길업 여사님의 세 번째 스무 살을 온 마음 다해 축하합니다.</p>
       <p class="opacity-80">이동 일정에 기재된 '티맵' 버튼을 누르시면 모바일 경로 안내로 즉시 연동됩니다.</p>
@@ -307,6 +407,7 @@
 
   </div>
 
+  <!-- 추천 레시피 모달 -->
   <div id="menu-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-xs">
     <div class="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl transform transition-all">
       <div class="bg-[#6f4e37] text-white px-5 py-4 flex justify-between items-center">
@@ -316,7 +417,8 @@
         </button>
       </div>
       <div class="p-6 text-sm text-gray-700 space-y-4" id="modal-body-content">
-        </div>
+        <!-- 동적 삽입 -->
+      </div>
       <div class="bg-[#faf7f5] px-5 py-3 text-right border-t border-[#ebdcd3]">
         <button onclick="closeMenuModal()" class="bg-[#c77d55] text-white px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-[#b06740]">
           닫기
@@ -361,37 +463,19 @@
         btn2.className = "tab-btn w-1/2 py-3 rounded-xl font-bold transition-all duration-300 shadow-md bg-[#6f4e37] text-white";
       }
     }
-// 3. 티맵(TMap) 호출 스키마 연동 (위경도 순서 뒤바뀜 및 Key 값 완벽 해결)// 3. 티맵(TMap) 호출 스키마 연동 (필수 파라미터 보완 및 인코딩 수정)
-function openNav(name, lng, lat) {
-  const encodedName = encodeURIComponent(name);
-  
-  // 💡 핵심 수정: &rCoordType=WGS84GEO 파라미터를 추가하여 위경도 좌표임을 티맵에 명시해야 합니다.
-  const tmapUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}&rCoordType=WGS84GEO`;
-  
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const isAndroid = /Android/.test(navigator.userAgent);
-  
-  if (isIOS) {
-    // 앱 없으면 앱스토어로 이동할 타이머 세팅
-    const fallbackTimer = setTimeout(() => {
-      window.location.href = 'https://apps.apple.com/kr/app/id431589174';
-    }, 1500);
+
+    // 3. 티맵(TMap) 호출 스키마 연동
+    function openNav(name, lng, lat) {
+      const encodedName = encodeURIComponent(name);
+      const tmapUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}&rCoordType=WGS84GEO`;
+      
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isAndroid = /Android/.test(navigator.userAgent);
+      
+      window.open(`https://map.naver.com/v5/?c=${lng},${lat},15,0,0,0,dh`, '_blank');
+
+    }
     
-    window.location.href = tmapUrl;
-    window.addEventListener('blur', () => clearTimeout(fallbackTimer), { once: true });
-    
-  } else if (isAndroid) {
-    // 안드로이드는 인텐트(Intent) 스키마를 사용하는 것이 브라우저 차단 현상 없이 가장 안전하게 실행됩니다.
-    const intentUrl = `intent://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}&rCoordType=WGS84GEO#Intent;scheme=tmap;package=com.skt.tmap;end`;
-    window.location.href = intentUrl;
-    
-  } else {
-    // PC나 기타 환경에서는 네이버 지도 웹으로 연동
-    window.open(`https://map.naver.com/v5/?c=${lng},${lat},15,0,0,0,dh`, '_blank');
-  }
-}
-    
-// 사용
     // 4. 메인 프로필 이미지 로드 실패 시 디폴트 일러스트 아이콘 복원 로직
     function handleImageError() {
       document.getElementById('profile-img').style.display = 'none';
@@ -568,7 +652,7 @@ function openNav(name, lng, lat) {
         goToSlide(currentSlideIndex + 1);
       };
 
-      // 스와이프 기능
+      // 스와이프 및 드래그 동작
       let startX = 0;
       let currentX = 0;
       let isDragging = false;
