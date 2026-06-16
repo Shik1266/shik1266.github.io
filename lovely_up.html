@@ -47,7 +47,7 @@
         <span class="inline-block bg-[#d4a373] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">FAMILY TRAVEL</span>
       </div>
       <h1 class="font-serif-custom text-2xl md:text-3xl font-bold text-[#6f4e37] leading-relaxed mb-2">
-        💖박길업 여사님의💖<br>세 번째 스무 살
+        💖박길업 여사님의💖<br>3 번째 스무 살
       </h1>
       <p class="text-xs text-[#a08070] tracking-wider mb-6 font-medium">2026. 06. 21(일) ~ 2026. 06. 22(월) | 1박 2일</p>
       
@@ -365,10 +365,11 @@
 function openNav(name, lng, lat) {
 
   const encodedName = encodeURIComponent(name);
-  const tmapUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}`;
-  
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const isAndroid = /Android/.test(navigator.userAgent);
+
+const tmapUrl = Platform.OS === 'ios'
+  ? `tmap://route?rGoName=${encodeURIComponent(name)}&rGoX=${lng}&rGoY=${lat}`
+  : `tmap://route?referrer=com.skt.Tmap&goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`;
+
   
   if (isIOS) {
     // 앱 없으면 앱스토어로
