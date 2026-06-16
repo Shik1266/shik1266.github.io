@@ -8,7 +8,6 @@
   <!-- 카카오톡 및 SNS 공유용 오픈 그래프(OG) 태그 -->
   <meta property="og:title" content="박길업 여사님의 세 번째 스무 살">
   <meta property="og:description" content="6월 21일 ~ 22일, 사랑하는 박길업 여사님의 환갑 여행 일정표 💕">
-  <!-- 깃허브에 올릴 이미지 경로를 절대주소로 지정합니다. -->
   <meta property="og:image" content="https://shik1266.github.io/Screenshot_20260616_094054_KakaoTalk.jpg">
   <meta property="og:url" content="https://shik1266.github.io">
   <meta property="og:type" content="website">
@@ -58,9 +57,8 @@
       </h1>
       <p class="text-xs text-[#a08070] tracking-wider mb-6 font-medium">2026. 06. 21(일) ~ 2026. 06. 22(월) | 1박 2일</p>
       
-      <!-- 사진 영역 (업로드 시 바로 연동, 업로드 전에는 기본 감성 일러스트 노출) -->
+      <!-- 사진 영역 -->
       <div class="w-44 h-44 mx-auto rounded-full bg-gradient-to-tr from-[#eed6cb] to-[#f5eae3] flex items-center justify-center shadow-md border-4 border-white mb-6 overflow-hidden relative">
-        <!-- 깃허브에 family-photo.jpg 이름으로 올릴 이미지 연동 -->
         <img id="profile-img" src="family-photo.jpg" alt="박길업 여사님 환갑 축하 사진" 
              class="w-full h-full object-cover"
              onerror="handleImageError()">
@@ -72,7 +70,7 @@
         </div>
       </div>
 
-      <!-- 실시간 디데이 카운트다운 (2026년 6월 21일 기준) -->
+      <!-- 실시간 디데이 카운트다운 -->
       <div class="bg-white/80 backdrop-blur-sm rounded-xl py-3 px-4 shadow-sm inline-flex items-center space-x-3 border border-[#ebdcd3]">
         <span class="text-sm font-medium text-[#8d6e63]">여행 출발까지</span>
         <span id="d-day-display" class="font-serif-custom text-lg font-bold text-[#c77d55] animate-pulse">D-Day</span>
@@ -90,7 +88,6 @@
           사랑하는 가족들과 함께 떠나는<br>
           설레는 힐링 여행에 초대합니다.
         </p>
-     
         <i class="fa-solid fa-quote-right text-2xl text-[#e3c1b1] mt-3"></i>
       </div>
     </section>
@@ -271,7 +268,7 @@
       </div>
     </section>
 
-    <!-- 4. 추억의 갤러리 섹션 (신규 추가 - 일정표 밑에 위치) -->
+    <!-- 4. 추억의 갤러리 섹션 -->
     <section class="bg-gradient-to-b from-[#ffffff] to-[#faf7f5] py-10 border-b border-[#eed6cb] relative">
       <div class="text-center mb-6 px-4">
         <span class="inline-block bg-[#eed6cb] text-[#6f4e37] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-widest mb-1">MEMORIES</span>
@@ -488,50 +485,15 @@
       document.getElementById("menu-modal").classList.add("hidden");
     }
 
-    // 6. 깃허브 API를 이용한 동적 갤러리 로딩 및 무한 스와이프 로직 구현
-    const GITHUB_OWNER = 'shik1266';
-    const GITHUB_REPO = 'shik1266.github.io';
-    const GALLERY_PATH = 'gallery';
-
-    async function fetchGalleryImages() {
-      const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GALLERY_PATH}`;
-      
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error('API request failed');
-        const files = await response.json();
-        
-        // 이미지 확장자 필터 (jpg, jpeg, png, gif, webp 등)
-        const imageExtensions = /\.(jpe?g|png|gif|webp|heic)$/i;
-        const images = files
-          .filter(file => file.type === 'file' && imageExtensions.test(file.name))
-          .map(file => {
-            // 파일명에서 확장자를 제외한 텍스트를 기본 설명으로 사용하되, 특정 키워드 정제
-            let desc = file.name.split('.')[0]
-              .replace(/[-_]/g, ' ') // 하이픈/언더바 공백 치환
-              .trim();
-            
-            return {
-              src: file.path, // relative path (gallery/filename.jpg)
-              desc: desc || '가족들과 함께한 행복한 시간 💖'
-            };
-          });
-
-        if (images.length === 0) throw new Error('No images in gallery folder');
-        return images;
-      } catch (error) {
-        console.warn('GitHub API 조회 실패 혹은 로컬 테스트 환경입니다. 기본 데모 리스트로 전환합니다.', error);
-        // 에러 또는 로컬 환경일 때 작동하는 디폴트 대체 이미지 목록
-        return [
-          { src: 'gallery/Screenshot_20260616_105545_KakaoTalk.jpg', desc: '첫번째 여행 대부도 에서 💕' },
-          { src: 'gallery/Screenshot_20260616_105523_KakaoTalk.jpg', desc: '두번째 여행 가평 에서! 🚗' },
-          { src: 'gallery/Screenshot_20260616_105408_KakaoTalk.jpg', desc: '시아랑 할머니랑 💖' },
-          { src: 'gallery/AISelect_20260616_105427_KakaoTalk.jpg', desc: '연두랑 벚꽃놀이 🌸' },
-          { src: 'gallery/Screenshot_20260616_105347_KakaoTalk.jpg', desc: '영화배우 부부 썬그리 😎✨' },
-          { src: 'gallery/Screenshot_20260616_105321_KakaoTalk.jpg', desc: '마장호수 에서 💖' }
-        ];
-      }
-    }
+    // 6. 갤러리 이미지 고정 데이터 정의 (불안정한 깃허브 API 호출 제거 및 완벽한 로컬 자원 매핑)
+    const GALLERY_IMAGES = [
+      { src: 'gallery/Screenshot_20260616_105545_KakaoTalk.jpg', desc: '첫번째 여행 대부도 에서 💕' },
+      { src: 'gallery/Screenshot_20260616_105523_KakaoTalk.jpg', desc: '두번째 여행 가평 에서! 🚗' },
+      { src: 'gallery/Screenshot_20260616_105408_KakaoTalk.jpg', desc: '시아랑 할머니랑 💖' },
+      { src: 'gallery/AISelect_20260616_105427_KakaoTalk.jpg', desc: '연두랑 벚꽃놀이 🌸' },
+      { src: 'gallery/Screenshot_20260616_105347_KakaoTalk.jpg', desc: '영화배우 부부 썬그리 😎✨' },
+      { src: 'gallery/Screenshot_20260616_105321_KakaoTalk.jpg', desc: '마장호수 에서 💖' }
+    ];
 
     function setupGallery(galleryImages) {
       const track = document.getElementById('gallery-track');
@@ -572,7 +534,7 @@
                 <i class="fa-solid fa-images text-3xl text-[#d4a373] mb-2 opacity-80"></i>
                 <span class="text-[11px] text-[#6f4e37] font-serif-custom font-semibold">이곳에 추억을 채워주세요</span>
                 <span class="text-[9px] text-[#a08070] mt-1 bg-white/60 px-2 py-0.5 rounded-full font-mono border border-[#eed6cb]">
-                  ${imgData.src.split('/').pop()}
+                  "${imgData.src.split('/').pop()}"
                 </span>
               </div>
             </div>
@@ -729,10 +691,9 @@
       startAutoPlay();
     }
 
-    // 7. 페이지 최초 로드 시 API 연동 및 갤러리 활성화
-    window.onload = async function() {
-      const images = await fetchGalleryImages();
-      setupGallery(images);
+    // 7. 페이지 최초 로드 시 고정 갤러리 리스트 연동 및 화면 구성
+    window.onload = function() {
+      setupGallery(GALLERY_IMAGES);
     }
   </script>
 </body>
