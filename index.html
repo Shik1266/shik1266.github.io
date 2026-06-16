@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>길(Road) 따라 기분 UP! 박길업 여사님의 세 번째 스무 살</title>
+  <title>박길업 여사님의 세 번째 스무 살</title>
   
   <!-- 카카오톡 및 SNS 공유용 오픈 그래프(OG) 태그 -->
-  <meta property="og:title" content="길(Road) 따라 기분 UP! 박길업 여사님의 세 번째 스무 살">
-  <meta property="og:description" content="6월 21일 ~ 22일, 텐션 길-업! 기분 길-업! 박길업 여사님 환갑 여행 일정표 💕">
+  <meta property="og:title" content="박길업 여사님의 세 번째 스무 살">
+  <meta property="og:description" content="6월 21일 ~ 22일, 사랑하는 박길업 여사님의 환갑 여행 일정표 💕">
+  <!-- 깃허브에 올릴 이미지 경로를 절대주소로 지정합니다. -->
   <meta property="og:image" content="https://shik1266.github.io/Screenshot_20260616_094054_KakaoTalk.jpg">
   <meta property="og:url" content="https://shik1266.github.io">
   <meta property="og:type" content="website">
@@ -29,9 +30,9 @@
     .font-serif-custom {
       font-family: 'Gowun Batang', serif;
     }
-    /* 고급스러운 스크롤바 커스텀 */
+    /* 스크롤바 커스텀 */
     ::-webkit-scrollbar {
-      width: 5px;
+      width: 4px;
     }
     ::-webkit-scrollbar-track {
       background: #f7f3f0;
@@ -45,7 +46,7 @@
 <body class="flex justify-center items-center min-h-screen">
 
   <!-- 모바일 프레임 컨테이너 (PC 뷰에서도 이쁜 모바일 화면비 유지) -->
-  <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col justify-between overflow-x-hidden border-x border-[#eed6cb]">
+  <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col justify-between overflow-x-hidden">
     
     <!-- 1. 메인 인트로 (로즈 골드 & 따뜻한 베이지 감성) -->
     <header class="relative bg-gradient-to-b from-[#f5eae3] to-[#ffffff] pt-12 pb-10 px-6 text-center border-b border-[#ebdcd3]">
@@ -53,23 +54,21 @@
         <span class="inline-block bg-[#d4a373] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">FAMILY TRAVEL</span>
       </div>
       <h1 class="font-serif-custom text-2xl md:text-3xl font-bold text-[#6f4e37] leading-relaxed mb-2">
-        길(Road) 따라 기분 UP! 💖<br>박길업 여사님의 세 번째 스무 살
+        💖박길업 여사님의💖<br>세 번째 스무 살
       </h1>
       <p class="text-xs text-[#a08070] tracking-wider mb-6 font-medium">2026. 06. 21(일) ~ 2026. 06. 22(월) | 1박 2일</p>
       
-      <!-- 사진 영역 (업로드 완료 시 연동, 업로드 전에는 기본 감성 일러스트 노출) -->
+      <!-- 사진 영역 (업로드 시 바로 연동, 업로드 전에는 기본 감성 일러스트 노출) -->
       <div class="w-44 h-44 mx-auto rounded-full bg-gradient-to-tr from-[#eed6cb] to-[#f5eae3] flex items-center justify-center shadow-md border-4 border-white mb-6 overflow-hidden relative">
-        <!-- 깃허브에 지정된 이름으로 올릴 이미지 연동 -->
-        <img id="profile-img" 
-             src="Screenshot_20260616_094054_KakaoTalk.jpg" 
-             alt="박길업 여사님 환갑 축하 사진" 
+        <!-- 깃허브에 family-photo.jpg 이름으로 올릴 이미지 연동 -->
+        <img id="profile-img" src="family-photo.jpg" alt="박길업 여사님 환갑 축하 사진" 
              class="w-full h-full object-cover"
              onerror="handleImageError()">
         
         <!-- 사진 로딩 전/실패 시 보여주는 기본 일러스트 아이콘 -->
         <div id="fallback-icon" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-tr from-[#eed6cb] to-[#f5eae3] hidden">
           <i class="fa-solid fa-cloud-sun-rain text-4xl text-[#d4a373] mb-1 animate-bounce"></i>
-          <p class="font-serif-custom text-xs font-bold text-[#6f4e37] mt-1">길UP! 기분UP!</p>
+          <p class="font-serif-custom text-xs font-bold text-[#6f4e37] mt-1">축 환갑 🎉</p>
         </div>
       </div>
 
@@ -91,15 +90,13 @@
           사랑하는 가족들과 함께 떠나는<br>
           설레는 힐링 여행에 초대합니다.
         </p>
-        <p class="font-serif-custom text-sm text-[#8a7268] font-bold">
-          - 사위와 딸 가족 올림 -
-        </p>
+     
         <i class="fa-solid fa-quote-right text-2xl text-[#e3c1b1] mt-3"></i>
       </div>
     </section>
 
     <!-- 3. 일정 탭 시스템 (Day 1 / Day 2) -->
-    <section class="bg-[#faf7f5] px-4 py-8">
+    <section class="bg-[#faf7f5] px-4 py-8 border-b border-[#eed6cb]">
       <div class="flex justify-center space-x-4 mb-8">
         <button onclick="switchTab('day1')" id="tab-day1" class="tab-btn w-1/2 py-3 rounded-xl font-bold transition-all duration-300 shadow-md bg-[#6f4e37] text-white">
           첫째 날 (6/21 일)
@@ -274,33 +271,40 @@
       </div>
     </section>
 
-    <!-- 4. 장모님을 위한 사랑방 편지함 (방명록) -->
-    <section class="bg-white px-6 py-10 border-t border-b border-[#eed6cb]">
-      <div class="text-center mb-6">
-        <i class="fa-solid fa-heart text-[#c77d55] text-2xl mb-1 animate-pulse"></i>
-        <h2 class="font-serif-custom text-xl font-bold text-[#6f4e37]">길업 마마 축하 메시지방</h2>
-        <p class="text-xs text-[#a08070] mt-1">여사님을 향한 소중한 진심을 남겨주세요 💕</p>
+    <!-- 4. 추억의 갤러리 섹션 (신규 추가 - 일정표 밑에 위치) -->
+    <section class="bg-gradient-to-b from-[#ffffff] to-[#faf7f5] py-10 border-b border-[#eed6cb] relative">
+      <div class="text-center mb-6 px-4">
+        <span class="inline-block bg-[#eed6cb] text-[#6f4e37] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-widest mb-1">MEMORIES</span>
+        <h2 class="font-serif-custom text-xl font-bold text-[#6f4e37]">우리의 소중한 순간들 📸</h2>
+        <p class="text-xs text-[#a08070] mt-1 leading-relaxed">
+          좌우로 스와이프하여 사랑이 묻어나는<br>가족 추억들을 감상해보세요.
+        </p>
       </div>
 
-      <!-- 방명록 리스트 공간 -->
-      <div id="guestbook-list" class="space-y-3 max-h-60 overflow-y-auto mb-6 p-2 bg-[#fdfaf8] rounded-xl border border-[#ebdcd3] text-sm">
-        <!-- 등록된 댓글이 여기에 동적으로 추가됩니다 -->
-      </div>
-
-      <!-- 방명록 작성 폼 -->
-      <form id="guestbook-form" onsubmit="addMessage(event)" class="space-y-3">
-        <div class="flex space-x-2">
-          <input id="writer-name" type="text" placeholder="보내는 분 (예: 사위)" required class="w-1/3 px-3 py-2 border border-[#ebdcd3] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c77d55] text-gray-800 bg-[#fdfbf9]">
-          <input id="message-content" type="text" placeholder="길업 여사님께 드리는 축하 멘트" required class="w-2/3 px-3 py-2 border border-[#ebdcd3] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c77d55] text-gray-800 bg-[#fdfbf9]">
+      <!-- 무한 스와이프 캐러셀 뷰포트 -->
+      <div class="relative w-full overflow-hidden px-1 py-2" id="carousel-viewport">
+        <!-- 슬라이드들이 담기는 움직이는 트랙 -->
+        <div id="gallery-track" class="flex transition-transform duration-300 ease-out cursor-grab active:cursor-grabbing select-none">
+          <!-- JS를 통해 동적으로 이미지 슬라이드들이 삽입됩니다 -->
         </div>
-        <button type="submit" class="w-full bg-[#c77d55] hover:bg-[#b06740] text-white text-sm font-bold py-2.5 rounded-lg shadow-md transition duration-200">
-          사랑의 한마디 남기기 <i class="fa-solid fa-paper-plane ml-1"></i>
+
+        <!-- 좌우 화살표 내비게이션 버튼 (PC 환경 보조용) -->
+        <button id="gallery-prev-btn" class="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-[#ebdcd3] text-[#6f4e37] flex items-center justify-center shadow-md hover:bg-white active:scale-95 transition z-10 focus:outline-none">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
         </button>
-      </form>
+        <button id="gallery-next-btn" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-[#ebdcd3] text-[#6f4e37] flex items-center justify-center shadow-md hover:bg-white active:scale-95 transition z-10 focus:outline-none">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- 활성화된 현재 슬라이드 상태를 보여주는 도트 인디케이터 -->
+      <div id="gallery-dots" class="flex justify-center items-center space-x-2 mt-4">
+        <!-- JS로 동적 생성됨 -->
+      </div>
     </section>
 
     <!-- 5. 푸터 안내 -->
-    <footer class="bg-[#6f4e37] text-[#e8ded7] py-8 px-6 text-center text-xs">
+    <footer class="bg-[#6f4e37] text-[#e8ded7] py-10 px-6 text-center text-xs border-t border-[#ebdcd3]">
       <p class="font-serif-custom text-sm font-bold mb-2 text-white">박길업 여사님의 세 번째 스무 살을 온 마음 다해 축하합니다.</p>
       <p class="opacity-80">이동 일정에 기재된 '티맵' 버튼을 누르시면 모바일 경로 안내로 즉시 연동됩니다.</p>
       <p class="mt-4 opacity-50">&copy; 2026 사랑하는 가족 일동. All rights reserved.</p>
@@ -389,13 +393,13 @@
       }, 500);
     }
 
-    // 4. 이미지 엑박(로딩 실패) 시 처리 로직
+    // 4. 메인 프로필 이미지 로드 실패 시 디폴트 일러스트 아이콘 복원 로직
     function handleImageError() {
       document.getElementById('profile-img').style.display = 'none';
       document.getElementById('fallback-icon').classList.remove('hidden');
     }
 
-    // 5. 동적 메뉴판 모달 열기 데이터 매핑
+    // 5. 동적 메뉴판 모달 데이터 매핑
     const menuData = {
       lunch: {
         title: "🍴 동해의 맛, 삼척/강릉식 든든한 조개섭국 & 오감만족 해산물",
@@ -484,69 +488,252 @@
       document.getElementById("menu-modal").classList.add("hidden");
     }
 
-    // 6. 방명록 로컬 저장 시스템 (새로고침해도 보존)
-    let messages = [
-      { id: 1, name: "큰사위", content: "길업 여사님, 늘 한결같이 사랑해 주셔서 감사합니다! 이번 강릉 여행 완벽히 모시겠습니다! 환갑 진심으로 축하드립니다. ❤️" },
-      { id: 2, name: "첫째딸", content: "엄마의 세 번째 스무 살을 너무 축하해! 우리 앞으로도 온 가족 건강하게 행복하고 이쁜 추억 많이 많이 쌓자!" }
-    ];
+    // 6. 깃허브 API를 이용한 동적 갤러리 로딩 및 무한 스와이프 로직 구현
+    const GITHUB_OWNER = 'shik1266';
+    const GITHUB_REPO = 'shik1266.github.io';
+    const GALLERY_PATH = 'gallery';
 
-    function initGuestbook() {
-      const stored = localStorage.getItem("gongneung_trip_messages");
-      if (stored) {
-        messages = JSON.parse(stored);
+    async function fetchGalleryImages() {
+      const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GALLERY_PATH}`;
+      
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error('API request failed');
+        const files = await response.json();
+        
+        // 이미지 확장자 필터 (jpg, jpeg, png, gif, webp 등)
+        const imageExtensions = /\.(jpe?g|png|gif|webp|heic)$/i;
+        const images = files
+          .filter(file => file.type === 'file' && imageExtensions.test(file.name))
+          .map(file => {
+            // 파일명에서 확장자를 제외한 텍스트를 기본 설명으로 사용하되, 특정 키워드 정제
+            let desc = file.name.split('.')[0]
+              .replace(/[-_]/g, ' ') // 하이픈/언더바 공백 치환
+              .trim();
+            
+            return {
+              src: file.path, // relative path (gallery/filename.jpg)
+              desc: desc || '가족들과 함께한 행복한 시간 💖'
+            };
+          });
+
+        if (images.length === 0) throw new Error('No images in gallery folder');
+        return images;
+      } catch (error) {
+        console.warn('GitHub API 조회 실패 혹은 로컬 테스트 환경입니다. 기본 데모 리스트로 전환합니다.', error);
+        // 에러 또는 로컬 환경일 때 작동하는 디폴트 대체 이미지 목록
+        return [
+          { src: 'gallery/Screenshot_20260616_105545_KakaoTalk.jpg', desc: '첫번째 여행 대부도 에서 💕' },
+          { src: 'gallery/Screenshot_20260616_105523_KakaoTalk.jpg', desc: '두번째 여행 가평 에서! 🚗' },
+          { src: 'gallery/Screenshot_20260616_105408_KakaoTalk.jpg', desc: '시아랑 할머니랑 💖' },
+          { src: 'gallery/AISelect_20260616_105427_KakaoTalk.jpg', desc: '연두랑 벚꽃놀이 🌸' },
+          { src: 'gallery/Screenshot_20260616_105347_KakaoTalk.jpg', desc: '영화배우 부부 썬그리 😎✨' },
+          { src: 'gallery/Screenshot_20260616_105321_KakaoTalk.jpg', desc: '마장호수 에서 💖' }
+        ];
       }
-      renderMessages();
     }
 
-    function renderMessages() {
-      const listContainer = document.getElementById("guestbook-list");
-      listContainer.innerHTML = "";
-      
-      messages.forEach(msg => {
-        const item = document.createElement("div");
-        item.className = "bg-white p-3 rounded-lg border border-[#f0e6e0] shadow-2xs relative";
-        item.innerHTML = `
-          <div class="flex justify-between items-center mb-1">
-            <span class="font-bold text-xs text-[#6f4e37] bg-[#f5eae3] px-2 py-0.5 rounded">${msg.name}</span>
-            <button onclick="deleteMessage(${msg.id})" class="text-gray-300 hover:text-red-500 text-xs">삭제</button>
+    function setupGallery(galleryImages) {
+      const track = document.getElementById('gallery-track');
+      const dotsContainer = document.getElementById('gallery-dots');
+      const prevBtn = document.getElementById('gallery-prev-btn');
+      const nextBtn = document.getElementById('gallery-next-btn');
+
+      // 기존 트랙 및 도트 인디케이터 초기화
+      track.innerHTML = '';
+      dotsContainer.innerHTML = '';
+
+      // 무한 롤링을 위해 앞뒤로 슬라이드 1개씩 복제하여 [마지막, ...원본, 첫번째] 구조 구성
+      const clonedSlides = [
+        galleryImages[galleryImages.length - 1],
+        ...galleryImages,
+        galleryImages[0]
+      ];
+
+      let currentSlideIndex = 1;
+      let isSlideTransitioning = false;
+      let autoSlideInterval;
+
+      // 슬라이드 HTML 생성 및 삽입
+      clonedSlides.forEach((imgData) => {
+        const slide = document.createElement('div');
+        slide.className = 'w-full flex-shrink-0 px-6 box-border';
+        
+        slide.innerHTML = `
+          <div class="bg-white rounded-2xl shadow-md border border-[#ebdcd3] p-4 mx-auto max-w-[290px] transform transition duration-300 hover:scale-[1.02]">
+            <div class="aspect-[4/3] w-full bg-[#fcf9f7] rounded-xl overflow-hidden relative border border-[#f0e6df]">
+              <img src="${imgData.src}" alt="${imgData.desc}" 
+                   class="w-full h-full object-cover relative z-10 hidden"
+                   onload="this.classList.remove('hidden'); this.nextElementSibling.classList.add('hidden');"
+                   onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+                   
+              <!-- 이미지 부재/에러 시 나타날 폴라로이드 플레이스홀더 -->
+              <div class="absolute inset-0 bg-gradient-to-tr from-[#f3e5dd] to-[#fcf9f7] flex flex-col items-center justify-center z-0 p-4 text-center">
+                <i class="fa-solid fa-images text-3xl text-[#d4a373] mb-2 opacity-80"></i>
+                <span class="text-[11px] text-[#6f4e37] font-serif-custom font-semibold">이곳에 추억을 채워주세요</span>
+                <span class="text-[9px] text-[#a08070] mt-1 bg-white/60 px-2 py-0.5 rounded-full font-mono border border-[#eed6cb]">
+                  ${imgData.src.split('/').pop()}
+                </span>
+              </div>
+            </div>
+            <div class="pt-4 pb-1 text-center border-t border-[#f7f3f0] mt-3">
+              <p class="font-serif-custom text-xs font-bold text-[#6f4e37] truncate">${imgData.desc}</p>
+            </div>
           </div>
-          <p class="text-xs text-gray-700 leading-relaxed">${msg.content}</p>
         `;
-        listContainer.appendChild(item);
+        track.appendChild(slide);
       });
-      
-      listContainer.scrollTop = listContainer.scrollHeight;
-    }
 
-    function addMessage(event) {
-      event.preventDefault();
-      const nameInput = document.getElementById("writer-name");
-      const contentInput = document.getElementById("message-content");
-      
-      const newMsg = {
-        id: Date.now(),
-        name: nameInput.value.trim(),
-        content: contentInput.value.trim()
+      // 도트 인디케이터 생성
+      galleryImages.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-[#c77d55] w-4' : 'bg-[#e2d4cb]'}`;
+        dot.setAttribute('aria-label', `Go to slide ${idx + 1}`);
+        dot.addEventListener('click', () => {
+          if (isSlideTransitioning) return;
+          resetAutoPlay();
+          goToSlide(idx + 1);
+        });
+        dotsContainer.appendChild(dot);
+      });
+
+      const dots = dotsContainer.children;
+      const originalLength = galleryImages.length;
+
+      function updateSlidePosition() {
+        track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+      }
+
+      function updateDotsState() {
+        let activeDotIndex = currentSlideIndex - 1;
+        if (currentSlideIndex === 0) activeDotIndex = originalLength - 1;
+        if (currentSlideIndex === originalLength + 1) activeDotIndex = 0;
+
+        for (let i = 0; i < dots.length; i++) {
+          if (i === activeDotIndex) {
+            dots[i].className = 'w-2 h-2 rounded-full transition-all duration-300 bg-[#c77d55] w-4';
+          } else {
+            dots[i].className = 'w-2 h-2 rounded-full transition-all duration-300 bg-[#e2d4cb]';
+          }
+        }
+      }
+
+      function goToSlide(index, animate = true) {
+        if (isSlideTransitioning) return;
+        isSlideTransitioning = true;
+
+        if (animate) {
+          track.style.transition = 'transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        } else {
+          track.style.transition = 'none';
+        }
+
+        currentSlideIndex = index;
+        updateSlidePosition();
+        updateDotsState();
+      }
+
+      // 무한 루프 처리용 이벤트 바인딩
+      track.addEventListener('transitionend', () => {
+        isSlideTransitioning = false;
+        if (currentSlideIndex === 0) {
+          track.style.transition = 'none';
+          currentSlideIndex = originalLength;
+          updateSlidePosition();
+        } else if (currentSlideIndex === originalLength + 1) {
+          track.style.transition = 'none';
+          currentSlideIndex = 1;
+          updateSlidePosition();
+        }
+      });
+
+      prevBtn.onclick = () => {
+        if (isSlideTransitioning) return;
+        resetAutoPlay();
+        goToSlide(currentSlideIndex - 1);
       };
-      
-      messages.push(newMsg);
-      localStorage.setItem("gongneung_trip_messages", JSON.stringify(messages));
-      
-      nameInput.value = "";
-      contentInput.value = "";
-      
-      renderMessages();
+
+      nextBtn.onclick = () => {
+        if (isSlideTransitioning) return;
+        resetAutoPlay();
+        goToSlide(currentSlideIndex + 1);
+      };
+
+      // 터치 & 마우스 드래그 이벤트 (스와이프 기능)
+      let startX = 0;
+      let currentX = 0;
+      let isDragging = false;
+      let startTranslate = 0;
+
+      function getEventX(e) {
+        return e.touches ? e.touches[0].clientX : e.clientX;
+      }
+
+      function onDragStart(e) {
+        if (isSlideTransitioning) return;
+        isDragging = true;
+        startX = getEventX(e);
+        track.style.transition = 'none';
+        const viewportWidth = document.getElementById('carousel-viewport').offsetWidth;
+        startTranslate = -currentSlideIndex * viewportWidth;
+        resetAutoPlay();
+      }
+
+      function onDragMove(e) {
+        if (!isDragging) return;
+        currentX = getEventX(e);
+        const diffX = currentX - startX;
+        track.style.transform = `translateX(${startTranslate + diffX}px)`;
+      }
+
+      function onDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        const viewportWidth = document.getElementById('carousel-viewport').offsetWidth;
+        const diffX = currentX - startX;
+        const threshold = viewportWidth * 0.15;
+
+        if (Math.abs(diffX) > threshold) {
+          if (diffX > 0) {
+            goToSlide(currentSlideIndex - 1);
+          } else {
+            goToSlide(currentSlideIndex + 1);
+          }
+        } else {
+          goToSlide(currentSlideIndex);
+        }
+      }
+
+      track.addEventListener('touchstart', onDragStart, { passive: true });
+      track.addEventListener('touchmove', onDragMove, { passive: true });
+      track.addEventListener('touchend', onDragEnd);
+
+      track.addEventListener('mousedown', onDragStart);
+      window.addEventListener('mousemove', onDragMove);
+      window.addEventListener('mouseup', onDragEnd);
+
+      function startAutoPlay() {
+        autoSlideInterval = setInterval(() => {
+          goToSlide(currentSlideIndex + 1);
+        }, 4500);
+      }
+
+      function resetAutoPlay() {
+        clearInterval(autoSlideInterval);
+        startAutoPlay();
+      }
+
+      // 첫 화면 리밸런싱 및 루핑 가동
+      updateSlidePosition();
+      updateDotsState();
+      startAutoPlay();
     }
 
-    function deleteMessage(id) {
-      messages = messages.filter(msg => msg.id !== id);
-      localStorage.setItem("gongneung_trip_messages", JSON.stringify(messages));
-      renderMessages();
+    // 7. 페이지 최초 로드 시 API 연동 및 갤러리 활성화
+    window.onload = async function() {
+      const images = await fetchGalleryImages();
+      setupGallery(images);
     }
-
-    window.onload = function() {
-      initGuestbook();
-    };
   </script>
 </body>
 </html>
