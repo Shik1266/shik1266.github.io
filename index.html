@@ -412,7 +412,7 @@
 
     // 3. 티맵(TMap) 호출 스키마 연동 (모바일 네이티브 대응 앱 구동 및 대체 웹 링크 구현)
    // 3. 티맵(TMap) 호출 스키마 연동 (보안 최적화 및 최신 규격 반영)
-function openNav(destinationName, lon, lat) {
+function openNav(destinationName,  lat,lon) {
 const tmapUrl = `tmap://route?rGoName=${encodeURIComponent(destName)}&rGoX=${lon}&rGoY=${lat}`;
   
   // 2. PC나 앱 미설치 사용자를 위한 웹 안내 페이지 (대안 URL)
