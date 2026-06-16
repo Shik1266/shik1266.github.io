@@ -411,25 +411,28 @@
     }
 
     // 3. 티맵(TMap) 호출 스키마 연동 (모바일 네이티브 대응 앱 구동 및 대체 웹 링크 구현)
-    function openNav(destinationName, lon, lat) {
-      const encodedName = encodeURIComponent(destinationName);
-      const appUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lon}&rGoY=${lat}`;
-      const webUrl = `https://m.map.naver.com/search2/search.naver?query=${encodedName}`;
+   // 3. 티맵(TMap) 호출 스키마 연동 (보안 최적화 및 최신 규격 반영)
+function openNav(destinationName, lon, lat) {
+  const encodedName = encodeURIComponent(destinationName);
+  
+  // 티맵 공식 URL Scheme 규격 (tmap://route?name=이름&lon=경도&lat=위도)
+  const appUrl = `tmap://route?name=${encodedName}&lon=${lon}&lat=${lat}`;
+  
+  // 앱이 없을 때 이동할 네이버 지도 모바일 웹 링크
+  const webUrl = `https://m.map.naver.com/search2/search.naver?query=${encodedName}`;
 
-      const start = Date.now();
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = appUrl;
-      document.body.appendChild(iframe);
+  const start = Date.now();
 
-      setTimeout(() => {
-        document.body.removeChild(iframe);
-        if (Date.now() - start < 1500) {
-          window.open(webUrl, "_blank");
-        }
-      }, 500);
+  // 카카오톡 내비 등 다른 앱과 간섭을 피하고 직관적으로 앱 호출
+  window.location.href = appUrl;
+
+  // 1.5초 이내에 앱이 열리지 않으면(화면 포커스를 잃지 않으면) 웹페이지로 전환
+  setTimeout(() => {
+    if (Date.now() - start < 1500) {
+      window.open(webUrl, "_blank");
     }
-
+  }, 1200);
+}
     // 4. 메인 프로필 이미지 로드 실패 시 디폴트 일러스트 아이콘 복원 로직
     function handleImageError() {
       document.getElementById('profile-img').style.display = 'none';
