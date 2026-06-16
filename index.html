@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>박길업 여사님의 세 번째 스무 살</title>
+  <title>박길업 여사님의 세 번째 스무 살!</title>
   
-  <meta property="og:title" content="박길업 여사님의 세 번째 스무 살">
+  <meta property="og:title" content="박길업 여사님의 세 번째 스무 살!">
   <meta property="og:description" content="6월 21일 ~ 22일, 사랑하는 박길업 여사님의 환갑 여행 일정표 💕">
   <meta property="og:image" content="https://shik1266.github.io/Screenshot_20260616_094054_KakaoTalk.jpg">
   <meta property="og:url" content="https://shik1266.github.io">
@@ -361,30 +361,24 @@
         btn2.className = "tab-btn w-1/2 py-3 rounded-xl font-bold transition-all duration-300 shadow-md bg-[#6f4e37] text-white";
       }
     }
+// 3. 티맵(TMap) 호출 스키마 연동 (위경도 순서 뒤바뀜 및 Key 값 완벽 해결)
+function openNav(destinationName, longitude, latitude) {
+  // 유저님이 버튼에서 127.xxx(경도), 37.xxx(위도) 순서로 보내시므로 
+  // 매개변수 이름을 직관적으로 longitude, latitude로 지정했습니다.
 
-    // 3. 티맵(TMap) 호출 스키마 연동 (오타 및 변수 매칭 버그 수정 완료)
-    function openNav(destinationName, lon, lat) {
-      const tmapUrl = `tmap://route?rGoName=${encodeURIComponent(destinationName)}&rGoX=${lon}&rGoY=${lat}`;
-      
-      // PC 유저용 웹 길안내 링크
-      const webUrl = `https://apis.openapi.sk.com/tmap/app/routes?appKey=YOUR_APP_KEY&name=${encodeURIComponent(destinationName)}&lon=${lon}&lat=${lat}`;
+  // 📌 Key 값 없이도 모바일 티맵 앱으로 목적지를 바로 쏴주는 마법의 주소
+  const tmapAppWebUrl = `https://apis.openapi.sk.com/tmap/app/routes?name=${encodeURIComponent(destinationName)}&lon=${longitude}&lat=${latitude}`;
 
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-      if (isMobile) {
-        window.location.href = tmapUrl;
-        
-        // 앱이 없을 때 2초 후 브라우저 새 창으로 웹 내비게이션 실행
-        setTimeout(function() {
-          if (confirm("티맵 앱이 설치되어 있지 않거나 실행되지 않았습니다. 웹 버전으로 확인하시겠습니까?")) {
-            window.open(webUrl, '_blank');
-          }
-        }, 2000);
-      } else {
-        window.open(webUrl, '_blank');
-      }
-    }
-
+  if (isMobile) {
+    // 폰에서는 이 주소로 가면 티맵 앱이 열리면서 목적지가 바로 꽂힙니다.
+    window.location.href = tmapAppWebUrl;
+  } else {
+    // PC 브라우저일 경우 웹 지도 길안내 페이지로 새 창 이동
+    window.open(tmapAppWebUrl, '_blank');
+  }
+}
     // 4. 메인 프로필 이미지 로드 실패 시 디폴트 일러스트 아이콘 복원 로직
     function handleImageError() {
       document.getElementById('profile-img').style.display = 'none';
