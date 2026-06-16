@@ -47,7 +47,7 @@
         <span class="inline-block bg-[#d4a373] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">FAMILY TRAVEL</span>
       </div>
       <h1 class="font-serif-custom text-2xl md:text-3xl font-bold text-[#6f4e37] leading-relaxed mb-2">
-        💖박길업 여사님의💖<br>3 번째 스무 살
+        💖박길업 여사님의💖<br>세 번째 스무 살!
       </h1>
       <p class="text-xs text-[#a08070] tracking-wider mb-6 font-medium">2026. 06. 21(일) ~ 2026. 06. 22(월) | 1박 2일</p>
       
@@ -361,40 +361,36 @@
         btn2.className = "tab-btn w-1/2 py-3 rounded-xl font-bold transition-all duration-300 shadow-md bg-[#6f4e37] text-white";
       }
     }
-// 3. 티맵(TMap) 호출 스키마 연동 (위경도 순서 뒤바뀜 및 Key 값 완벽 해결)
+// 3. 티맵(TMap) 호출 스키마 연동 (위경도 순서 뒤바뀜 및 Key 값 완벽 해결)// 3. 티맵(TMap) 호출 스키마 연동 (필수 파라미터 보완 및 인코딩 수정)
 function openNav(name, lng, lat) {
-
   const encodedName = encodeURIComponent(name);
-
-const tmapUrl = Platform.OS === 'ios'
-  ? `tmap://route?rGoName=${encodeURIComponent(name)}&rGoX=${lng}&rGoY=${lat}`
-  : `tmap://route?referrer=com.skt.Tmap&goalname=${encodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`;
-
+  
+  // 💡 핵심 수정: &rCoordType=WGS84GEO 파라미터를 추가하여 위경도 좌표임을 티맵에 명시해야 합니다.
+  const tmapUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}&rCoordType=WGS84GEO`;
+  
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
   
   if (isIOS) {
-    // 앱 없으면 앱스토어로
+    // 앱 없으면 앱스토어로 이동할 타이머 세팅
     const fallbackTimer = setTimeout(() => {
       window.location.href = 'https://apps.apple.com/kr/app/id431589174';
     }, 1500);
     
     window.location.href = tmapUrl;
-    
     window.addEventListener('blur', () => clearTimeout(fallbackTimer), { once: true });
     
   } else if (isAndroid) {
-    // 앱 없으면 플레이스토어로
-    window.location.href = tmapUrl;
-    
-    setTimeout(() => {
-      window.location.href = 'market://details?id=com.skt.tmap';
-    }, 1500);
+    // 안드로이드는 인텐트(Intent) 스키마를 사용하는 것이 브라우저 차단 현상 없이 가장 안전하게 실행됩니다.
+    const intentUrl = `intent://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}&rCoordType=WGS84GEO#Intent;scheme=tmap;package=com.skt.tmap;end`;
+    window.location.href = intentUrl;
     
   } else {
-    // PC면 웹으로 fallback (티맵 웹은 목적지 직접 지원 안 해서 네이버지도 등으로 대체 가능)
+    // PC나 기타 환경에서는 네이버 지도 웹으로 연동
     window.open(`https://map.naver.com/v5/?c=${lng},${lat},15,0,0,0,dh`, '_blank');
   }
 }
-
+    
 // 사용
     // 4. 메인 프로필 이미지 로드 실패 시 디폴트 일러스트 아이콘 복원 로직
     function handleImageError() {
