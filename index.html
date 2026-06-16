@@ -92,8 +92,44 @@
       </div>
     </section>
 
-    <!-- 3. 일정 탭 시스템 (Day 1 / Day 2) -->
+    <!-- 3. 일정 탭 시스템 (Day 1 / Day 2) 및 날씨 정보 -->
     <section class="bg-[#faf7f5] px-4 py-8 border-b border-[#eed6cb]">
+      
+      <!-- 실시간 강릉 기상 예보 카드 추가 -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-[#ebdcd3] mb-6 transition-all duration-300 hover:shadow-md">
+        <div class="flex justify-between items-center mb-3 border-b border-[#f7f3f0] pb-2">
+          <h4 class="font-serif-custom text-xs font-bold text-[#6f4e37] flex items-center gap-1.5">
+            <i class="fa-solid fa-cloud-sun text-[#c77d55] animate-bounce"></i> 강릉 날씨 기상대 🌊
+          </h4>
+          <span class="text-[9px] text-[#a08070] bg-[#f5eae3] px-2 py-0.5 rounded-full font-medium" id="weather-update-time">예보 불러오는 중</span>
+        </div>
+        <div class="grid grid-cols-2 gap-3" id="weather-container">
+          <!-- 첫째 날 날씨 (6/21) -->
+          <div class="bg-[#faf7f5] rounded-xl p-3 border border-[#eed6cb]/40 flex items-center space-x-2.5">
+            <div class="text-2xl text-[#d4a373] w-8 text-center" id="day1-weather-icon">
+              <i class="fa-solid fa-circle-notch animate-spin text-sm text-[#c77d55]"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-[9px] font-bold text-[#8d6e63]">첫째 날 (6/21)</p>
+              <p class="text-[11px] font-bold text-[#6f4e37] truncate" id="day1-weather-text">로딩 중...</p>
+              <p class="text-[9px] text-[#a08070] mt-0.5" id="day1-temp">--°C / --°C</p>
+            </div>
+          </div>
+          <!-- 둘째 날 날씨 (6/22) -->
+          <div class="bg-[#faf7f5] rounded-xl p-3 border border-[#eed6cb]/40 flex items-center space-x-2.5">
+            <div class="text-2xl text-[#d4a373] w-8 text-center" id="day2-weather-icon">
+              <i class="fa-solid fa-circle-notch animate-spin text-sm text-[#c77d55]"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-[9px] font-bold text-[#8d6e63]">둘째 날 (6/22)</p>
+              <p class="text-[11px] font-bold text-[#6f4e37] truncate" id="day2-weather-text">로딩 중...</p>
+              <p class="text-[9px] text-[#a08070] mt-0.5" id="day2-temp">--°C / --°C</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 탭 버튼 영역 -->
       <div class="flex justify-center space-x-4 mb-8">
         <button onclick="switchTab('day1')" id="tab-day1" class="tab-btn w-1/2 py-3 rounded-xl font-bold transition-all duration-300 shadow-md bg-[#6f4e37] text-white">
           첫째 날 (6/21 일)
@@ -111,73 +147,55 @@
           <div class="absolute -left-[35px] top-1 bg-[#6f4e37] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-car"></i>
           </div>
-          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">09:00</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">설레는 강릉 출발 🚗</h3>
-          <p class="text-sm text-[#7a6458] mt-1">고양시 행신동에서 기분 좋게 출발합니다. 안전 운전하세요!</p>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오전 09:00</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">설레는 여행! 강릉으로 출발~ 🚗</h3>
+          <p class="text-sm text-[#7a6458] mt-1">강릉 여행 기분 좋게 출발합니다. 안전 운전하세요!</p>
         </div>
 
         <!-- 일정 2 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
-            <i class="fa-solid fa-mug-hot"></i>
+            <i class="fa-solid fa-restroom"></i>
           </div>
-          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">10:15 - 10:45</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">경기광주휴게소 (원주방향) ☕</h3>
-          <p class="text-sm text-[#7a6458] mt-1">출발 후 1시간 반 타이밍! 화장실도 들르고 맛있는 휴게소 명물 간식 타임을 가집니다.</p>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오전 10:30 - 11:00</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">경기광주휴게소 - 원주방향 (변경가능) ☕</h3>
+          <p class="text-sm text-[#7a6458] mt-1">출발 후 1시간 반 타이밍!<br>소피 보고 맛있는 간식 타임을 가집니다.<br>2시간 뒤에 강릉시장 도착이니 허기만 채우세요~ </p>
           <div class="mt-3 flex space-x-2">
-            <button onclick="openNav('경기광주휴게소 원주방향', 127.319728, 37.355157)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
+            <button onclick="openNav('경기광주휴게소 원주방향', 127.4362297, 37.3785969)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
               <span>티맵 네비 실행</span>
             </button>
           </div>
         </div>
 
-        <!-- 일정 3 -->
-        <div class="relative mb-8">
-          <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
-            <i class="fa-solid fa-utensils"></i>
-          </div>
-          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">13:00 - 14:00</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">바다부채길 근처 점심 식사 🍚</h3>
-          <p class="text-sm text-[#7a6458] mt-1">본격적인 바다 산책 전 든든하게 영양 보충! (추천 메뉴: 매콤 시원한 물회 및 섭국)</p>
-          <div class="mt-3 flex space-x-2">
-            <button onclick="openNav('강릉 바다부채길 부근 맛집', 129.049448, 37.674902)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
-              <i class="fa-solid fa-map-location-dot"></i>
-              <span>티맵 네비 실행</span>
-            </button>
-            <button onclick="openMenuModal('lunch')" class="flex items-center space-x-1 bg-[#6f4e37] hover:bg-[#4e3629] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
-              <i class="fa-solid fa-file-invoice"></i>
-              <span>추천 메뉴판 보기</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 일정 4 -->
-        <div class="relative mb-8">
-          <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
-            <i class="fa-solid fa-person-walking"></i>
-          </div>
-          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">14:00 - 16:00</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">정동심곡 바다부채길 산책 🌊</h3>
-          <p class="text-sm text-[#7a6458] mt-1">천혜의 비경을 지닌 해안 산책로를 걸으며, 우리 '길업 마마' 단독 인생샷 및 행복한 가족사진을 촬영합니다.</p>
-          <div class="mt-3 flex space-x-2">
-            <button onclick="openNav('정동심곡바다부채길', 129.049448, 37.674902)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
-              <i class="fa-solid fa-map-location-dot"></i>
-              <span>티맵 네비 실행</span>
-            </button>
-          </div>
-        </div>
 
         <!-- 일정 5 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
             <i class="fa-solid fa-basket-shopping"></i>
           </div>
-          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">16:40 - 18:10</span>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 1:00 - 2:00</span>
           <h3 class="text-base font-bold text-[#4e3629] mt-1">강릉 중앙시장 투어 🛍️</h3>
-          <p class="text-sm text-[#7a6458] mt-1">닭강정, 어묵 고로케 등 시장 맛집을 정복하고 저녁 환갑 파티용 싱싱한 회와 맛있는 먹거리를 장봅니다.</p>
+          <p class="text-sm text-[#7a6458] mt-1">장모님의 PICK! 배니닭강정<br>파워블로거님들의 오징어순대<br>기타 등등...😋</p>
           <div class="mt-3 flex space-x-2">
             <button onclick="openNav('강릉중앙시장 주차장', 128.898857, 37.754165)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <span>티맵 네비 실행</span>
+            </button>
+          </div>
+        </div>
+
+        
+        <!-- 일정 5 -->
+        <div class="relative mb-8">
+          <div class="absolute -left-[35px] top-1 bg-[#d4a373] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
+            <i class="fa-solid fa-cart-arrow-down"></i>
+          </div>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 2:05 - 2:40</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">이마트 장보기🛒</h3>
+          <p class="text-sm text-[#7a6458] mt-1">장보는것도 여행의 재미!<br>저녁 식사, 아침식사, 주류 등 필요용품 구매💵</p>
+          <div class="mt-3 flex space-x-2">
+            <button onclick="openNav('강릉 이마트', 128.9225318, 37.7706543)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
               <span>티맵 네비 실행</span>
             </button>
@@ -187,20 +205,34 @@
         <!-- 일정 6 -->
         <div class="relative mb-8">
           <div class="absolute -left-[35px] top-1 bg-[#6f4e37] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
-            <i class="fa-solid fa-cake-candles"></i>
+            <i class="fa-solid fa-person-swimming"></i>
           </div>
-          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">18:30 - 24:00</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">숙소 입실 및 저녁식사 (환갑 파티!) 🏡🥩🎉</h3>
-          <p class="text-sm text-[#7a6458] mt-1">프리미엄 펜션 '강릉 풀빌라수'에 도착하여 짐을 풀고 온가족이 모여 감동적인 '길업 여사님'의 환갑 파티를 시작합니다!</p>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 3:00 - 5:00</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">숙소 입실 및 수영! 🏊🥽🛟</h3>
+          <p class="text-sm text-[#7a6458] mt-1">프리미엄 펜션 '강릉 풀빌라수'에 도착하여 짐을 풀고<br>시아&연두 공주님들과 함께 물놀이를 합시다~</p>
           <div class="mt-3 flex space-x-2">
-            <button onclick="openNav('강릉풀빌라수', 128.916738, 37.800547)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
+            <button onclick="openNav('강릉풀빌라수', 128.8949337, 37.8132596)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
               <i class="fa-solid fa-map-location-dot"></i>
               <span>티맵 네비 실행</span>
             </button>
-            <button onclick="openMenuModal('party')" class="flex items-center space-x-1 bg-[#6f4e37] hover:bg-[#4e3629] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>파티 추천 메뉴/리스트</span>
+            
+          </div>
+        </div>
+
+                <!-- 일정 6 -->
+        <div class="relative mb-8">
+          <div class="absolute -left-[35px] top-1 bg-[#6f4e37] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md">
+            <i class="fa-solid fa-microphone"></i>
+          </div>
+          <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">오후 5:00</span>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">저녁 식사 준비 및 음주가무🧑‍🎤</h3>
+          <p class="text-sm text-[#7a6458] mt-1">맛있는 저녁식사 시간!!<br>펜션의 부대시설인 노래방에서 노래도 한곡!🎤🎵</p>
+          <div class="mt-3 flex space-x-2">
+            <button onclick="openNav('강릉풀빌라수', 128.8949337, 37.8132596)" class="flex items-center space-x-1 bg-[#e4a07b] hover:bg-[#c77d55] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <span>티맵 네비 실행</span>
             </button>
+            
           </div>
         </div>
 
@@ -210,7 +242,7 @@
             <i class="fa-solid fa-bed"></i>
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">24:00</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">행복한 밤, 취침 💤</h3>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">행복한 밤, 굿나잇~💤</h3>
           <p class="text-sm text-[#7a6458] mt-1">즐거운 이야기꽃을 가득 피운 뒤 내일의 일정을 위해 편안한 꿀잠을 자러 갑니다.</p>
         </div>
 
@@ -235,7 +267,7 @@
             <i class="fa-solid fa-bowl-hot"></i>
           </div>
           <span class="text-xs font-bold text-[#c77d55] bg-[#fae8e0] px-2 py-0.5 rounded">09:30 - 10:30</span>
-          <h3 class="text-base font-bold text-[#4e3629] mt-1">조식 (사랑이 담긴 라면) 🍜</h3>
+          <h3 class="text-base font-bold text-[#4e3629] mt-1">조식 (사랑이 담긴 라면?) 🍜</h3>
           <p class="text-sm text-[#7a6458] mt-1">해안가 펜션 최고의 아침 별미! 어제 남은 풍성한 해산물을 가득 넣은 마법의 라면으로 식사합니다.</p>
           <div class="mt-3">
             <button onclick="openMenuModal('ramen')" class="flex items-center space-x-1 bg-[#6f4e37] hover:bg-[#4e3629] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition">
@@ -691,9 +723,86 @@
       startAutoPlay();
     }
 
-    // 7. 페이지 최초 로드 시 고정 갤러리 리스트 연동 및 화면 구성
+    // 7. 실시간 강릉 기상 정보 호출 시스템 (Open-Meteo 활용)
+    async function fetchGangneungWeather() {
+      const lat = 37.7518;
+      const lon = 128.8761;
+      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul`;
+      
+      // 초여름 강릉 지역 표준 기후 가이드 데이터 (Fallback)
+      const fallbackData = {
+        day1: { text: "맑고 따뜻함 ☀️", icon: "fa-solid fa-sun text-amber-500 animate-pulse", temp: "19°C / 26°C" },
+        day2: { text: "대체로 맑음 ⛅", icon: "fa-solid fa-cloud-sun text-amber-400", temp: "18°C / 25°C" }
+      };
+
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Weather API Response Error");
+        const data = await response.json();
+        
+        const dates = data.daily.time;
+        const targetDay1 = "2026-06-21";
+        const targetDay2 = "2026-06-22";
+        
+        const idx1 = dates.indexOf(targetDay1);
+        const idx2 = dates.indexOf(targetDay2);
+        
+        // 예보 조회 가능 날짜(오늘 기준 7일 내)일 경우 실시간 데이터 바인딩
+        if (idx1 !== -1 && idx2 !== -1) {
+          const code1 = data.daily.weathercode[idx1];
+          const maxTemp1 = Math.round(data.daily.temperature_2m_max[idx1]);
+          const minTemp1 = Math.round(data.daily.temperature_2m_min[idx1]);
+          
+          const code2 = data.daily.weathercode[idx2];
+          const maxTemp2 = Math.round(data.daily.temperature_2m_max[idx2]);
+          const minTemp2 = Math.round(data.daily.temperature_2m_min[idx2]);
+          
+          applyWeatherData(1, code1, minTemp1, maxTemp1);
+          applyWeatherData(2, code2, minTemp2, maxTemp2);
+          document.getElementById("weather-update-time").innerText = "실시간 기상 정보";
+        } else {
+          // 예보 범위 밖인 경우(과거/미래) 정성스럽게 연출된 가이드 시즌 기후 출력
+          applyFallbackWeather(fallbackData);
+        }
+      } catch (error) {
+        console.warn("Using season climate default values for Mrs. Park's special travel due to API limits.");
+        applyFallbackWeather(fallbackData);
+      }
+    }
+
+    function applyFallbackWeather(data) {
+      document.getElementById("day1-weather-icon").innerHTML = `<i class="${data.day1.icon}"></i>`;
+      document.getElementById("day1-weather-text").innerText = data.day1.text;
+      document.getElementById("day1-temp").innerText = data.day1.temp;
+      
+      document.getElementById("day2-weather-icon").innerHTML = `<i class="${data.day2.icon}"></i>`;
+      document.getElementById("day2-weather-text").innerText = data.day2.text;
+      document.getElementById("day2-temp").innerText = data.day2.temp;
+      document.getElementById("weather-update-time").innerText = "추천 시즌 예보";
+    }
+
+    function applyWeatherData(dayNum, code, minTemp, maxTemp) {
+      const mapping = getWeatherMapping(code);
+      document.getElementById(`day${dayNum}-weather-icon`).innerHTML = `<i class="${mapping.icon}"></i>`;
+      document.getElementById(`day${dayNum}-weather-text`).innerText = mapping.text;
+      document.getElementById(`day${dayNum}-temp`).innerText = `${minTemp}°C / ${maxTemp}°C`;
+    }
+
+    // WMO 날씨 코드 매핑 유틸리티
+    function getWeatherMapping(code) {
+      if (code === 0) return { text: "맑음 ☀️", icon: "fa-solid fa-sun text-amber-500 animate-pulse" };
+      if ([1, 2, 3].includes(code)) return { text: "구름조금 ⛅", icon: "fa-solid fa-cloud-sun text-amber-400" };
+      if ([45, 48].includes(code)) return { text: "안개 흐림 🌫️", icon: "fa-solid fa-smog text-gray-400" };
+      if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return { text: "비 예보 ☔", icon: "fa-solid fa-cloud-showers-heavy text-blue-400" };
+      if ([71, 73, 75, 77, 85, 86].includes(code)) return { text: "눈 소식 ❄️", icon: "fa-regular fa-snowflake text-sky-300" };
+      if ([95, 96, 99].includes(code)) return { text: "천둥번개 ⚡", icon: "fa-solid fa-cloud-bolt text-yellow-600" };
+      return { text: "대체로 맑음 ☀️", icon: "fa-solid fa-sun text-amber-500" };
+    }
+
+    // 8. 페이지 최초 로드 시 고정 갤러리 리스트 연동 및 화면 구성
     window.onload = function() {
       setupGallery(GALLERY_IMAGES);
+      fetchGangneungWeather();
     }
   </script>
 </body>
