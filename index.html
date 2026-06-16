@@ -362,23 +362,39 @@
       }
     }
 // 3. 티맵(TMap) 호출 스키마 연동 (위경도 순서 뒤바뀜 및 Key 값 완벽 해결)
-function openNav(destinationName, longitude, latitude) {
-  // 유저님이 버튼에서 127.xxx(경도), 37.xxx(위도) 순서로 보내시므로 
-  // 매개변수 이름을 직관적으로 longitude, latitude로 지정했습니다.
+function openNav(name, lng, lat) {
 
-  // 📌 Key 값 없이도 모바일 티맵 앱으로 목적지를 바로 쏴주는 마법의 주소
-  const tmapAppWebUrl = `https://apis.openapi.sk.com/tmap/app/routes?name=${encodeURIComponent(destinationName)}&lon=${longitude}&lat=${latitude}`;
-
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  if (isMobile) {
-    // 폰에서는 이 주소로 가면 티맵 앱이 열리면서 목적지가 바로 꽂힙니다.
-    window.location.href = tmapAppWebUrl;
+  const encodedName = encodeURIComponent(name);
+  const tmapUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}`;
+  
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
+  
+  if (isIOS) {
+    // 앱 없으면 앱스토어로
+    const fallbackTimer = setTimeout(() => {
+      window.location.href = 'https://apps.apple.com/kr/app/id431589174';
+    }, 1500);
+    
+    window.location.href = tmapUrl;
+    
+    window.addEventListener('blur', () => clearTimeout(fallbackTimer), { once: true });
+    
+  } else if (isAndroid) {
+    // 앱 없으면 플레이스토어로
+    window.location.href = tmapUrl;
+    
+    setTimeout(() => {
+      window.location.href = 'market://details?id=com.skt.tmap';
+    }, 1500);
+    
   } else {
-    // PC 브라우저일 경우 웹 지도 길안내 페이지로 새 창 이동
-    window.open(tmapAppWebUrl, '_blank');
+    // PC면 웹으로 fallback (티맵 웹은 목적지 직접 지원 안 해서 네이버지도 등으로 대체 가능)
+    window.open(`https://map.naver.com/v5/?c=${lng},${lat},15,0,0,0,dh`, '_blank');
   }
 }
+
+// 사용
     // 4. 메인 프로필 이미지 로드 실패 시 디폴트 일러스트 아이콘 복원 로직
     function handleImageError() {
       document.getElementById('profile-img').style.display = 'none';
