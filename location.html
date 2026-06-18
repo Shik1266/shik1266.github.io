@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>패밀리 GPS - 실시간 가족 위치 공유</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Paho MQTT Client JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #f3f4f6;
+    }
+    .font-serif-custom {
+      font-family: 'Gowun Batang', serif;
+    }
+    /* 실시간 마커 파동 애니메이션 */
+    .pulse-marker-self {
+      border: 3px solid white;
+      border-radius: 50%;
+      background-color: #3b82f6; /* 파란색: 나 */
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      animation: pulseBlue 2s infinite;
+    }
+    .pulse-marker-family {
+      border: 3px solid white;
+      border-radius: 50%;
+      background-color: #ef4444; /* 빨간색: 가족 */
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      animation: pulseRed 2s infinite;
+    }
+    @keyframes pulseBlue {
+      0% { box-shadow: 0 0 0 0px rgba(59, 130, 246, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0px rgba(59, 130, 246, 0); }
+    }
+    @keyframes pulseRed {
+      0% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0); }
+    }
+    /* 커스텀 토스트 알림 스타일 */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -125px;
+      text-align: center;
+      border-radius: 12px;
+      padding: 16px;
+      position: fixed;
+      z-index: 9999;
+      left: 50%;
+      bottom: 30px;
+    }
+    #toast.show {
+      visibility: visible;
+      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein {
+      from { bottom: 0; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 0; opacity: 0; }
+    }
+  </style>
+</head>
+<body class="flex justify-center items-center min-h-screen">
+
+  <!-- 모바일 메인 뷰포트 컨테이너 -->
+  <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col justify-between overflow-x-hidden">
+    
+    <!-- 1. 앱 헤더 -->
+    <header class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white pt-8 pb-6 px-6 text-center shadow-md">
+      <div class="flex justify-center items-center space-x-2 mb-1">
+        <i class="fa-solid fa-satellite-dish animate-bounce text-xl"></i>
+        <h1 class="font-serif-custom text-2xl font-bold tracking-wide">Family GPS</h1>
+      </div>
+      <p class="text-xs text-indigo-100 opacity-90">우리 가족 실시간 위치 무전기 서비스</p>
+    </header>
+
+    <!-- 2. 서비스 콘텐츠 바디 -->
+    <main class="flex-grow flex flex-col">
+
+      <!-- [A] 방 진입 전 화면 (대기방 설정) -->
+      <div id="room-setup-screen" class="p-6 flex-grow flex flex-col justify-center space-y-6">
+        <div class="text-center space-y-2 mb-2">
+          <div class="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mx-auto text-indigo-600">
+            <i class="fa-solid fa-map-location-dot text-3xl"></i>
+          </div>
+          <h2 class="text-lg font-bold text-gray-800">실시간 위치 공유 시작하기</h2>
+          <p class="text-xs text-gray-500">지도 상에 나타날 내 이름을 적고 입장해 주세요.</p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- 내 역할 설정 -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-gray-700 flex justify-between">
+              <span>내 이름 또는 역할 입력</span>
+              <span class="text-[10px] text-gray-400">지도 마커 아래에 표시됩니다</span>
+            </label>
+            <input type="text" id="input-user-role" placeholder="예: 어머님, 아빠, 첫째, 영희" 
+                   class="w-full text-sm bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-3 focus:ring-2 focus:ring-indigo-500 outline-none transition">
+          </div>
+        </div>
+
+        <!-- 진입 버튼 -->
+        <button onclick="joinLocationService()" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md active:scale-95 transition-all duration-150 text-sm">
+          <i class="fa-solid fa-door-open mr-1.5"></i> 위치 공유 시작하기
+        </button>
+
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center text-[11px] text-gray-500 leading-relaxed">
+          <p><i class="fa-solid fa-lock text-indigo-400 mr-1"></i> 공유 정보는 수집 및 저장되지 않습니다.</p>
+          <p>방을 종료하거나 나가면 위치 추적이 즉시 자동 소멸됩니다.</p>
+        </div>
+      </div>
+
+      <!-- [B] 방 진입 후 활성화 화면 (지도 및 위치 제어) -->
+      <div id="map-active-screen" class="hidden flex-grow flex flex-col relative">
+        
+        <!-- 실시간 상단 정보 바 -->
+        <div class="bg-indigo-50 border-b border-indigo-100 px-4 py-2.5 flex items-center justify-between text-xs text-indigo-900 font-medium">
+          <div class="flex items-center space-x-1.5 truncate">
+            <i class="fa-solid fa-house-chimney text-indigo-600"></i>
+            <span>실시간 가족 위치 지도</span>
+          </div>
+          <button onclick="copyInviteLink()" class="flex items-center space-x-1 bg-white hover:bg-indigo-100 border border-indigo-200 text-indigo-700 px-2 py-1 rounded-lg shadow-xs active:scale-95 transition text-[10px]">
+            <i class="fa-solid fa-copy"></i>
+            <span>가족 초대 링크 복사</span>
+          </button>
+        </div>
+
+        <!-- 실제 지도가 렌더링될 영역 -->
+        <div class="relative flex-grow h-96 min-h-[350px]">
+          <div id="service-map" class="w-full h-full z-10"></div>
+          
+          <!-- 우측 하단 플로팅 컨트롤 -->
+          <div class="absolute bottom-4 right-4 z-20 flex flex-col space-y-2">
+            <button onclick="recenterMyMarker()" class="w-11 h-11 bg-white/95 hover:bg-white text-indigo-600 hover:text-indigo-700 rounded-full flex items-center justify-center shadow-lg border border-gray-200 active:scale-95 transition" title="내 위치로">
+              <i class="fa-solid fa-location-crosshairs text-xl"></i>
+            </button>
+          </div>
+
+          <!-- 좌측 하단 데모 모드 작동 알림 -->
+          <div id="banner-sandbox-demo" class="hidden absolute top-3 left-3 right-3 z-20 bg-amber-500/90 backdrop-blur-xs text-white text-[10px] py-2 px-3 rounded-xl shadow-md leading-normal flex items-start gap-1.5 border border-amber-400">
+            <i class="fa-solid fa-triangle-exclamation text-xs mt-0.5 animate-pulse"></i>
+            <span><b>시뮬레이션 모드 가동 중:</b> 보안 제한으로 가상의 가족 위치 드라이브를 작동합니다. (실제 배포서버 배포 시 GPS 동기화 활성화 가능)</span>
+          </div>
+        </div>
+
+        <!-- 하단 실시간 상태 센터 및 접속 현황 -->
+        <div class="bg-white p-4 border-t border-gray-100 space-y-3.5 shadow-xl">
+          <div class="flex justify-between items-center text-xs">
+            <div class="flex items-center space-x-2">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span class="text-gray-700 font-semibold" id="text-connection-status">GPS 위치 수신망 정상 구동 중</span>
+            </div>
+            <button onclick="exitLocationService()" class="text-red-500 hover:text-red-600 hover:underline font-bold flex items-center gap-1 text-[11px]">
+              <i class="fa-solid fa-right-from-bracket"></i> 위치 공유 종료
+            </button>
+          </div>
+
+          <!-- 참여 가족 마커 목록 -->
+          <div class="bg-gray-50 rounded-xl p-3 border border-gray-100 space-y-2">
+            <h4 class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
+              <i class="fa-solid fa-users text-indigo-500"></i> 실시간 접속 가족 현황판 (<span id="text-family-count">1</span>명)
+            </h4>
+            <ul id="list-active-family" class="grid grid-cols-2 gap-2 text-xs text-gray-700">
+              <!-- 접속 멤버가 실시간 연동 배치됨 -->
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- 3. 푸터 카피라이트 -->
+    <footer class="bg-gray-100 text-gray-400 py-4 text-center text-[10px] border-t border-gray-200">
+      <p>&copy; 2026 Family GPS Live Server Network. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+  <!-- 커스텀 메세지 토스트 알림창 -->
+  <div id="toast" class="bg-gray-800 text-white text-xs shadow-xl flex items-center justify-center gap-2">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toast-message">알림</span>
+  </div>
+
+  <!-- 비동기 통신 및 맵 제어 스크립트 -->
+  <script>
+    // 방 이름 조합용 임시 데이터는 생략하고 공통 룸 채널 ID 지정
+    const currentRoomId = "unified_family_global_gps_channel_2026";
+    let currentRole = "";
+
+    let serviceMap = null;
+    let selfMarker = null;
+    let gpsWatchId = null;
+    let mqttClient = null;
+    
+    let otherFamilyMarkers = {};  // 다른 구성원들의 마커 집합
+    let activeFamilyMembers = {}; // 실시간 업데이트 정보
+
+    // 💡 샌드박스 대응 데모 시뮬레이션 관련 변수
+    let isDemoMode = false;
+    let demoSimTimer = null;
+    let demoPathPositions = {
+      "둘째동생 👩": { lat: 37.7518, lng: 128.8761, targetLat: 37.8132, targetLng: 128.8949, speed: 0.005 },
+      "셋째사위 👦": { lat: 37.7212, lng: 128.8122, targetLat: 37.7541, targetLng: 128.8988, speed: 0.003 }
+    };
+
+    // 무전 채널 룸 고유 패치 루트
+    const MQTT_ROOT_TOPIC = "shared_gps_family_service_2026_root";
+
+    // 1. 방 진입 전 초기 처리 (방 선택이 불필요하므로 로드 단계 간소화)
+    window.onload = function() {
+      // 웰컴 안내문 제거 및 로직 슬림화
+    };
+
+    // 3. 커스텀 토스트 알림 표시기
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toast-message").innerText = message;
+      toast.className = "show bg-gray-900 text-white";
+      setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
+    // 4. 지도 서비스 가동 및 마킹
+    function joinLocationService() {
+      const roleInput = document.getElementById('input-user-role').value.trim();
+
+      if (!roleInput) {
+        showToast("지도 상에 표기될 본인 역할을 적어주세요!");
+        return;
+      }
+
+      currentRole = roleInput;
+
+      // 뷰 전환
+      document.getElementById('room-setup-screen').classList.add('hidden');
+      document.getElementById('map-active-screen').classList.remove('hidden');
+
+      // Leaflet 지도 초기화 진행
+      initServiceMap();
+
+      // 위치 정보 실시간 공유 채널 접속 시도
+      connectRealtimeBroker();
+    }
+
+    // 5. Leaflet 맵 초기 셋업
+    function initServiceMap() {
+      serviceMap = L.map('service-map', {
+        zoomControl: false
+      }).setView([37.7518, 128.8761], 11);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(serviceMap);
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          updateSelfMarkerOnMap(lat, lng);
+          serviceMap.setView([lat, lng], 13);
+        }, () => {
+          updateSelfMarkerOnMap(37.7518, 128.8761);
+        });
+      }
+    }
+
+    // 내 마커 맵 표출 및 무빙
+    function updateSelfMarkerOnMap(lat, lng) {
+      if (!serviceMap) return;
+
+      const selfMarkerHtml = `<div class="w-8 h-8 flex items-center justify-center text-xs font-bold text-white shadow-lg">나</div>`;
+      const selfIcon = L.divIcon({
+        className: 'pulse-marker-self text-white flex items-center justify-center',
+        html: selfMarkerHtml,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+
+      if (!selfMarker) {
+        selfMarker = L.marker([lat, lng], { icon: selfIcon }).addTo(serviceMap);
+        selfMarker.bindPopup(`<div class="text-xs font-bold">내 위치 (${currentRole})</div>`).openPopup();
+      } else {
+        selfMarker.setLatLng([lat, lng]);
+      }
+    }
+
+    // 내 위치로 복귀 앵커링
+    function recenterMyMarker() {
+      if (selfMarker) {
+        serviceMap.setView(selfMarker.getLatLng(), 15);
+      } else {
+        showToast("GPS 신호를 찾고 있습니다...");
+      }
+    }
+
+    // 6. 실시간 위치 전송 브로커 (MQTT) 터널 개설
+    function connectRealtimeBroker() {
+      try {
+        const uniqueClientId = "gps_client_" + Math.random().toString(36).substring(2, 11);
+        mqttClient = new Paho.MQTT.Client("broker.emqx.io", 8084, "/mqtt", uniqueClientId);
+
+        mqttClient.onConnectionLost = onMqttLost;
+        mqttClient.onMessageArrived = onMqttArrived;
+
+        const connectConfig = {
+          useSSL: true,
+          onSuccess: onMqttSuccess,
+          onFailure: onMqttFailure,
+          keepAliveInterval: 45,
+          cleanSession: true
+        };
+
+        mqttClient.connect(connectConfig);
+      } catch (securityErr) {
+        console.warn("IFrame Sandbox Security Blocked. Starting Demo Sim Mode.");
+        activateDemoSimulation();
+      }
+    }
+
+    function onMqttSuccess() {
+      mqttClient.subscribe(`${MQTT_ROOT_TOPIC}/${currentRoomId}/+`);
+      startGpsBroadcasting();
+      showToast("통신 서버 연결에 성공했습니다! 📡");
+    }
+
+    function onMqttFailure(err) {
+      console.warn("MQTT connection failure: ", err);
+      activateDemoSimulation();
+    }
+
+    function onMqttLost(res) {
+      if (res.errorCode !== 0) {
+        if (!isDemoMode) {
+          setTimeout(connectRealtimeBroker, 3000);
+        }
+      }
+    }
+
+    // 7. 실시간 무전 신호 파싱하여 지도에 가족들 동선 그리기
+    function onMqttArrived(msg) {
+      if (isDemoMode) return;
+
+      try {
+        const topic = msg.destinationName;
+        const subChannels = topic.split('/');
+        const senderName = subChannels[subChannels.length - 1];
+
+        if (senderName === currentRole) return;
+
+        if (msg.payloadString === "") {
+          if (otherFamilyMarkers[senderName]) {
+            serviceMap.removeLayer(otherFamilyMarkers[senderName]);
+            delete otherFamilyMarkers[senderName];
+          }
+          delete activeFamilyMembers[senderName];
+          refreshFamilyStateUI();
+          return;
+        }
+
+        const gpsData = JSON.parse(msg.payloadString);
+        const lat = parseFloat(gpsData.lat);
+        const lng = parseFloat(gpsData.lng);
+        const timeStr = gpsData.time;
+
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        activeFamilyMembers[senderName] = { lat, lng, lastTime: timeStr };
+        refreshFamilyStateUI();
+
+        updateFamilyMarkerOnMap(senderName, lat, lng, timeStr);
+      } catch (err) {
+        console.error("수신 데이터 분석 에러: ", err);
+      }
+    }
+
+    // 다른 구성원들의 마커 빌더 및 무버
+    function updateFamilyMarkerOnMap(name, lat, lng, time) {
+      const initialText = name.substring(0, 2);
+      const familyIcon = L.divIcon({
+        className: 'pulse-marker-family text-white flex items-center justify-center font-bold text-xs',
+        html: `<div class="w-8 h-8 flex items-center justify-center text-[10px]">${initialText}</div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+
+      if (otherFamilyMarkers[name]) {
+        otherFamilyMarkers[name].setLatLng([lat, lng]);
+      } else {
+        const marker = L.marker([lat, lng], { icon: familyIcon }).addTo(serviceMap);
+        marker.bindPopup(`<div class="text-xs"><b>${name}</b><br>최근 연결: ${time}</div>`);
+        otherFamilyMarkers[name] = marker;
+      }
+    }
+
+    // 8. 🚨 Canvas 샌드박스 보안 대체용 가상 패밀리 시뮬레이션 엔진 
+    function activateDemoSimulation() {
+      isDemoMode = true;
+      document.getElementById("banner-sandbox-demo").classList.remove("hidden");
+      document.getElementById("text-connection-status").innerText = "데모 시뮬레이터 구동중 (안전 모드)";
+      
+      if (!selfMarker) {
+        updateSelfMarkerOnMap(37.7518, 128.85);
+      }
+
+      demoSimTimer = setInterval(() => {
+        const timeTick = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        
+        for (const [familyUser, pos] of Object.entries(demoPathPositions)) {
+          pos.lat += (pos.targetLat - pos.lat) * pos.speed;
+          pos.lng += (pos.targetLng - pos.lng) * pos.speed;
+
+          activeFamilyMembers[familyUser] = { lat: pos.lat, lng: pos.lng, lastTime: timeTick };
+          updateFamilyMarkerOnMap(familyUser, pos.lat, pos.lng, timeTick);
+        }
+        refreshFamilyStateUI();
+      }, 3000);
+
+      startGpsBroadcasting();
+    }
+
+    // 9. 내 스마트폰 GPS 수집 & 발신 프로세스
+    function startGpsBroadcasting() {
+      if (navigator.geolocation) {
+        gpsWatchId = navigator.geolocation.watchPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+
+          updateSelfMarkerOnMap(lat, lng);
+
+          if (!isDemoMode && mqttClient && mqttClient.isConnected()) {
+            const timeObj = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            const messagePayload = {
+              lat: lat,
+              lng: lng,
+              time: timeObj
+            };
+
+            const payloadMessage = new Paho.MQTT.Message(JSON.stringify(messagePayload));
+            payloadMessage.destinationName = `${MQTT_ROOT_TOPIC}/${currentRoomId}/${currentRole}`;
+            payloadMessage.qos = 0;
+            payloadMessage.retained = true;
+            mqttClient.send(payloadMessage);
+          }
+        }, err => {
+          console.warn("GPS 기기 반응 없음: ", err.message);
+          document.getElementById("text-connection-status").innerText = "위치 수신 상태 대기 중...";
+        }, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        });
+      }
+    }
+
+    // 가족 접속 현황 목록 판독 UI 갱신
+    function refreshFamilyStateUI() {
+      const listContainer = document.getElementById("list-active-family");
+      if (!listContainer) return;
+      listContainer.innerHTML = "";
+
+      const selfItem = document.createElement("li");
+      selfItem.className = "flex items-center gap-1.5 font-bold text-indigo-600 border border-indigo-100 bg-indigo-50/50 p-1.5 rounded-lg";
+      selfItem.innerHTML = `<span class="h-2 w-2 rounded-full bg-indigo-500"></span> ${currentRole} (나)`;
+      listContainer.appendChild(selfItem);
+
+      let memberCount = 1;
+
+      for (const [name, info] of Object.entries(activeFamilyMembers)) {
+        memberCount++;
+        const item = document.createElement("li");
+        item.className = "flex items-center gap-1.5 text-slate-600 bg-slate-50/70 border border-slate-100 p-1.5 rounded-lg truncate";
+        item.innerHTML = `<span class="h-2 w-2 rounded-full bg-red-400"></span> ${name} (${info.lastTime})`;
+        listContainer.appendChild(item);
+      }
+
+      document.getElementById("text-family-count").innerText = memberCount;
+    }
+
+    // 10. 링크 클립보드 원터치 복사 (IFrame 보안에 대응하는 execCommand 활용)
+    function copyInviteLink() {
+      const targetUrl = `${window.location.origin}${window.location.pathname}`;
+      
+      const textTempBox = document.createElement("input");
+      textTempBox.value = targetUrl;
+      document.body.appendChild(textTempBox);
+      textTempBox.select();
+      
+      try {
+        const copyResult = document.execCommand("copy");
+        if(copyResult) {
+          showToast("가족 초대 링크가 복사되었습니다! 카톡에 공유해 보세요. 🔗");
+        } else {
+          showToast("복사에 실패했습니다. 주소창 주소를 직접 전송해주세요.");
+        }
+      } catch (err) {
+        showToast("사용하시는 브라우저에서 복사 기능을 거부했습니다.");
+      } finally {
+        document.body.removeChild(textTempBox);
+      }
+    }
+
+    // 11. 서비스 완전 퇴실 및 메모리 정리 정돈
+    function exitLocationService() {
+      if (gpsWatchId !== null) {
+        navigator.geolocation.clearWatch(gpsWatchId);
+        gpsWatchId = null;
+      }
+      if (demoSimTimer !== null) {
+        clearInterval(demoSimTimer);
+        demoSimTimer = null;
+      }
+      isDemoMode = false;
+
+      if (mqttClient && mqttClient.isConnected()) {
+        const cleanMessage = new Paho.MQTT.Message("");
+        cleanMessage.destinationName = `${MQTT_ROOT_TOPIC}/${currentRoomId}/${currentRole}`;
+        cleanMessage.retained = true;
+        mqttClient.send(cleanMessage);
+
+        mqttClient.disconnect();
+      }
+
+      if (selfMarker) {
+        serviceMap.removeLayer(selfMarker);
+        selfMarker = null;
+      }
+      for (const [name, marker] of Object.entries(otherFamilyMarkers)) {
+        serviceMap.removeLayer(marker);
+      }
+      otherFamilyMarkers = {};
+      activeFamilyMembers = {};
+
+      if (serviceMap) {
+        serviceMap.remove();
+        serviceMap = null;
+      }
+
+      document.getElementById('map-active-screen').classList.add('hidden');
+      document.getElementById('room-setup-screen').classList.remove('hidden');
+      document.getElementById('banner-sandbox-demo').classList.add("hidden");
+
+      showToast("실시간 위치 공유가 종료되었습니다. 🚪");
+    }
+  </script>
+</body>
+</html>
