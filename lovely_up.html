@@ -63,10 +63,141 @@
       100% { box-shadow: 0 0 0 0px rgba(199, 125, 85, 0); }
     }
   </style>
-</head>
-<body class="flex justify-center items-center min-h-screen">
 
-  <!-- 모바일 프레임 컨테이너 (PC 뷰에서도 이쁜 모바일 화면비 유지) -->
+  <!-- 💡 비밀 접속 기록을 위한 데이터베이스 (Firebase) 모듈 스크립트 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+    // 💡 [중요] 선생님의 개인 Firebase(git-io-33713) 설정값 적용 완료!
+    let firebaseConfig = {
+      apiKey: "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo",
+      authDomain: "git-io-33713.firebaseapp.com",
+      projectId: "git-io-33713",
+      storageBucket: "git-io-33713.firebasestorage.app",
+      messagingSenderId: "488733080531",
+      appId: "1:488733080531:web:2a95f7c25856b078ce8d26",
+      measurementId: "G-58XJP9R6HB"
+    };
+
+    // 현재 캔버스(테스트) 환경 지원용 코드 (유지)
+    const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+    try { 
+        const parsed = JSON.parse(firebaseConfigStr);
+        if(Object.keys(parsed).length > 0) firebaseConfig = parsed;
+    } catch(e) {}
+    
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'demo-family-app';
+
+    if (Object.keys(firebaseConfig).length > 0) {
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let currentUser = null;
+
+        // 익명으로 자동 로그인 처리 (접속 기록을 남기기 위함)
+        const initAuth = async () => {
+            await signInAnonymously(auth);
+        };
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            // 최초 접속 시 방문 기록 남기기 (1회만)
+            if (user && !window.hasLoggedInitialVisit) {
+                window.hasLoggedInitialVisit = true;
+                window.logVisitToDb("👀 누군가 페이지 접속함");
+            }
+        });
+
+        // 글로벌 스코프에서 호출할 수 있도록 window 객체에 할당 (DB 쓰기 함수)
+        window.logVisitToDb = async function(roleName) {
+            if (!currentUser) return;
+            
+            // 📱 핸드폰 기종(OS) 파악 로직 추가
+            let deviceInfo = "PC/기타";
+            const ua = navigator.userAgent;
+            if (/iPhone|iPad|iPod/i.test(ua)) deviceInfo = "아이폰/아이패드";
+            else if (/Android/i.test(ua)) deviceInfo = "안드로이드(갤럭시 등)";
+            else if (/Mac/i.test(ua)) deviceInfo = "Mac PC";
+            else if (/Windows/i.test(ua)) deviceInfo = "Windows PC";
+
+            try {
+                const logsCol = collection(db, 'artifacts', appId, 'public', 'data', 'visitLogs');
+                await addDoc(logsCol, {
+                    role: roleName,
+                    device: deviceInfo, // 접속 기기 정보 저장
+                    timestamp: new Date().toISOString()
+                });
+            } catch (e) {
+                console.error("Log error", e);
+            }
+        };
+
+        // 글로벌 스코프에서 호출할 수 있도록 window 객체에 할당 (DB 읽기 함수 - 관리자용)
+        window.loadVisitLogsFromDb = async function() {
+            const listEl = document.getElementById('visit-log-list');
+            if (!currentUser) {
+                listEl.innerHTML = '<li class="text-xs text-red-500 p-3 text-center">데이터베이스 접속 대기 중이거나 실패했습니다.</li>';
+                return;
+            }
+            listEl.innerHTML = '<li class="text-xs text-slate-500 p-4 text-center"><i class="fa-solid fa-spinner fa-spin mr-2"></i>비밀 기록을 불러오는 중...</li>';
+
+            try {
+                const logsCol = collection(db, 'artifacts', appId, 'public', 'data', 'visitLogs');
+                const snapshot = await getDocs(logsCol);
+                let logs = [];
+                snapshot.forEach(doc => logs.push(doc.data()));
+
+                // 최신 순으로 정렬
+                logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                listEl.innerHTML = '';
+                if (logs.length === 0) {
+                    listEl.innerHTML = '<li class="text-xs text-slate-500 p-4 text-center">아직 접속 기록이 없습니다.</li>';
+                    return;
+                }
+
+                logs.forEach(log => {
+                    const date = new Date(log.timestamp);
+                    const isGPS = log.role.includes("위치공유");
+                    // 보기 편한 시간 형식으로 변환
+                    const timeStr = date.toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit', second:'2-digit' });
+                    const deviceStr = log.device ? ` / 📱 ${log.device}` : ''; // 기기 정보 표시
+
+                    const li = document.createElement('li');
+                    li.className = 'border-b border-slate-100 py-2 px-3 text-xs flex flex-col justify-center bg-white rounded shadow-sm mb-1.5 transition hover:bg-slate-50';
+
+                    let icon = isGPS ? '<i class="fa-solid fa-location-dot text-emerald-500 w-5 text-center"></i>' : '<i class="fa-regular fa-eye text-slate-400 w-5 text-center"></i>';
+
+                    li.innerHTML = `
+                        <div class="flex items-center gap-2 mb-0.5">
+                            ${icon}
+                            <span class="font-bold ${isGPS ? 'text-emerald-700' : 'text-slate-600'}">${log.role}</span>
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono tracking-tighter pl-7">
+                            ${timeStr}${deviceStr}
+                        </div>
+                    `;
+                    listEl.appendChild(li);
+                });
+            } catch (e) {
+                listEl.innerHTML = `<li class="text-xs text-red-500 p-3">데이터 로딩 오류: ${e.message}</li>`;
+            }
+        }
+    } else {
+        // 실제 Github 환경 등 DB 세팅이 안 된 곳을 위한 예외 처리
+        window.logVisitToDb = function() { console.log("DB not configured."); };
+        window.loadVisitLogsFromDb = function() {
+            document.getElementById('visit-log-list').innerHTML = '<li class="text-xs text-red-500 p-4 leading-relaxed">현재 캔버스 임시 DB가 연결되지 않았습니다.<br>개인 Github 환경에서 접속 기록을 보시려면 본인의 Firebase 설정값을 위 코드(firebaseConfig)에 붙여넣어 주세요!</li>';
+        };
+    }
+  </script>
+</head>
+<body class="flex justify-center items-center min-h-screen relative">
+
+  <!-- 모바일 프레임 컨테이너 -->
   <div class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col justify-between overflow-x-hidden">
     
     <!-- 헤더 영역 -->
@@ -74,7 +205,8 @@
       <div class="mb-4">
         <span class="inline-block bg-[#d4a373] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest animate-pulse">FAMILY TRAVEL</span>
       </div>
-      <h1 class="font-serif-custom text-2xl md:text-3xl font-bold text-[#6f4e37] leading-relaxed mb-2">
+      <!-- 💡 여기에 비밀 관리자 모드 실행 트리거가 숨겨져 있습니다 (onclick="handleSecretClick()") -->
+      <h1 onclick="handleSecretClick()" class="font-serif-custom text-2xl md:text-3xl font-bold text-[#6f4e37] leading-relaxed mb-2 select-none">
         💖박길업 여사님의💖<br>세 번째 스무 살!
       </h1>
       <p class="text-xs text-[#a08070] tracking-wider mb-6 font-medium">2026. 06. 21(일) ~ 2026. 06. 22(월) | 1박 2일</p>
@@ -466,7 +598,54 @@
     </div>
   </div>
 
+  <!-- 💡 비밀 관리자 모달창 (나만 아는 접속 기록실) -->
+  <div id="admin-modal" class="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4 hidden backdrop-blur-sm transition-opacity">
+    <div class="bg-[#faf7f5] rounded-2xl w-full max-w-xs overflow-hidden shadow-2xl border-2 border-[#ebdcd3]">
+      <div class="bg-[#4e3629] text-[#e8ded7] px-4 py-3 flex justify-between items-center shadow-md">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-user-secret text-[#d4a373]"></i> 
+          <span class="font-serif-custom tracking-wider">비밀 접속 기록실</span>
+        </h3>
+        <button onclick="closeAdminModal()" class="text-[#e8ded7] hover:text-white transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="p-3 bg-[#fdfbf9] min-h-[250px] max-h-[400px] overflow-y-auto">
+        <ul id="visit-log-list" class="space-y-1.5">
+          <!-- 접속 로그가 여기에 동적으로 들어옵니다 -->
+        </ul>
+      </div>
+      <div class="bg-[#f0e6df] px-4 py-2 text-center border-t border-[#ebdcd3]">
+        <p class="text-[10px] text-[#8d6e63]">타이틀을 5번 연속 터치해야만 나타납니다 🤫</p>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // 💡 비밀 관리자 창 실행을 위한 타이틀 터치 카운터 함수
+    let secretCount = 0;
+    let secretTimer = null;
+    function handleSecretClick() {
+        secretCount++;
+        // 1.5초가 지나면 카운트 초기화 (연속으로 빨리 눌러야 함)
+        if (secretTimer) clearTimeout(secretTimer);
+        secretTimer = setTimeout(() => { secretCount = 0; }, 1500);
+
+        // 5번 연속 터치 성공 시
+        if (secretCount >= 5) {
+            secretCount = 0;
+            document.getElementById('admin-modal').classList.remove('hidden');
+            // 기록 불러오기 실행
+            if(window.loadVisitLogsFromDb) {
+                window.loadVisitLogsFromDb();
+            }
+        }
+    }
+    
+    function closeAdminModal() {
+        document.getElementById('admin-modal').classList.add('hidden');
+    }
+
     // 1. D-Day 카운트다운 함수
     function updateDday() {
       const travelDate = new Date("2026-06-21T09:00:00+09:00");
@@ -769,7 +948,6 @@
       const lat = 37.7518;
       const lon = 128.8761;
       
-      // 브라우저 직접 호출용으로 안전하고 CORS 제한이 없는 무료 글로벌 고성능 예보 API 연동
       const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul`;
       
       const kmaStaticBaseline = {
@@ -919,7 +1097,6 @@
             updateMyOnMapLocation(myLat, myLng);
             liveMap.setView([myLat, myLng], 14);
           }, () => {
-            // 위치 정보를 거부했거나 샌드박스에서 오류가 나면 가상의 시작점으로 보냄
             const defaultLat = 37.754165;
             const defaultLng = 128.898857;
             updateMyOnMapLocation(defaultLat, defaultLng);
@@ -947,11 +1124,9 @@
       }
     }
 
-    // 📡 실시간 MQTT 데이터 브로커 접속 환경 설정 (WebSocket Secure 방식)
     function connectMqtt() {
       try {
         const clientId = "client_" + Math.random().toString(36).substring(2, 15);
-        // Paho 클라이언트 생성 시도 (Canvas 환경 오류 트래핑)
         mqttClient = new Paho.MQTT.Client("broker.emqx.io", 8084, "/mqtt", clientId);
 
         mqttClient.onConnectionLost = onMqttConnectionLost;
@@ -967,7 +1142,6 @@
 
         mqttClient.connect(connectOptions);
       } catch (securityError) {
-        // Canvas 안에서 WebSockets가 거부되면 즉시 시뮬레이션 데모 모드로 점프합니다.
         console.warn("샌드박스 보안 정책으로 인해 MQTT 소켓 연결이 거부되어 시뮬레이션 모드로 전환합니다.");
         startDemoSimulation();
       }
@@ -993,9 +1167,8 @@
       }
     }
 
-    // 📨 가족들로부터 무전 좌표 신호를 수신했을 때 실시간 위치 마킹 처리
     function onMqttMessageArrived(message) {
-      if (isDemoMode) return; // 데모모드 일 때는 메시지 처리하지 않음
+      if (isDemoMode) return; 
       try {
         const topic = message.destinationName;
         const senderRole = topic.replace(FAMILY_CHANNEL_ROOT + "/", "");
@@ -1042,23 +1215,19 @@
       }
     }
 
-    // 💡 샌드박스 전용: 가상 가족 이동 시뮬레이션 루틴 
     function startDemoSimulation() {
       isDemoMode = true;
       document.getElementById("sandbox-warning-banner").classList.remove("hidden");
       document.getElementById("status-text").innerText = "⚠️ 데모 시뮬레이션 모드 가동 중";
       
-      // 사용자 GPS 가상 생성 (브라우저 차단 시 대체용)
       if (!myMarker) {
         updateMyOnMapLocation(37.75, 128.87);
       }
       
-      // 3초마다 가상 가족들의 좌표를 목적지를 향해 조금씩 움직임
       demoTimer = setInterval(() => {
         const nowTime = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
         
         for (const [name, pos] of Object.entries(demoPositions)) {
-          // 조금씩 목표값으로 어프로치
           pos.lat += (pos.targetLat - pos.lat) * pos.speed;
           pos.lng += (pos.targetLng - pos.lng) * pos.speed;
           
@@ -1083,10 +1252,9 @@
         updateActiveMembersListUI();
       }, 3000);
       
-      startGpsTracking(); // 사용자 본인 GPS도 백그라운드 구동 시도
+      startGpsTracking(); 
     }
 
-    // 실시간 접속 가족 현황판 UI 새로고침
     function updateActiveMembersListUI() {
       const listEl = document.getElementById("active-members-list");
       if (!listEl) return;
@@ -1105,7 +1273,6 @@
       }
     }
 
-    // 내 스마트폰 하드웨어 GPS 추적 및 중계 서버(MQTT) 송신
     function startGpsTracking() {
       if (navigator.geolocation) {
         watchId = navigator.geolocation.watchPosition(position => {
@@ -1114,7 +1281,6 @@
 
           updateMyOnMapLocation(lat, lng);
 
-          // MQTT 소켓이 성공적으로 열렸을 때만 실제로 통신 전송
           if (!isDemoMode && mqttClient && mqttClient.isConnected()) {
             const messageObj = {
               lat: lat,
@@ -1149,6 +1315,11 @@
       document.getElementById("active-members-container").classList.remove("hidden");
       document.getElementById("status-text").innerText = `${currentRoleName} 실시간 공유 중!`;
 
+      // 💡 비밀 관리자 DB에 누가 어떤 역할로 들어왔는지 기록 전송
+      if(window.logVisitToDb) {
+          window.logVisitToDb(`${currentRoleName} 님이 위치공유를 켰습니다.`);
+      }
+
       connectMqtt();
     };
 
@@ -1159,7 +1330,6 @@
         watchId = null;
       }
       
-      // 데모 타이머 청소
       if (demoTimer !== null) {
         clearInterval(demoTimer);
         demoTimer = null;
