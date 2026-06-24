@@ -1,494 +1,491 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>초코땡 Calendar</title>
-  
-  <meta property="og:title" content="초코땡">
-  <meta property="og:description" content="우리 부부만의 공유 달력">
-  <meta property="og:type" content="website">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>초코땡 Calendar</title>
+  
+  <meta property="og:title" content="초코땡">
+  <meta property="og:description" content="우리 부부만의 공유 달력">
+  <meta property="og:type" content="website">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Pretendard Font -->
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- 💡 EmailJS SDK (이메일 알림용 라이브러리) -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() {
-      // ⚠️ 여기에 EmailJS 회원가입 후 얻은 Public Key를 입력하세요.
-      emailjs.init("7vBIRclAXO4VokLPz");
-    })();
-  </script>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- 💡 EmailJS SDK (이메일 알림용 라이브러리) -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      // ⚠️ 여기에 EmailJS 회원가입 후 얻은 Public Key를 입력하세요.
+      emailjs.init("7vBIRclAXO4VokLPz");
+    })();
+  </script>
 
-  <style>
-    body {
-      font-family: 'Pretendard', sans-serif;
-      background-color: #f8fafc; /* slate-50 */
-      color: #0f172a; /* slate-900 */
-      -webkit-font-smoothing: antialiased;
-    }
-    
-    /* 스크롤바 숨기기 (깔끔한 UI용) */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    
-    .active-scale:active {
-      transform: scale(0.95);
-    }
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #f8fafc; /* slate-50 */
+      color: #0f172a; /* slate-900 */
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* 스크롤바 숨기기 (깔끔한 UI용) */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    .active-scale:active {
+      transform: scale(0.95);
+    }
 
-    .modal-enter {
-      animation: modalFadeIn 0.2s ease-out forwards;
-    }
+    .modal-enter {
+      animation: modalFadeIn 0.2s ease-out forwards;
+    }
 
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: scale(0.95) translateY(10px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-  </style>
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+  </style>
 </head>
 <body class="flex justify-center items-start sm:items-center min-h-screen relative selection:bg-indigo-100 selection:text-indigo-900">
 
-  <!-- 메인 앱 컨테이너 -->
-  <div class="w-full max-w-md bg-white min-h-screen sm:min-h-[850px] sm:my-8 sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200 relative flex flex-col overflow-hidden">
-    
-    <!-- 헤더 영역 -->
-    <header class="pt-8 pb-4 px-5 flex items-center justify-between bg-white z-10 border-b border-slate-100">
-      <div>
-        <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">
-          초코땡
-        </h1>
-      </div>
-      <div class="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500">
-        <i class="fa-solid fa-heart text-rose-400"></i>
-      </div>
-    </header>
+  <!-- 메인 앱 컨테이너 -->
+  <div class="w-full max-w-md bg-white min-h-screen sm:min-h-[850px] sm:my-8 sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200 relative flex flex-col overflow-hidden">
+    
+    <!-- 헤더 영역 -->
+    <header class="pt-8 pb-4 px-5 flex items-center justify-between bg-white z-10 border-b border-slate-100">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">
+          초코땡
+        </h1>
+      </div>
+      <div class="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500">
+        <i class="fa-solid fa-heart text-rose-400"></i>
+      </div>
+    </header>
 
-    <!-- 달력 컨테이너 -->
-    <section class="flex-grow flex flex-col bg-white">
-      <!-- 달력 컨트롤 -->
-      <div class="flex justify-between items-center px-5 py-4">
-        <h2 id="current-month-display" class="text-lg font-bold text-slate-800 tracking-tight">
-          2026. 06
-        </h2>
-        <div class="flex space-x-2">
-          <button onclick="window.changeMonth(-1)" class="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-100 transition active-scale">
-            <i class="fa-solid fa-chevron-left text-[10px]"></i>
-          </button>
-          <button onclick="window.changeMonth(1)" class="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-100 transition active-scale">
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-          </button>
-        </div>
-      </div>
+    <!-- 달력 컨테이너 -->
+    <section class="flex-grow flex flex-col bg-white">
+      <!-- 달력 컨트롤 -->
+      <div class="flex justify-between items-center px-5 py-4">
+        <h2 id="current-month-display" class="text-lg font-bold text-slate-800 tracking-tight">
+          2026. 06
+        </h2>
+        <div class="flex space-x-2">
+          <button onclick="window.changeMonth(-1)" class="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-100 transition active-scale">
+            <i class="fa-solid fa-chevron-left text-[10px]"></i>
+          </button>
+          <button onclick="window.changeMonth(1)" class="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-100 transition active-scale">
+            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+      </div>
 
-      <!-- 달력 요일 -->
-      <div class="grid grid-cols-7 text-center text-[11px] font-semibold text-slate-400 border-b border-slate-100 pb-2">
-        <div class="text-rose-400">Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div class="text-indigo-400">Sat</div>
-      </div>
+      <!-- 달력 요일 -->
+      <div class="grid grid-cols-7 text-center text-[11px] font-semibold text-slate-400 border-b border-slate-100 pb-2">
+        <div class="text-rose-400">Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div class="text-indigo-400">Sat</div>
+      </div>
 
-      <!-- 💡 달력 그리드 -->
-      <div class="flex-grow overflow-y-auto no-scrollbar bg-slate-100">
-        <div id="calendar-grid" class="grid grid-cols-7 gap-px bg-slate-100 border-b border-slate-100">
-          <!-- JS로 동적 렌더링 -->
-        </div>
-      </div>
-    </section>
+      <!-- 💡 달력 그리드 -->
+      <div class="flex-grow overflow-y-auto no-scrollbar bg-slate-100">
+        <div id="calendar-grid" class="grid grid-cols-7 gap-px bg-slate-100 border-b border-slate-100">
+          <!-- JS로 동적 렌더링 -->
+        </div>
+      </div>
+    </section>
 
-    <!-- 하단 선택된 날짜 상세/삭제 영역 -->
-   <section class="bg-white border-t border-slate-100 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] z-10 h-40 flex flex-col relative">
-  <!-- 고정되는 헤더 영역 -->
-  <div class="px-5 pt-4 pb-2 bg-white shrink-0 z-10">
-    <div class="flex justify-between items-end">
-      <!-- 헤더 내용 -->
-    </div>
-  </div>
-  <!-- 스크롤되는 리스트 영역 -->
-  <div class="px-5 pb-4 overflow-y-auto no-scrollbar flex-grow">
-    <div id="schedule-list" class="space-y-2 pb-16">
-      <!-- 일정 목록 -->
-    </div>
-  </div>
-</section>
+    <!-- 하단 선택된 날짜 상세/삭제 영역 -->
+    <section class="bg-white border-t border-slate-100 px-5 py-4 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] z-10 h-40 overflow-y-auto no-scrollbar relative">
+      <div class="flex justify-between items-end mb-3 sticky top-0 bg-white z-10 pb-1">
+        <div>
+          <h3 id="selected-date-title" class="text-sm font-bold text-slate-800">전체 일정</h3>
+          <p id="selected-date-subtitle" class="text-[10px] text-slate-400">All Schedules</p>
+        </div>
+      </div>
+      <div id="schedule-list" class="space-y-2 pb-20">
+        <!-- 일정 목록 -->
+      </div>
+    </section>
 
-    <!-- 플로팅 액션 버튼 (FAB) -->
-    <div class="absolute bottom-5 right-5 z-20 flex" id="fab-container">
-      <button onclick="window.openAddModal()" class="w-12 h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-[0_4px_12px_rgba(79,70,229,0.4)] flex items-center justify-center transition-all active-scale focus:outline-none">
-        <i class="fa-solid fa-plus text-lg"></i>
-      </button>
-    </div>
+    <!-- 플로팅 액션 버튼 (FAB) -->
+    <div class="absolute bottom-5 right-5 z-20 flex" id="fab-container">
+      <button onclick="window.openAddModal()" class="w-12 h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-[0_4px_12px_rgba(79,70,229,0.4)] flex items-center justify-center transition-all active-scale focus:outline-none">
+        <i class="fa-solid fa-plus text-lg"></i>
+      </button>
+    </div>
 
-  </div>
+  </div>
 
-  <!-- 📝 일정 추가 모달 -->
-  <div id="schedule-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-0">
-    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="window.closeAddModal()"></div>
-    
-    <div class="bg-white rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl relative z-10 modal-enter border border-slate-100">
-      <div class="px-6 pt-7 pb-5">
-        <div class="flex justify-between items-center mb-5">
-          <h3 class="text-lg font-bold text-slate-900">일정 추가</h3>
-          <button onclick="window.closeAddModal()" class="w-8 h-8 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-100 transition">
-            <i class="fa-solid fa-xmark text-sm"></i>
-          </button>
-        </div>
-        
-        <div class="space-y-4">
-          <!-- 제목 입력 -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">내용</label>
-            <input type="text" id="input-title" placeholder="일정을 입력하세요" class="w-full text-sm bg-slate-50 text-slate-900 border border-slate-200 rounded-xl px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all placeholder:text-slate-400">
-          </div>
+  <!-- 📝 일정 추가 모달 -->
+  <div id="schedule-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-0">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="window.closeAddModal()"></div>
+    
+    <div class="bg-white rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl relative z-10 modal-enter border border-slate-100">
+      <div class="px-6 pt-7 pb-5">
+        <div class="flex justify-between items-center mb-5">
+          <h3 class="text-lg font-bold text-slate-900">일정 추가</h3>
+          <button onclick="window.closeAddModal()" class="w-8 h-8 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-100 transition">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <!-- 제목 입력 -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">내용</label>
+            <input type="text" id="input-title" placeholder="일정을 입력하세요" class="w-full text-sm bg-slate-50 text-slate-900 border border-slate-200 rounded-xl px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all placeholder:text-slate-400">
+          </div>
 
-          <div class="grid grid-cols-2 gap-3">
-            <!-- 날짜 설정 -->
-            <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">날짜</label>
-              <input type="date" id="input-date" class="w-full text-sm bg-slate-50 text-slate-900 border border-slate-200 rounded-xl px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
-            </div>
-            
-            <!-- 시간 설정 -->
-            <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">시간</label>
-              <!-- 기본값을 자바스크립트에서 제어합니다 -->
-              <input type="time" id="input-time" class="w-full text-sm bg-slate-50 text-slate-900 border border-slate-200 rounded-xl px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="p-4 bg-slate-50 flex gap-2 border-t border-slate-100">
-        <button onclick="window.closeAddModal()" class="flex-1 bg-white text-slate-600 border border-slate-200 py-3 rounded-xl text-sm font-bold hover:bg-slate-50 transition active-scale">취소</button>
-        <button onclick="window.saveSchedule()" id="btn-save" class="flex-1 bg-indigo-600 text-white py-3 rounded-xl text-sm font-bold hover:bg-indigo-700 shadow-md shadow-indigo-600/20 transition active-scale">저장</button>
-      </div>
-    </div>
-  </div>
+          <div class="grid grid-cols-2 gap-3">
+            <!-- 날짜 설정 -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">날짜</label>
+              <input type="date" id="input-date" class="w-full text-sm bg-slate-50 text-slate-900 border border-slate-200 rounded-xl px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+            </div>
+            
+            <!-- 시간 설정 -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 ml-1">시간</label>
+              <!-- 기본값을 자바스크립트에서 제어합니다 -->
+              <input type="time" id="input-time" class="w-full text-sm bg-slate-50 text-slate-900 border border-slate-200 rounded-xl px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="p-4 bg-slate-50 flex gap-2 border-t border-slate-100">
+        <button onclick="window.closeAddModal()" class="flex-1 bg-white text-slate-600 border border-slate-200 py-3 rounded-xl text-sm font-bold hover:bg-slate-50 transition active-scale">취소</button>
+        <button onclick="window.saveSchedule()" id="btn-save" class="flex-1 bg-indigo-600 text-white py-3 rounded-xl text-sm font-bold hover:bg-indigo-700 shadow-md shadow-indigo-600/20 transition active-scale">저장</button>
+      </div>
+    </div>
+  </div>
 
-  <!-- Firebase 로직 스크립트 -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  <!-- Firebase 로직 스크립트 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    let firebaseConfig = {
-      apiKey: "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo",
-      authDomain: "git-io-33713.firebaseapp.com",
-      projectId: "git-io-33713",
-      storageBucket: "git-io-33713.firebasestorage.app",
-      messagingSenderId: "488733080531",
-      appId: "1:488733080531:web:2a95f7c25856b078ce8d26",
-      measurementId: "G-58XJP9R6HB"
-    };
+    let firebaseConfig = {
+      apiKey: "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo",
+      authDomain: "git-io-33713.firebaseapp.com",
+      projectId: "git-io-33713",
+      storageBucket: "git-io-33713.firebasestorage.app",
+      messagingSenderId: "488733080531",
+      appId: "1:488733080531:web:2a95f7c25856b078ce8d26",
+      measurementId: "G-58XJP9R6HB"
+    };
 
-    if (typeof __firebase_config !== 'undefined') {
-      try { 
-        const parsed = JSON.parse(__firebase_config);
-        if(Object.keys(parsed).length > 0) firebaseConfig = parsed;
-      } catch(e) {}
-    }
-    
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'choco-calendar';
+    if (typeof __firebase_config !== 'undefined') {
+      try { 
+        const parsed = JSON.parse(__firebase_config);
+        if(Object.keys(parsed).length > 0) firebaseConfig = parsed;
+      } catch(e) {}
+    }
+    
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'choco-calendar';
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    // --- 상태 관리 ---
-    let currentUser = null;
-    let allSchedules = []; 
-    let currentDate = new Date(); 
-    let selectedDateString = null; // null이면 전체 보기 모드
+    // --- 상태 관리 ---
+    let currentUser = null;
+    let allSchedules = []; 
+    let currentDate = new Date(); 
+    let selectedDateString = null; // null이면 전체 보기 모드
 
-    const initAuth = async () => {
-      try {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-      } catch (error) {
-        console.error("Auth Error:", error);
-      }
-    };
-    initAuth();
+    const initAuth = async () => {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+      } catch (error) {
+        console.error("Auth Error:", error);
+      }
+    };
+    initAuth();
 
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      if (user) {
-        setupRealtimeListener();
-      }
-    });
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      if (user) {
+        setupRealtimeListener();
+      }
+    });
 
-    function setupRealtimeListener() {
-      if (!currentUser) return;
-      
-      const schedulesCol = collection(db, 'artifacts', appId, 'public', 'data', 'schedules');
-      
-      onSnapshot(schedulesCol, (snapshot) => {
-        allSchedules = [];
-        snapshot.forEach(doc => {
-          allSchedules.push({ id: doc.id, ...doc.data() });
-        });
-        
-        renderCalendar();
-        renderScheduleList();
-      }, (error) => {
-        console.error("Data Sync Error:", error);
-      });
-    }
+    function setupRealtimeListener() {
+      if (!currentUser) return;
+      
+      const schedulesCol = collection(db, 'artifacts', appId, 'public', 'data', 'schedules');
+      
+      onSnapshot(schedulesCol, (snapshot) => {
+        allSchedules = [];
+        snapshot.forEach(doc => {
+          allSchedules.push({ id: doc.id, ...doc.data() });
+        });
+        
+        renderCalendar();
+        renderScheduleList();
+      }, (error) => {
+        console.error("Data Sync Error:", error);
+      });
+    }
 
-    function renderCalendar() {
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
 
-      document.getElementById('current-month-display').innerText = `${year}. ${(month + 1).toString().padStart(2, '0')}`;
+      document.getElementById('current-month-display').innerText = `${year}. ${(month + 1).toString().padStart(2, '0')}`;
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
 
-      const grid = document.getElementById('calendar-grid');
-      grid.innerHTML = '';
+      const grid = document.getElementById('calendar-grid');
+      grid.innerHTML = '';
 
-      const todayStr = getLocalYMD(new Date());
+      const todayStr = getLocalYMD(new Date());
 
-      for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = "bg-white/40 h-20 sm:h-24";
-        grid.appendChild(emptyCell);
-      }
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = "bg-white/40 h-20 sm:h-24";
+        grid.appendChild(emptyCell);
+      }
 
-      for (let day = 1; day <= lastDate; day++) {
-        const cellDate = new Date(year, month, day);
-        const cellDateStr = getLocalYMD(cellDate);
-        
-        const dayEvents = allSchedules
-            .filter(s => s.date === cellDateStr)
-            .sort((a, b) => a.time.localeCompare(b.time));
+      for (let day = 1; day <= lastDate; day++) {
+        const cellDate = new Date(year, month, day);
+        const cellDateStr = getLocalYMD(cellDate);
+        
+        const dayEvents = allSchedules
+            .filter(s => s.date === cellDateStr)
+            .sort((a, b) => a.time.localeCompare(b.time));
 
-        const cell = document.createElement('div');
-        
-        let baseStyle = "relative h-20 sm:h-24 p-1 flex flex-col transition-all cursor-pointer overflow-hidden ";
-        
-        if (cellDateStr === selectedDateString) {
-          baseStyle += "bg-indigo-50/50 outline outline-2 outline-indigo-500 outline-offset-[-2px] z-10";
-        } else if (cellDateStr === todayStr) {
-          baseStyle += "bg-slate-50 font-bold";
-        } else {
-          baseStyle += "bg-white hover:bg-slate-50";
-        }
+        const cell = document.createElement('div');
+        
+        let baseStyle = "relative h-20 sm:h-24 p-1 flex flex-col transition-all cursor-pointer overflow-hidden ";
+        
+        if (cellDateStr === selectedDateString) {
+          baseStyle += "bg-indigo-50/50 outline outline-2 outline-indigo-500 outline-offset-[-2px] z-10";
+        } else if (cellDateStr === todayStr) {
+          baseStyle += "bg-slate-50 font-bold";
+        } else {
+          baseStyle += "bg-white hover:bg-slate-50";
+        }
 
-        cell.className = baseStyle;
-        cell.onclick = () => window.selectDate(cellDateStr);
+        cell.className = baseStyle;
+        cell.onclick = () => window.selectDate(cellDateStr);
 
-        const dayOfWeek = cellDate.getDay();
-        let numColor = "text-slate-700";
-        if (dayOfWeek === 0) numColor = "text-rose-500";
-        if (dayOfWeek === 6) numColor = "text-indigo-500";
+        const dayOfWeek = cellDate.getDay();
+        let numColor = "text-slate-700";
+        if (dayOfWeek === 0) numColor = "text-rose-500";
+        if (dayOfWeek === 6) numColor = "text-indigo-500";
 
-        let eventsHTML = '';
-        dayEvents.forEach(evt => {
-            eventsHTML += `
-                <div class="text-[9px] sm:text-[10px] bg-indigo-100 text-indigo-800 px-1 py-0.5 rounded-sm mb-[2px] truncate w-full font-medium" title="${evt.time} ${evt.title}">
-                    ${evt.title}
-                </div>
-            `;
-        });
+        let eventsHTML = '';
+        dayEvents.forEach(evt => {
+            eventsHTML += `
+                <div class="text-[9px] sm:text-[10px] bg-indigo-100 text-indigo-800 px-1 py-0.5 rounded-sm mb-[2px] truncate w-full font-medium" title="${evt.time} ${evt.title}">
+                    ${evt.title}
+                </div>
+            `;
+        });
 
-        cell.innerHTML = `
-          <span class="text-xs ml-1 mt-0.5 mb-0.5 ${numColor}">${day}</span>
-          <div class="flex flex-col w-full overflow-y-auto no-scrollbar px-0.5">
-            ${eventsHTML}
-          </div>
-        `;
-        
-        grid.appendChild(cell);
-      }
-    }
+        cell.innerHTML = `
+          <span class="text-xs ml-1 mt-0.5 mb-0.5 ${numColor}">${day}</span>
+          <div class="flex flex-col w-full overflow-y-auto no-scrollbar px-0.5">
+            ${eventsHTML}
+          </div>
+        `;
+        
+        grid.appendChild(cell);
+      }
+    }
 
-    window.changeMonth = function(offset) {
-      currentDate.setMonth(currentDate.getMonth() + offset);
-      renderCalendar();
-    }
+    window.changeMonth = function(offset) {
+      currentDate.setMonth(currentDate.getMonth() + offset);
+      renderCalendar();
+    }
 
-    window.selectDate = function(dateStr) {
-      if (selectedDateString === dateStr) {
-        selectedDateString = null;
-        document.getElementById('selected-date-title').innerText = `전체 일정`;
-        document.getElementById('selected-date-subtitle').innerText = `All Schedules`;
-      } else {
-        selectedDateString = dateStr;
-        const dateObj = new Date(dateStr);
-        const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-        const dayName = days[dateObj.getDay()];
-        const parts = dateStr.split('-');
-        
-        document.getElementById('selected-date-title').innerText = `${parseInt(parts[1])}월 ${parseInt(parts[2])}일`;
-        document.getElementById('selected-date-subtitle').innerText = `${parts[0]}년, ${dayName}`;
-      }
-      
-      renderCalendar(); 
-      renderScheduleList();
-    }
+    window.selectDate = function(dateStr) {
+      if (selectedDateString === dateStr) {
+        selectedDateString = null;
+        document.getElementById('selected-date-title').innerText = `전체 일정`;
+        document.getElementById('selected-date-subtitle').innerText = `All Schedules`;
+      } else {
+        selectedDateString = dateStr;
+        const dateObj = new Date(dateStr);
+        const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+        const dayName = days[dateObj.getDay()];
+        const parts = dateStr.split('-');
+        
+        document.getElementById('selected-date-title').innerText = `${parseInt(parts[1])}월 ${parseInt(parts[2])}일`;
+        document.getElementById('selected-date-subtitle').innerText = `${parts[0]}년, ${dayName}`;
+      }
+      
+      renderCalendar(); 
+      renderScheduleList();
+    }
 
-    function renderScheduleList() {
-      const listContainer = document.getElementById('schedule-list');
-      listContainer.innerHTML = '';
+    function renderScheduleList() {
+      const listContainer = document.getElementById('schedule-list');
+      listContainer.innerHTML = '';
 
-      let displayEvents = allSchedules;
-      if (selectedDateString) {
-        displayEvents = allSchedules.filter(s => s.date === selectedDateString);
-      }
+      let displayEvents = allSchedules;
+      if (selectedDateString) {
+        displayEvents = allSchedules.filter(s => s.date === selectedDateString);
+      }
 
-      displayEvents.sort((a, b) => {
-        if (a.date !== b.date) return a.date.localeCompare(b.date);
-        return a.time.localeCompare(b.time);
-      });
+      displayEvents.sort((a, b) => {
+        if (a.date !== b.date) return a.date.localeCompare(b.date);
+        return a.time.localeCompare(b.time);
+      });
 
-      if (displayEvents.length === 0) {
-        listContainer.innerHTML = `
-          <div class="text-center text-slate-400 py-6">
-            <p class="text-xs font-medium">등록된 일정이 없습니다</p>
-          </div>
-        `;
-        return;
-      }
+      if (displayEvents.length === 0) {
+        listContainer.innerHTML = `
+          <div class="text-center text-slate-400 py-6">
+            <p class="text-xs font-medium">등록된 일정이 없습니다</p>
+          </div>
+        `;
+        return;
+      }
 
-      displayEvents.forEach(evt => {
-        const item = document.createElement('div');
-        item.className = "bg-slate-50 px-3 py-2.5 rounded-xl border border-slate-100 flex items-center justify-between";
-        
-        let dateBadge = '';
-        if (!selectedDateString) {
-            const parts = evt.date.split('-');
-            dateBadge = `<span class="text-[10px] text-slate-500 font-bold bg-white border border-slate-200 px-1.5 py-0.5 rounded mr-2 shrink-0">${parseInt(parts[1])}/${parseInt(parts[2])}</span>`;
-        }
+      displayEvents.forEach(evt => {
+        const item = document.createElement('div');
+        item.className = "bg-slate-50 px-3 py-2.5 rounded-xl border border-slate-100 flex items-center justify-between";
+        
+        let dateBadge = '';
+        if (!selectedDateString) {
+            const parts = evt.date.split('-');
+            dateBadge = `<span class="text-[10px] text-slate-500 font-bold bg-white border border-slate-200 px-1.5 py-0.5 rounded mr-2 shrink-0">${parseInt(parts[1])}/${parseInt(parts[2])}</span>`;
+        }
 
-        item.innerHTML = `
-          <div class="flex items-center flex-grow overflow-hidden pr-2">
-            ${dateBadge}
-            <span class="text-xs font-bold text-indigo-600 w-10 shrink-0">${evt.time}</span>
-            <h4 class="text-xs font-medium text-slate-800 truncate leading-tight">${evt.title}</h4>
-          </div>
-          <button onclick="window.deleteSchedule('${evt.id}')" class="w-8 h-8 rounded-full bg-white text-slate-400 hover:text-rose-500 hover:bg-rose-50 flex items-center justify-center transition shrink-0 border border-slate-200" title="일정 삭제">
-            <i class="fa-solid fa-trash-can text-[11px]"></i>
-          </button>
-        `;
-        listContainer.appendChild(item);
-      });
-    }
+        item.innerHTML = `
+          <div class="flex items-center flex-grow overflow-hidden pr-2">
+            ${dateBadge}
+            <span class="text-xs font-bold text-indigo-600 w-10 shrink-0">${evt.time}</span>
+            <h4 class="text-xs font-medium text-slate-800 truncate leading-tight">${evt.title}</h4>
+          </div>
+          <button onclick="window.deleteSchedule('${evt.id}')" class="w-8 h-8 rounded-full bg-white text-slate-400 hover:text-rose-500 hover:bg-rose-50 flex items-center justify-center transition shrink-0 border border-slate-200" title="일정 삭제">
+            <i class="fa-solid fa-trash-can text-[11px]"></i>
+          </button>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
 
-    window.openAddModal = function() {
-      document.getElementById('input-date').value = selectedDateString || getLocalYMD(new Date());
-      document.getElementById('input-time').value = "19:30";
-      document.getElementById('input-title').value = "";
-      
-      const modal = document.getElementById('schedule-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      
-      setTimeout(() => document.getElementById('input-title').focus(), 100);
-    }
+    window.openAddModal = function() {
+      document.getElementById('input-date').value = selectedDateString || getLocalYMD(new Date());
+      document.getElementById('input-time').value = "19:30";
+      document.getElementById('input-title').value = "";
+      
+      const modal = document.getElementById('schedule-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      setTimeout(() => document.getElementById('input-title').focus(), 100);
+    }
 
-    window.closeAddModal = function() {
-      const modal = document.getElementById('schedule-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
+    window.closeAddModal = function() {
+      const modal = document.getElementById('schedule-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
 
-    window.saveSchedule = async function() {
-      if (!currentUser) {
-        alert("데이터베이스와 연결 중입니다. 1~2초 뒤에 다시 시도해주세요.");
-        return;
-      }
+    window.saveSchedule = async function() {
+      if (!currentUser) {
+        alert("데이터베이스와 연결 중입니다. 1~2초 뒤에 다시 시도해주세요.");
+        return;
+      }
 
-      const date = document.getElementById('input-date').value;
-      const time = document.getElementById('input-time').value;
-      const title = document.getElementById('input-title').value.trim();
+      const date = document.getElementById('input-date').value;
+      const time = document.getElementById('input-time').value;
+      const title = document.getElementById('input-title').value.trim();
 
-      if (!title || !date) {
-        document.getElementById('input-title').focus();
-        return;
-      }
+      if (!title || !date) {
+        document.getElementById('input-title').focus();
+        return;
+      }
 
-      const saveBtn = document.getElementById('btn-save');
-      const originalText = saveBtn.innerText;
-      saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
-      saveBtn.disabled = true;
+      const saveBtn = document.getElementById('btn-save');
+      const originalText = saveBtn.innerText;
+      saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+      saveBtn.disabled = true;
 
-      try {
-        // 1. Firebase 데이터베이스에 일정 저장
-        const schedulesCol = collection(db, 'artifacts', appId, 'public', 'data', 'schedules');
-        await addDoc(schedulesCol, {
-          date: date,
-          time: time || '19:30',
-          title: title,
-          createdAt: new Date().toISOString()
-        });
+      try {
+        // 1. Firebase 데이터베이스에 일정 저장
+        const schedulesCol = collection(db, 'artifacts', appId, 'public', 'data', 'schedules');
+        await addDoc(schedulesCol, {
+          date: date,
+          time: time || '19:30',
+          title: title,
+          createdAt: new Date().toISOString()
+        });
 
-        // 2. 💡 EmailJS를 활용한 이메일 전송 호출 
-        // (이메일 발송 실패가 화면 동작을 막지 않도록 catch로 묶어둠)
-        try {
-          // ⚠️ 아래에 서비스 ID와 템플릿 ID를 넣어야 이메일이 발송됩니다.
-          emailjs.send("service_btklitm", "template_v6pyyrf", {
-            to_email: "a611103@naver.com, chu2804@naver.com",
-            schedule_date: date,
-            schedule_time: time,
-            schedule_title: title
-          }).then(() => {
-            console.log("알림 이메일 전송 성공");
-          });
-        } catch (emailErr) {
-          console.error("이메일 전송 에러:", emailErr);
-        }
+        // 2. 💡 EmailJS를 활용한 이메일 전송 호출 
+        // (이메일 발송 실패가 화면 동작을 막지 않도록 catch로 묶어둠)
+        try {
+          // ⚠️ 아래에 서비스 ID와 템플릿 ID를 넣어야 이메일이 발송됩니다.
+          emailjs.send("service_btklitm", "template_v6pyyrf", {
+            to_email: "a611103@naver.com",
+            schedule_date: date,
+            schedule_time: time,
+            schedule_title: title
+          }).then(() => {
+            console.log("알림 이메일 전송 성공");
+          });
+        } catch (emailErr) {
+          console.error("이메일 전송 에러:", emailErr);
+        }
 
-        window.closeAddModal();
-      } catch (e) {
-        console.error("Save Error:", e);
-        alert("저장 실패");
-      } finally {
-        saveBtn.innerText = originalText;
-        saveBtn.disabled = false;
-      }
-    }
+        window.closeAddModal();
+      } catch (e) {
+        console.error("Save Error:", e);
+        alert("저장 실패");
+      } finally {
+        saveBtn.innerText = originalText;
+        saveBtn.disabled = false;
+      }
+    }
 
-    window.deleteSchedule = async function(docId) {
-      if (!currentUser) {
-        alert("데이터베이스와 연결 중입니다. 잠시 후 다시 시도해주세요.");
-        return;
-      }
-      if (!confirm("일정을 삭제할까요?")) return;
-      
-      try {
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'schedules', docId);
-        await deleteDoc(docRef);
-      } catch (e) {
-        console.error("Delete Error:", e);
-      }
-    }
+    window.deleteSchedule = async function(docId) {
+      if (!currentUser) {
+        alert("데이터베이스와 연결 중입니다. 잠시 후 다시 시도해주세요.");
+        return;
+      }
+      if (!confirm("일정을 삭제할까요?")) return;
+      
+      try {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'schedules', docId);
+        await deleteDoc(docRef);
+      } catch (e) {
+        console.error("Delete Error:", e);
+      }
+    }
 
-    function getLocalYMD(dateObj) {
-      const offset = dateObj.getTimezoneOffset() * 60000;
-      const localISOTime = (new Date(dateObj - offset)).toISOString().split('T')[0];
-      return localISOTime;
-    }
+    function getLocalYMD(dateObj) {
+      const offset = dateObj.getTimezoneOffset() * 60000;
+      const localISOTime = (new Date(dateObj - offset)).toISOString().split('T')[0];
+      return localISOTime;
+    }
 
-    window.onload = function() {
-      setTimeout(renderCalendar, 50);
-    }
-  </script>
+    window.onload = function() {
+      setTimeout(renderCalendar, 50);
+    }
+  </script>
 </body>
 </html>
