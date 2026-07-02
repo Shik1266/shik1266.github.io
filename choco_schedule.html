@@ -4,9 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>초코땡 Calendar</title>
+  
+  <meta property="og:title" content="초코땡">
+  <meta property="og:description" content="우리 부부만의 공유 달력">
+  <meta property="og:type" content="website">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      // ⚠️ 여기에 EmailJS 회원가입 후 얻은 Public Key를 입력하세요.
+      emailjs.init("7vBIRclAXO4VokLPz");
+    })();
+  </script>
+
   <style>
     body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #0f172a; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -221,19 +235,50 @@
       const time = document.getElementById('input-time').value;
 
       if (!title || !date) {
-        alert("내용과 날짜를 입력해주세요."); // 알림 대신 UI에 경고 메시지를 띄우는 것이 더 좋습니다.
+        alert("내용과 날짜를 입력해주세요."); 
         return;
       }
 
-      const id = document.getElementById('edit-id').value;
-      const data = { title, date, time };
-      
-      if(id) {
-        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id), data);
-      } else {
-        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), data);
+      // 버튼 상태 변경 (저장 중 표시 방지)
+      const saveBtn = document.getElementById('btn-save');
+      const originalText = saveBtn.innerText;
+      saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+      saveBtn.disabled = true;
+
+      try {
+        const id = document.getElementById('edit-id').value;
+        const data = { title, date, time };
+        
+        // 1. Firebase 데이터베이스에 일정 추가 및 수정
+        if(id) {
+          await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id), data);
+        } else {
+          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), data);
+        }
+
+        // 2. 💡 EmailJS를 활용한 이메일 전송 로직 적용 (첫 번째 코드 4번 기능)
+        try {
+          // ⚠️ 아래에 서비스 ID와 템플릿 ID를 넣어야 이메일이 발송됩니다.
+          emailjs.send("service_btklitm", "template_v6pyyrf", {
+            to_email: "a611103@naver.com",
+            schedule_date: date,
+            schedule_time: time,
+            schedule_title: title
+          }).then(() => {
+            console.log("알림 이메일 전송 성공");
+          });
+        } catch (emailErr) {
+          console.error("이메일 전송 에러:", emailErr);
+        }
+
+        window.closeAddModal();
+      } catch (e) {
+        console.error("Save Error:", e);
+        alert("저장 실패");
+      } finally {
+        saveBtn.innerText = originalText;
+        saveBtn.disabled = false;
       }
-      window.closeAddModal();
     };
 
     window.deleteSchedule = async (id) => { 
