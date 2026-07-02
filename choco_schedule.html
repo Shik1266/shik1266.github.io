@@ -257,20 +257,21 @@
         }
 
         // 2. 💡 EmailJS를 활용한 이메일 전송 로직 적용 (첫 번째 코드 4번 기능)
-        try {
-          // ⚠️ 아래에 서비스 ID와 템플릿 ID를 넣어야 이메일이 발송됩니다.
-          emailjs.send("service_btklitm", "template_v6pyyrf", {
-            to_email: "a611103@naver.com",
-            schedule_date: date,
-            schedule_time: time,
-            schedule_title: title
-          }).then(() => {
-            console.log("알림 이메일 전송 성공");
-          });
-        } catch (emailErr) {
-          console.error("이메일 전송 에러:", emailErr);
-        }
-
+      // 2. 💡 EmailJS를 활용한 이메일 전송 로직 적용
+try {
+  // await를 추가하여 발송이 완료될 때까지 기다리고, 실패 시 에러를 정확히 잡습니다.
+  await emailjs.send("service_btklitm", "template_v6pyyrf", {
+    to_email: "a611103@naver.com",
+    schedule_date: date,
+    schedule_time: time,
+    schedule_title: title
+  });
+  console.log("알림 이메일 전송 성공");
+} catch (emailErr) {
+  // 이제 발송 실패 시 콘솔에 정확한 에러 메시지가 뜹니다.
+  console.error("이메일 전송 에러:", emailErr);
+  alert("이메일 발송에 실패했습니다. 콘솔 창(F12)을 확인해주세요.");
+}
         window.closeAddModal();
       } catch (e) {
         console.error("Save Error:", e);
