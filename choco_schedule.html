@@ -7,7 +7,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #0f172a; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -77,7 +76,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    let allSchedules = [], currentDate = new Date(), selectedDateString = null;
+    let allSchedules = [], currentDate = new Date();
     signInAnonymously(auth);
     onAuthStateChanged(auth, (user) => { if(user) setupListener(); });
 
@@ -89,31 +88,48 @@
     }
 
     function render() {
-      const year = currentDate.getFullYear(), month = currentDate.getMonth();
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const monthStr = `${year}-${(month + 1).toString().padStart(2, '0')}`;
+      
       document.getElementById('current-month-display').innerText = `${year}.${(month + 1).toString().padStart(2, '0')}`;
       document.getElementById('list-title').innerText = `${month+1}월 일정`;
       
-      const grid = document.getElementById('calendar-grid'); grid.innerHTML = '';
-      const first = new Date(year, month, 1).getDay(), last = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById('calendar-grid'); 
+      grid.innerHTML = '';
+      const first = new Date(year, month, 1).getDay();
+      const last = new Date(year, month + 1, 0).getDate();
+      
       for(let i=0; i<first; i++) grid.appendChild(document.createElement('div'));
       for(let d=1; d<=last; d++) {
         const dateStr = `${year}-${(month+1).toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
         const cell = document.createElement('div');
-        cell.className = "h-20 p-1 bg-white hover:bg-slate-50 cursor-pointer border";
-        cell.innerHTML = `<div class="text-xs">${d}</div>` + allSchedules.filter(s => s.date === dateStr).map(s => `<div class="text-[9px] truncate bg-indigo-100">${s.title}</div>`).join('');
-        cell.onclick = () => { selectedDateString = dateStr; render(); };
+        cell.className = "h-20 p-1 bg-white hover:bg-slate-50 cursor-pointer border text-[9px]";
+        cell.innerHTML = `<div class="font-bold">${d}</div>` + allSchedules.filter(s => s.date === dateStr).map(s => `<div class="truncate bg-indigo-100 rounded px-1 mt-0.5">${s.title}</div>`).join('');
         grid.appendChild(cell);
       }
       
-      const list = document.getElementById('schedule-list'); list.innerHTML = '';
-      allSchedules.filter(s => s.date.startsWith(`${year}-${(month+1).toString().padStart(2, '0')}`))
-        .sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time))
-        .forEach(s => {
+      const list = document.getElementById('schedule-list'); 
+      list.innerHTML = '';
+      
+      // 필터링 수정: 해당 월(YYYY-MM)로 시작하는 모든 데이터 필터링
+      const filtered = allSchedules.filter(s => s.date && s.date.startsWith(monthStr))
+        .sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+
+      if(filtered.length === 0) {
+        list.innerHTML = `<p class="text-center text-slate-400 text-sm mt-10">등록된 일정이 없습니다.</p>`;
+      } else {
+        filtered.forEach(s => {
           const div = document.createElement('div');
           div.className = "flex justify-between items-center bg-slate-50 p-2 mb-2 rounded-lg text-xs";
-          div.innerHTML = `<span>${s.date.split('-')[2]}일 ${s.time} ${s.title}</span> <div><button onclick="window.editSchedule('${s.id}')" class="text-blue-500 mr-2">수정</button><button onclick="window.deleteSchedule('${s.id}')" class="text-red-500">삭제</button></div>`;
+          div.innerHTML = `<span>${s.date.split('-')[2]}일 ${s.time} - ${s.title}</span> 
+            <div>
+              <button onclick="window.editSchedule('${s.id}')" class="text-blue-500 mr-2">수정</button>
+              <button onclick="window.deleteSchedule('${s.id}')" class="text-red-500">삭제</button>
+            </div>`;
           list.appendChild(div);
         });
+      }
     }
 
     window.changeMonth = (o) => { currentDate.setMonth(currentDate.getMonth() + o); render(); };
@@ -139,7 +155,7 @@
       else await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), data);
       window.closeAddModal();
     };
-    window.deleteSchedule = async (id) => { if(confirm("삭제?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id)); };
+    window.deleteSchedule = async (id) => { if(confirm("삭제하시겠습니까?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id)); };
   </script>
 </body>
 </html>
