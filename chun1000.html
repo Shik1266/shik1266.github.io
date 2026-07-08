@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>2026 쿨썸머 바캉스 🌊</title>
+  
+  <meta property="og:title" content="여름 휴가! 가평 & 춘천으로 떠나요 🌊">
+  <meta property="og:description" content="짜릿한 수상레저와 프라이빗 풀빌라가 기다리는 1박 2일 여름 휴가 일정표 💙">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1541625902047-ce434c46f6dc?q=80&w=1200&auto=format&fit=crop">
+  <meta property="og:url" content="https://shik1266.github.io">
+  <meta property="og:type" content="website">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 기존의 진지한 폰트 대신 발랄하고 시원한 폰트(Jua, Noto Sans) 적용 -->
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      padding: 0;
+      /* 파도가 일렁이는 듯한 다이나믹 배경 그라데이션 */
+      background: linear-gradient(-45deg, #00c6ff, #0072ff, #2193b0, #6dd5ed);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #0f172a;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .font-display {
+      font-family: 'Jua', sans-serif;
+    }
+
+    /* 시원한 느낌의 스크롤바 커스텀 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.1);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.5);
+      border-radius: 10px;
+    }
+
+    /* 글래스모피즘(유리) 효과 커스텀 클래스 */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px 0 rgba(0, 84, 153, 0.2);
+    }
+    
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+    }
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: translateY(-2px);
+    }
+
+    /* 타임라인 커스텀 요소 */
+    .timeline-dot {
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+
+    /* 둥둥 떠다니는 애니메이션 */
+    .float-anim {
+      animation: floating 3s ease-in-out infinite;
+    }
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+<body class="flex justify-center items-center min-h-screen">
+
+  <div class="w-full max-w-lg min-h-screen relative flex flex-col overflow-hidden pb-10">
+    
+    <!-- 배경 장식용 물방울 요소들 -->
+    <div class="absolute top-10 left-[-20px] w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+    <div class="absolute top-40 right-[-40px] w-48 h-48 bg-blue-300/20 rounded-full blur-3xl"></div>
+    
+    <header class="relative pt-16 pb-8 px-6 text-center z-10">
+      <div class="mb-6 float-anim">
+        <span class="inline-block glass-card text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
+          <i class="fa-solid fa-plane-departure mr-1"></i> SUMMER VACATION
+        </span>
+      </div>
+      <h1 class="font-display text-4xl md:text-5xl text-white drop-shadow-md leading-tight mb-3">
+        2026 쿨썸머 바캉스
+      </h1>
+      <p class="text-white/90 font-medium text-sm md:text-base tracking-wide mb-8 bg-black/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm">
+        가평 수상레저 & 춘천 힐링 (7.12 - 7.13)
+      </p>
+      
+      <div class="relative w-40 h-40 mx-auto mb-8 float-anim" style="animation-delay: 0.5s;">
+        <div class="absolute inset-0 bg-white/30 rounded-[2rem] rotate-6 backdrop-blur-md"></div>
+        <div class="absolute inset-0 bg-white/30 rounded-[2rem] -rotate-6 backdrop-blur-md"></div>
+        <img id="profile-img" src="https://images.unsplash.com/photo-1541625902047-ce434c46f6dc?q=80&w=600&auto=format&fit=crop" alt="여름 바캉스 이미지" 
+             class="relative w-full h-full object-cover rounded-[2rem] shadow-xl border-2 border-white/50"
+             onerror="handleImageError()">
+             
+        <div id="fallback-icon" class="relative w-full h-full rounded-[2rem] bg-gradient-to-tr from-cyan-400 to-blue-500 flex flex-col items-center justify-center shadow-xl border-2 border-white/50 hidden">
+          <i class="fa-solid fa-water text-5xl text-white mb-2 animate-bounce"></i>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl py-4 px-6 inline-flex flex-col items-center space-y-1 w-3/4 max-w-xs mx-auto">
+        <span class="text-xs font-bold text-white/80 uppercase tracking-widest">Departure in</span>
+        <span id="d-day-display" class="font-display text-3xl text-white drop-shadow-sm animate-pulse">D-Day</span>
+      </div>
+    </header>
+
+    <section class="px-6 py-6 z-10 space-y-6">
+      
+      <!-- 초대 문구 -->
+      <div class="glass-card rounded-3xl p-6 text-center text-white relative overflow-hidden">
+        <i class="fa-solid fa-quote-left absolute top-4 left-4 text-white/20 text-4xl"></i>
+        <p class="font-medium text-sm leading-relaxed relative z-10">
+          푹푹 찌는 무더위를 피해서<br>
+          <span class="text-cyan-100 font-extrabold text-base">시원한 물살을 가르는 가평 수상레저</span>와<br>
+          맛있는 음식이 가득한 춘천으로 떠납니다.<br>
+          아무 생각 없이 신나게 먹고 즐기는<br>
+          완벽한 여름 휴가를 만들어 보아요! 🏄‍♂️😎
+        </p>
+        <i class="fa-solid fa-quote-right absolute bottom-4 right-4 text-white/20 text-4xl"></i>
+      </div>
+
+      <!-- 날씨 위젯 -->
+      <div class="glass-card rounded-3xl p-5">
+        <div class="flex justify-between items-center mb-4 border-b border-white/20 pb-3">
+          <h4 class="font-display text-lg text-white flex items-center gap-2">
+            <i class="fa-solid fa-umbrella-beach text-yellow-300"></i> 기상대 예보
+          </h4>
+          <span class="text-[10px] text-white/80 bg-black/20 px-2.5 py-1 rounded-full" id="weather-update-time">예보 로딩중</span>
+        </div>
+        <div class="flex flex-col gap-3" id="weather-container">
+          <!-- 1일차 날씨 -->
+          <div class="bg-white/10 rounded-2xl p-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl text-yellow-300" id="day1-weather-icon">
+                <i class="fa-solid fa-circle-notch animate-spin text-sm text-white"></i>
+              </div>
+              <div>
+                <p class="text-xs text-white/70 font-bold mb-0.5">7/12 (일) 첫째 날</p>
+                <p class="text-sm text-white font-bold" id="day1-weather-text">로딩 중...</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-lg font-display text-white" id="day1-temp">--°</p>
+            </div>
+          </div>
+          <!-- 2일차 날씨 -->
+          <div class="bg-white/10 rounded-2xl p-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl text-yellow-300" id="day2-weather-icon">
+                <i class="fa-solid fa-circle-notch animate-spin text-sm text-white"></i>
+              </div>
+              <div>
+                <p class="text-xs text-white/70 font-bold mb-0.5">7/13 (월) 둘째 날</p>
+                <p class="text-sm text-white font-bold" id="day2-weather-text">로딩 중...</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-lg font-display text-white" id="day2-temp">--°</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="px-6 py-4 z-10">
+      
+      <h2 class="font-display text-3xl text-white text-center mb-8 drop-shadow-md">
+        🌊 바캉스 타임라인
+      </h2>
+
+      <!-- 타임라인 컨테이너 -->
+      <div class="relative wrap overflow-hidden p-2 h-full">
+        <!-- 중앙 선 (모바일에서는 좌측 쏠림) -->
+        <div class="absolute border-opacity-30 border-white border-l-2 h-full left-6 md:left-1/2 top-0"></div>
+        
+        <!-- DAY 1 배지 -->
+        <div class="relative flex items-center justify-start md:justify-center mb-8 z-20">
+          <span class="bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-display text-xl px-6 py-2 rounded-full shadow-lg border-2 border-white/30">
+            DAY 1 (7/12 일)
+          </span>
+        </div>
+
+        <!-- 아이템 1 -->
+        <div class="mb-8 flex justify-between items-center w-full md:flex-row-reverse right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-cyan-400 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-car-side text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">08:30</span>
+            <h3 class="font-bold text-white text-base mb-1">여름휴가 출발! 가평으로~</h3>
+            <p class="text-sm leading-snug text-white/80">차 막히기 전에 서둘러 출발합니다! 신나는 음악 장전 완료 🎵</p>
+          </div>
+        </div>
+
+        <!-- 아이템 2 -->
+        <div class="mb-8 flex justify-between items-center w-full right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-blue-500 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-water text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">10:30 - 13:30</span>
+            <h3 class="font-bold text-white text-base mb-1">가평 수상레저(빠지) 타임 🏄‍♂️💦</h3>
+            <p class="text-sm leading-snug text-white/80 mb-3">바나나보트, 워터파크 무제한 즐기기! 더위를 확 날려버립니다.</p>
+            <div class="flex gap-2 flex-wrap">
+              <button onclick="openMenuModal('packing')" class="glass-btn text-blue-900 text-xs font-bold py-2 px-3 rounded-lg shadow-sm">
+                <i class="fa-solid fa-suitcase mr-1"></i> 준비물 체크
+              </button>
+              <button onclick="openNav('가평 수상레저', 127.4645, 37.7188)" class="glass-btn text-blue-900 text-xs font-bold py-2 px-3 rounded-lg shadow-sm">
+                <i class="fa-solid fa-location-dot mr-1"></i> 네비 켜기
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 아이템 3 -->
+        <div class="mb-8 flex justify-between items-center w-full md:flex-row-reverse right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-orange-400 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-utensils text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">14:00 - 15:00</span>
+            <h3 class="font-bold text-white text-base mb-1">점심 식사 - 춘천 닭갈비 🥘</h3>
+            <p class="text-sm leading-snug text-white/80 mb-3">물놀이 후 꿀맛! 철판 닭갈비와 시원한 막국수를 흡입합니다.</p>
+            <button onclick="openNav('춘천 명동 닭갈비 골목', 127.7285, 37.8800)" class="glass-btn text-blue-900 text-xs font-bold py-2 px-3 rounded-lg shadow-sm">
+              <i class="fa-solid fa-location-dot mr-1"></i> 네비 켜기
+            </button>
+          </div>
+        </div>
+
+        <!-- 아이템 4 -->
+        <div class="mb-8 flex justify-between items-center w-full right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-green-400 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-cart-shopping text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">15:30 - 16:30</span>
+            <h3 class="font-bold text-white text-base mb-1">이마트 춘천점 장보기 🛒</h3>
+            <p class="text-sm leading-snug text-white/80 mb-3">저녁 바베큐 고기, 주류, 과자 등을 푸짐하게 구매합니다.</p>
+            <button onclick="openNav('이마트 춘천점', 127.7215, 37.8385)" class="glass-btn text-blue-900 text-xs font-bold py-2 px-3 rounded-lg shadow-sm">
+              <i class="fa-solid fa-location-dot mr-1"></i> 네비 켜기
+            </button>
+          </div>
+        </div>
+
+        <!-- 아이템 5 -->
+        <div class="mb-8 flex justify-between items-center w-full md:flex-row-reverse right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-purple-500 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-house-chimney text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">17:00</span>
+            <h3 class="font-bold text-white text-base mb-1">풀하우스 이팝 풀빌라 입실! 🏡</h3>
+            <p class="text-xs text-white/60 mb-2 font-mono">강원 춘천시 동내면 거두길 127-3</p>
+            <p class="text-sm leading-snug text-white/80 mb-3">물놀이 후, 예약해둔 프라이빗 풀빌라 체크인! 짐을 풀고 에어컨 바람 아래서 뽀송하게 휴식을 취합니다.</p>
+            <button onclick="openNav('풀하우스 이팝 풀빌라', 127.755, 37.854)" class="glass-btn text-blue-900 text-xs font-bold py-2 px-3 rounded-lg shadow-sm">
+              <i class="fa-solid fa-location-dot mr-1"></i> 숙소 네비 켜기
+            </button>
+          </div>
+        </div>
+
+        <!-- 아이템 6 -->
+        <div class="mb-8 flex justify-between items-center w-full right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-red-500 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-fire-burner text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">18:30 ~ </span>
+            <h3 class="font-bold text-white text-base mb-1">광란의 바베큐 파티 & 음주가무 🍻</h3>
+            <p class="text-sm leading-snug text-white/80">펜션 여행의 꽃! 삼겹살과 소시지를 굽고, 시원한 맥주 한 잔으로 피로를 풉니다.</p>
+          </div>
+        </div>
+
+        <!-- DAY 2 배지 -->
+        <div class="relative flex items-center justify-start md:justify-center mb-8 mt-12 z-20">
+          <span class="bg-gradient-to-r from-teal-400 to-emerald-500 text-white font-display text-xl px-6 py-2 rounded-full shadow-lg border-2 border-white/30">
+            DAY 2 (7/13 월)
+          </span>
+        </div>
+
+        <!-- 아이템 7 -->
+        <div class="mb-8 flex justify-between items-center w-full md:flex-row-reverse right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-yellow-400 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-sun text-xs animate-spin" style="animation-duration: 6s;"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">09:30</span>
+            <h3 class="font-bold text-white text-base mb-1">기상 및 아침 식사 ☀️</h3>
+            <p class="text-sm leading-snug text-white/80">어제 남은 재료를 팍팍 넣은 K-펜션 국룰 '모닝 해장라면'으로 속을 달래줍니다.</p>
+          </div>
+        </div>
+
+        <!-- 아이템 8 -->
+        <div class="mb-8 flex justify-between items-center w-full right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-indigo-400 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-door-open text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">10:30 - 11:00</span>
+            <h3 class="font-bold text-white text-base mb-1">퇴실 준비 및 체크아웃 🧳</h3>
+            <p class="text-sm leading-snug text-white/80">분리수거와 뒷정리를 깔끔하게 마치고 11시에 맞춰 펜션을 나섭니다.</p>
+          </div>
+        </div>
+
+        <!-- 아이템 9 -->
+        <div class="mb-8 flex justify-between items-center w-full md:flex-row-reverse right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-pink-400 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-mug-hot text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">11:30 - 13:30</span>
+            <h3 class="font-bold text-white text-base mb-1">소양강뷰 카페 투어 ☕</h3>
+            <p class="text-sm leading-snug text-white/80 mb-3">감자밭 카페나 어스17에 들러 예쁜 사진 100장 찍기!</p>
+            <button onclick="openNav('카페 감자밭', 127.7946, 37.9171)" class="glass-btn text-blue-900 text-xs font-bold py-2 px-3 rounded-lg shadow-sm">
+              <i class="fa-solid fa-location-dot mr-1"></i> 카페 네비 켜기
+            </button>
+          </div>
+        </div>
+
+        <!-- 아이템 10 -->
+        <div class="mb-2 flex justify-between items-center w-full right-timeline">
+          <div class="order-1 hidden md:block md:w-5/12"></div>
+          <div class="z-20 flex items-center order-1 bg-gray-600 shadow-xl w-8 h-8 rounded-full timeline-dot text-white justify-center absolute left-2 md:left-1/2 md:-translate-x-1/2">
+            <i class="fa-solid fa-route text-xs"></i>
+          </div>
+          <div class="order-1 glass-card rounded-2xl w-full pl-12 pr-4 py-4 md:w-5/12 md:pl-4">
+            <span class="text-xs font-bold text-cyan-200 bg-black/20 px-2 py-1 rounded-md mb-2 inline-block">14:00</span>
+            <h3 class="font-bold text-white text-base mb-1">컴백홈! 일상으로 복귀 🛣️</h3>
+            <p class="text-sm leading-snug text-white/80">월요일 차 막히기 전에 서둘러 출발! 즐거운 여행 끝!</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 실시간 방명록 섹션 -->
+    <section class="px-6 py-4 z-10 w-full max-w-lg mx-auto mb-6">
+      <div class="glass-card rounded-3xl p-5 border border-white/40 shadow-[0_8px_32px_rgba(0,180,255,0.2)] relative overflow-hidden">
+        <!-- 배경 장식 -->
+        <i class="fa-regular fa-comments absolute -right-4 -bottom-4 text-[100px] text-white/10 z-0"></i>
+        
+        <div class="relative z-10">
+          <h4 class="font-display text-lg text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-yellow-300"></i> 기대평 한마디!
+          </h4>
+          
+          <div class="flex flex-col gap-2 mb-4">
+            <input type="text" id="guestbook-name" placeholder="이름 (선택)" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white placeholder-white/60 text-sm focus:outline-none focus:bg-white/20 focus:border-cyan-300 transition-all">
+            <div class="flex gap-2">
+              <input type="text" id="guestbook-input" placeholder="이번 휴가 기대되나요? (방명록 남기기)" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white placeholder-white/60 text-sm focus:outline-none focus:bg-white/20 focus:border-cyan-300 transition-all" onkeypress="if(event.key === 'Enter') window.submitGuestbook()">
+              <button onclick="window.submitGuestbook()" class="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-white font-bold px-4 py-2 rounded-xl transition-all shadow-lg whitespace-nowrap text-sm transform hover:-translate-y-0.5 border border-white/20">등록</button>
+            </div>
+          </div>
+
+          <!-- 방명록 리스트 -->
+          <div id="guestbook-list" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+            <div class="text-center text-white/60 text-sm py-6 flex flex-col items-center justify-center">
+              <i class="fa-solid fa-circle-notch fa-spin text-2xl text-cyan-300 mb-3"></i>
+              방명록을 불러오는 중...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-8 py-8 px-6 text-center text-white/80 text-xs border-t border-white/20 z-10">
+      <p class="font-display text-lg mb-2 text-white">더위 탈출! 신나는 여름 휴가를 기대합니다 💙</p>
+      <p>버튼을 누르시면 모바일 T-Map 경로 안내로 즉시 연동됩니다.</p>
+      <p class="mt-4 opacity-50">&copy; 2026 Summer Vacation.</p>
+    </footer>
+
+  </div>
+
+  <!-- 빠지 준비물 모달 (글래스모피즘 스타일 적용) -->
+  <div id="menu-modal" class="fixed inset-0 bg-black/40 z-[9999] flex items-center justify-center p-4 hidden backdrop-blur-sm transition-opacity">
+    <div class="glass-card rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl border border-white/50">
+      <div class="bg-white/20 px-5 py-4 flex justify-between items-center border-b border-white/20">
+        <h3 id="modal-title" class="font-display text-xl text-white">빠지 필수 준비물</h3>
+        <button onclick="closeMenuModal()" class="text-white hover:text-cyan-200 text-2xl focus:outline-none">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-6 text-sm text-white/90 space-y-4" id="modal-body-content">
+        <!-- Injected via JS -->
+      </div>
+      <div class="bg-black/10 px-5 py-4 text-center border-t border-white/20">
+        <button onclick="closeMenuModal()" class="w-full bg-white text-blue-600 px-4 py-3 rounded-xl font-bold shadow-lg hover:bg-cyan-50 focus:outline-none transition-all">
+          확인 완료!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. D-Day 카운트다운 함수
+    function updateDday() {
+      const travelDate = new Date("2026-07-12T09:00:00+09:00");
+      const today = new Date();
+      const diffTime = travelDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      const dDayDisplay = document.getElementById("d-day-display");
+      if (diffDays > 0) {
+        dDayDisplay.innerText = `D-${diffDays}`;
+      } else if (diffDays === 0) {
+        dDayDisplay.innerText = `D-Day (오늘 출발!)`;
+      } else {
+        dDayDisplay.innerText = `여행 완료`;
+      }
+    }
+    updateDday();
+
+    // 2. 티맵(TMap) 호출 스키마 연동
+    function openNav(name, lng, lat) {
+      const encodedName = encodeURIComponent(name);
+      const tmapUrl = `tmap://route?rGoName=${encodedName}&rGoX=${lng}&rGoY=${lat}`;
+      
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isAndroid = /Android/.test(navigator.userAgent);
+      
+      if (isIOS) {
+        const fallbackTimer = setTimeout(() => {
+          window.location.href = 'https://apps.apple.com/kr/app/id431589174';
+        }, 1500);
+        window.location.href = tmapUrl;
+        window.addEventListener('blur', () => clearTimeout(fallbackTimer), { once: true });
+      } else if (isAndroid) {
+        window.location.href = tmapUrl;
+        setTimeout(() => {
+          window.location.href = 'market://details?id=com.skt.tmap';
+        }, 1500);
+      } else {
+        window.open(`https://map.naver.com/v5/?c=${lng},${lat},15,0,0,0,dh`, '_blank');
+      }
+    }
+
+    // 3. 메인 이미지 로드 실패 시 아이콘 대체
+    function handleImageError() {
+      document.getElementById('profile-img').style.display = 'none';
+      document.getElementById('fallback-icon').classList.remove('hidden');
+    }
+
+    // 4. 모달 데이터 매핑
+    const menuData = {
+      packing: {
+        title: "🧳 빠지 200% 즐기기 준비물!",
+        content: `
+          <div class="space-y-4">
+            <div class="border-l-4 border-cyan-300 pl-3 space-y-3">
+              <div>
+                <p class="font-bold text-white text-base"><i class="fa-solid fa-shirt text-cyan-300 w-5"></i> 의류/신발</p>
+                <p class="text-white/80 mt-1">래쉬가드(수영복), 아쿠아슈즈(필수), 갈아입을 여벌 옷, 속옷</p>
+              </div>
+              <div>
+                <p class="font-bold text-white text-base"><i class="fa-solid fa-bath text-cyan-300 w-5"></i> 세면/수건</p>
+                <p class="text-white/80 mt-1">개인 수건 1~2장, 샴푸/바디워시 샘플, 스킨로션</p>
+              </div>
+              <div>
+                <p class="font-bold text-white text-base"><i class="fa-solid fa-mobile-screen-button text-cyan-300 w-5"></i> 필수 잡화</p>
+                <p class="text-white/80 mt-1">스마트폰 방수팩, 캡모자, 워터프루프 썬크림, 비닐봉투</p>
+              </div>
+            </div>
+            <p class="text-xs text-blue-900 bg-white/70 p-3 rounded-xl shadow-inner font-medium">
+              💡 귀중품은 최소한으로! 구명조끼 보증금용 현금 약간 챙기면 편해요.
+            </p>
+          </div>
+        `
+      }
+    };
+
+    function openMenuModal(type) {
+      const data = menuData[type];
+      if (data) {
+        document.getElementById("modal-title").innerText = data.title;
+        document.getElementById("modal-body-content").innerHTML = data.content;
+        document.getElementById("menu-modal").classList.remove("hidden");
+        // 약간의 애니메이션 트릭
+        document.getElementById("menu-modal").style.opacity = 0;
+        setTimeout(() => document.getElementById("menu-modal").style.opacity = 1, 50);
+      }
+    }
+
+    function closeMenuModal() {
+      document.getElementById("menu-modal").style.opacity = 0;
+      setTimeout(() => document.getElementById("menu-modal").classList.add("hidden"), 300);
+    }
+
+    // 5. 실시간 춘천 기상 정보 호출 (Open-Meteo API)
+    async function fetchWeather() {
+      const lat = 37.8813; // 춘천
+      const lon = 127.7298;
+      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul`;
+      
+      const fallbackData = {
+        day1: { text: "햇빛 쨍쨍 ☀️", icon: "fa-solid fa-sun text-yellow-300 animate-pulse", temp: "24° / 33°" },
+        day2: { text: "맑고 구름 ⛅", icon: "fa-solid fa-cloud-sun text-yellow-200", temp: "23° / 31°" }
+      };
+
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Weather API Error");
+        const data = await response.json();
+        
+        const dates = data.daily.time;
+        const targetDay1 = "2026-07-12";
+        const targetDay2 = "2026-07-13";
+        
+        const idx1 = dates.indexOf(targetDay1);
+        const idx2 = dates.indexOf(targetDay2);
+        
+        if (idx1 !== -1 && idx2 !== -1) {
+          const code1 = data.daily.weathercode[idx1];
+          const maxTemp1 = Math.round(data.daily.temperature_2m_max[idx1]);
+          const minTemp1 = Math.round(data.daily.temperature_2m_min[idx1]);
+          
+          const code2 = data.daily.weathercode[idx2];
+          const maxTemp2 = Math.round(data.daily.temperature_2m_max[idx2]);
+          const minTemp2 = Math.round(data.daily.temperature_2m_min[idx2]);
+          
+          applyWeatherData(1, code1, minTemp1, maxTemp1);
+          applyWeatherData(2, code2, minTemp2, maxTemp2);
+          document.getElementById("weather-update-time").innerText = "실시간 정보";
+        } else {
+          applyFallbackWeather(fallbackData);
+        }
+      } catch (error) {
+        applyFallbackWeather(fallbackData);
+      }
+    }
+
+    function applyFallbackWeather(data) {
+      document.getElementById("day1-weather-icon").innerHTML = `<i class="${data.day1.icon}"></i>`;
+      document.getElementById("day1-weather-text").innerText = data.day1.text;
+      document.getElementById("day1-temp").innerText = data.day1.temp;
+      
+      document.getElementById("day2-weather-icon").innerHTML = `<i class="${data.day2.icon}"></i>`;
+      document.getElementById("day2-weather-text").innerText = data.day2.text;
+      document.getElementById("day2-temp").innerText = data.day2.temp;
+      document.getElementById("weather-update-time").innerText = "평년 기준";
+    }
+
+    function applyWeatherData(dayNum, code, minTemp, maxTemp) {
+      const mapping = getWeatherMapping(code);
+      document.getElementById(`day${dayNum}-weather-icon`).innerHTML = `<i class="${mapping.icon}"></i>`;
+      document.getElementById(`day${dayNum}-weather-text`).innerText = mapping.text;
+      document.getElementById(`day${dayNum}-temp`).innerText = `${minTemp}° / ${maxTemp}°`;
+    }
+
+    function getWeatherMapping(code) {
+      if (code === 0) return { text: "맑음", icon: "fa-solid fa-sun text-yellow-300 animate-pulse" };
+      if ([1, 2, 3].includes(code)) return { text: "구름조금", icon: "fa-solid fa-cloud-sun text-yellow-200" };
+      if ([45, 48].includes(code)) return { text: "안개 흐림", icon: "fa-solid fa-smog text-gray-300" };
+      if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return { text: "비/소나기", icon: "fa-solid fa-cloud-showers-heavy text-cyan-200" };
+      if ([71, 73, 75, 77, 85, 86].includes(code)) return { text: "우박/눈", icon: "fa-regular fa-snowflake text-white" };
+      if ([95, 96, 99].includes(code)) return { text: "천둥번개", icon: "fa-solid fa-cloud-bolt text-yellow-400" };
+      return { text: "대체로 맑음", icon: "fa-solid fa-sun text-yellow-300" };
+    }
+
+    window.onload = function() {
+      fetchWeather();
+    }
+  </script>
+
+  <!-- 파이어베이스 실시간 방명록 모듈 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // 알려주신 실제 Firebase 프로젝트 설정 적용 완료!
+    const firebaseConfig = {
+      apiKey: "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo",
+      authDomain: "git-io-33713.firebaseapp.com",
+      projectId: "git-io-33713",
+      storageBucket: "git-io-33713.firebasestorage.app",
+      messagingSenderId: "488733080531",
+      appId: "1:488733080531:web:2a95f7c25856b078ce8d26",
+      measurementId: "G-58XJP9R6HB"
+    };
+
+    let app, db;
+
+    // 파이어베이스 환경 초기화 (인증 과정 생략)
+    try {
+      app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      loadMessages(); // 익명 로그인 없이 바로 메시지 로드
+    } catch (e) {
+      console.error("Firebase initialization error", e);
+      document.getElementById('guestbook-list').innerHTML = '<div class="text-center text-white/80 py-4 text-sm">시스템 오류로 방명록을 불러올 수 없습니다.<br>(Config 설정을 확인해주세요)</div>';
+    }
+
+    function loadMessages() {
+      // 내 파이어베이스의 'guestbook' 컬렉션을 사용합니다.
+      const guestbookRef = collection(db, 'guestbook');
+
+      // 실시간 데이터 리스닝
+      onSnapshot(guestbookRef, (snapshot) => {
+        const messages = [];
+        snapshot.forEach(doc => {
+          messages.push({ id: doc.id, ...doc.data() });
+        });
+
+        // 최신순 정렬
+        messages.sort((a, b) => {
+          const timeA = a.createdAt?.toMillis() || 0;
+          const timeB = b.createdAt?.toMillis() || 0;
+          return timeB - timeA;
+        });
+
+        renderMessages(messages);
+      }, (error) => {
+        console.error("Snapshot Error:", error);
+      });
+    }
+
+    function renderMessages(messages) {
+      const listContainer = document.getElementById('guestbook-list');
+      listContainer.innerHTML = '';
+
+      if (messages.length === 0) {
+        listContainer.innerHTML = '<div class="text-center text-white/60 text-sm py-8"><i class="fa-regular fa-comment-dots text-3xl mb-2 opacity-50"></i><br>아직 방명록이 없어요.<br>첫 번째 기대평을 남겨주세요!</div>';
+        return;
+      }
+
+      messages.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 transform transition hover:scale-[1.01] hover:bg-white/20';
+        
+        const timeString = msg.createdAt ? new Date(msg.createdAt.toMillis()).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '방금 전';
+        const authorName = msg.name || '익명';
+        
+        const safeText = msg.text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeName = authorName.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        div.innerHTML = `
+          <div class="flex justify-between items-end mb-1">
+            <span class="font-bold text-yellow-300 text-xs flex items-center gap-1">
+              <i class="fa-solid fa-user-astronaut text-[10px]"></i> ${safeName}
+            </span>
+            <span class="text-[10px] text-white/50">${timeString}</span>
+          </div>
+          <p class="text-white/90 text-sm font-medium leading-snug break-words">${safeText}</p>
+        `;
+        listContainer.appendChild(div);
+      });
+    }
+
+    // 메시지 전송 함수
+    window.submitGuestbook = async function() {
+      const inputEl = document.getElementById('guestbook-input');
+      const nameEl = document.getElementById('guestbook-name');
+      
+      const text = inputEl.value.trim();
+      const name = nameEl.value.trim();
+      
+      if (!text) return;
+      
+      inputEl.disabled = true; // 중복 제출 방지
+      
+      try {
+        const guestbookRef = collection(db, 'guestbook');
+        await addDoc(guestbookRef, {
+          name: name || '익명',
+          text: text,
+          createdAt: serverTimestamp()
+        });
+        
+        inputEl.value = ''; 
+      } catch (error) {
+        console.error("Add message error:", error);
+        const originalPlaceholder = inputEl.placeholder;
+        inputEl.placeholder = "오류 발생! Config 설정이나 네트워크를 확인해주세요.";
+        setTimeout(() => inputEl.placeholder = originalPlaceholder, 3000);
+      } finally {
+        inputEl.disabled = false;
+        inputEl.focus();
+      }
+    }
+  </script>
+</body>
+</html>
