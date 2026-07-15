@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>초코땡 Calendar</title>
   
+  <meta property="og:title" content="초코땡">
+  <meta property="og:description" content="우리 부부만의 공유 달력">
+  <meta property="og:type" content="website">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -48,7 +52,7 @@
 
     <section class="bg-white border-t border-slate-100 h-64 flex flex-col">
       <div class="px-5 py-3 border-b border-slate-50">
-        <h3 id="list-title" class="text-sm font-bold text-slate-800">이번 달 일정</h3>
+        <h3 id="list-title" class="text-sm font-bold text-slate-800">일정 목록</h3>
       </div>
       <div class="px-5 py-3 overflow-y-auto no-scrollbar flex-grow" id="schedule-list"></div>
     </section>
@@ -86,52 +90,17 @@
     </div>
   </div>
 
-  <div id="confirm-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm"></div>
-    <div class="bg-white rounded-2xl w-full max-w-xs p-5 relative z-10 modal-enter shadow-2xl">
-      <p id="confirm-message" class="text-sm font-medium text-slate-700 mb-6 text-center"></p>
-      <div class="flex gap-2">
-        <button id="btn-confirm-cancel" class="flex-1 py-2 rounded-lg bg-slate-100 text-slate-600 text-sm font-bold">취소</button>
-        <button id="btn-confirm-ok" class="flex-1 py-2 rounded-lg bg-indigo-600 text-white text-sm font-bold">확인</button>
-      </div>
-    </div>
-  </div>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const appId = 'choco-calendar';
-    const firebaseConfig = {"apiKey": "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo", "authDomain": "git-io-33713.firebaseapp.com", "projectId": "git-io-33713", "storageBucket": "git-io-33713.firebasestorage.app", "messagingSenderId": "488733080531", "appId": "1:488733080531:web:2a95f7c25856b078ce8d26"};
-    const app = initializeApp(firebaseConfig);
+    const app = initializeApp(JSON.parse('{"apiKey": "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo", "authDomain": "git-io-33713.firebaseapp.com", "projectId": "git-io-33713", "storageBucket": "git-io-33713.firebasestorage.app", "messagingSenderId": "488733080531", "appId": "1:488733080531:web:2a95f7c25856b078ce8d26"}'));
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     let allSchedules = [], currentDate = new Date();
-    
-    // Custom UI helpers
-    window.showToast = (msg) => { alert(msg); }; // Keeping simple alert or replace with toast later
-    window.showConfirm = (msg, onConfirm) => {
-      const modal = document.getElementById('confirm-modal');
-      document.getElementById('confirm-message').innerText = msg;
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      
-      const okBtn = document.getElementById('btn-confirm-ok');
-      const cancelBtn = document.getElementById('btn-confirm-cancel');
-      
-      const cleanup = () => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        okBtn.onclick = null;
-        cancelBtn.onclick = null;
-      };
-      
-      okBtn.onclick = () => { onConfirm(); cleanup(); };
-      cancelBtn.onclick = cleanup;
-    };
-
     signInAnonymously(auth);
     onAuthStateChanged(auth, (user) => { if(user) setupListener(); });
 
@@ -145,108 +114,101 @@
     function render() {
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth();
+      const todayStr = new Date().toISOString().split('T')[0];
       const monthStr = `${year}-${(month + 1).toString().padStart(2, '0')}`;
       
       document.getElementById('current-month-display').innerText = `${year}.${(month + 1).toString().padStart(2, '0')}`;
-      document.getElementById('list-title').innerText = `${month+1}월 일정`;
       
       const grid = document.getElementById('calendar-grid'); 
       grid.innerHTML = '';
       const first = new Date(year, month, 1).getDay();
       const last = new Date(year, month + 1, 0).getDate();
-      
       for(let i=0; i<first; i++) grid.appendChild(document.createElement('div'));
       
       for(let d=1; d<=last; d++) {
         const dateStr = `${year}-${(month+1).toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
         const cell = document.createElement('div');
-        cell.className = "h-[85px] p-1 bg-white hover:bg-slate-50 cursor-pointer border-b border-r border-slate-100 text-[10px] overflow-hidden flex flex-col gap-0.5";
+        cell.className = `h-[85px] p-1 bg-white hover:bg-slate-50 cursor-pointer border-b border-r border-slate-100 text-[10px] overflow-hidden flex flex-col gap-0.5 ${dateStr === todayStr ? 'ring-2 ring-inset ring-indigo-400 bg-indigo-50/20' : ''}`;
         
-        let dateHTML = `<div class="font-semibold text-slate-700 mb-1 pl-0.5">${d}</div>`;
-        
-        // 클릭 가능한 일정 배지
-        const daySchedules = allSchedules.filter(s => s.date === dateStr);
-        const badgesHTML = daySchedules.map(s => 
-          `<div onclick="event.stopPropagation(); window.editSchedule('${s.id}')" 
-                class="cursor-pointer truncate bg-indigo-50 text-indigo-700 border border-indigo-100 rounded px-1 py-0.5 hover:bg-indigo-100 transition-colors">
-                ${s.title}
-           </div>`
+        cell.innerHTML = `<div class="font-bold ${dateStr === todayStr ? 'text-indigo-600' : 'text-slate-700'} mb-1 pl-0.5">${d}</div>` + 
+          allSchedules.filter(s => s.date === dateStr).map(s => 
+          `<div onclick="event.stopPropagation(); window.editSchedule('${s.id}')" class="truncate bg-indigo-100 text-indigo-700 border border-indigo-200 rounded px-1 py-0.5">${s.title}</div>`
         ).join('');
-        
-        cell.innerHTML = dateHTML + badgesHTML;
         cell.onclick = () => window.openAddModal(dateStr);
         grid.appendChild(cell);
       }
       
-      // 하단 목록 업데이트
       const list = document.getElementById('schedule-list'); 
       list.innerHTML = '';
       const filtered = allSchedules.filter(s => s.date && s.date.startsWith(monthStr))
         .sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
 
       if(filtered.length === 0) {
-        list.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-slate-400 mt-4"><i class="fa-regular fa-calendar-xmark text-3xl mb-2 text-slate-300"></i><p class="text-sm">등록된 일정이 없습니다.</p></div>`;
+        list.innerHTML = `<div class="text-center text-slate-400 mt-10 text-sm">등록된 일정이 없습니다.</div>`;
       } else {
-        filtered.forEach(s => {
+        let hasScrolled = false;
+        filtered.forEach((s) => {
           const div = document.createElement('div');
+          // 오늘 혹은 미래 일정
+          if (!hasScrolled && s.date >= todayStr) {
+            div.id = 'target-upcoming';
+            hasScrolled = true;
+          }
           div.className = "flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors p-3 mb-2 rounded-xl border border-slate-100 group";
-          const day = s.date.split('-')[2];
           div.innerHTML = `
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm">
-                ${parseInt(day)}일
-              </div>
-              <div>
-                <p class="font-bold text-sm text-slate-800">${s.title}</p>
-                <p class="text-xs text-slate-500 font-medium">${s.time || '시간 미지정'}</p>
-              </div>
+              <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm">${parseInt(s.date.split('-')[2])}</div>
+              <div><p class="font-bold text-sm text-slate-800">${s.title}</p><p class="text-xs text-slate-500 font-medium">${s.time || '시간 미지정'}</p></div>
             </div>
-            <div class="flex gap-2">
-              <button onclick="window.editSchedule('${s.id}')" class="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-200 flex items-center justify-center transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
-              <button onclick="window.deleteSchedule('${s.id}')" class="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-rose-500 hover:border-rose-200 flex items-center justify-center transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+            <div class="flex gap-1">
+              <button onclick="window.editSchedule('${s.id}')" class="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-200 flex items-center justify-center transition-all"><i class="fa-solid fa-pen text-[10px]"></i></button>
+              <button onclick="window.deleteSchedule('${s.id}')" class="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-rose-500 hover:border-rose-200 flex items-center justify-center transition-all"><i class="fa-solid fa-trash text-[10px]"></i></button>
             </div>
           `;
           list.appendChild(div);
         });
+
+        // 스크롤 이동
+        setTimeout(() => {
+          const target = document.getElementById('target-upcoming');
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
       }
     }
 
     window.changeMonth = (o) => { currentDate.setMonth(currentDate.getMonth() + o); render(); };
-    window.openAddModal = (defaultDate = '') => {
+    window.openAddModal = (d = '') => {
       document.getElementById('modal-title').innerText = "일정 추가";
       document.getElementById('edit-id').value = "";
       document.getElementById('input-title').value = "";
-      if (defaultDate) { document.getElementById('input-date').value = defaultDate; }
-      else { document.getElementById('input-date').value = new Date().toISOString().split('T')[0]; }
-      document.getElementById('input-time').value = "";
+      document.getElementById('input-date').value = d || new Date().toISOString().split('T')[0];
       document.getElementById('schedule-modal').classList.remove('hidden');
     };
-
     window.editSchedule = (id) => {
       const s = allSchedules.find(x => x.id === id);
       if (!s) return;
       document.getElementById('modal-title').innerText = "일정 수정";
       document.getElementById('edit-id').value = id;
-      document.getElementById('input-title').value = s.title || '';
-      document.getElementById('input-date').value = s.date || '';
-      document.getElementById('input-time').value = s.time || '';
+      document.getElementById('input-title').value = s.title;
+      document.getElementById('input-date').value = s.date;
+      document.getElementById('input-time').value = s.time;
       document.getElementById('schedule-modal').classList.remove('hidden');
     };
-
+    window.deleteSchedule = async (id) => {
+      if (confirm("정말 이 일정을 삭제하시겠습니까?")) {
+        try {
+          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id));
+        } catch (e) { alert("삭제 실패"); }
+      }
+    };
     window.closeAddModal = () => document.getElementById('schedule-modal').classList.add('hidden');
-
+    
     window.saveSchedule = async () => {
       const title = document.getElementById('input-title').value.trim();
       const date = document.getElementById('input-date').value;
       const time = document.getElementById('input-time').value;
-
-      if (!title || !date) { alert("내용과 날짜를 입력해주세요."); return; }
-
-      const saveBtn = document.getElementById('btn-save');
-      const originalText = saveBtn.innerText;
-      saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
-      saveBtn.disabled = true;
-
+      if (!title || !date) return alert("내용과 날짜를 입력해주세요.");
+      
       try {
         const id = document.getElementById('edit-id').value;
         if(id) await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id), { title, date, time });
@@ -254,16 +216,10 @@
         
         try {
           await emailjs.send("service_btklitm", "template_v6pyyrf", { to_email: "a611103@naver.com", schedule_date: date, schedule_time: time, schedule_title: title });
-        } catch(e) { console.error("EmailJS failed", e); }
+        } catch(e) { console.error("Email error:", e); }
         
         window.closeAddModal();
-      } catch (e) { alert("저장 실패"); } finally { saveBtn.innerText = originalText; saveBtn.disabled = false; }
-    };
-
-    window.deleteSchedule = async (id) => { 
-      window.showConfirm("이 일정을 삭제하시겠습니까?", async () => {
-        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id));
-      });
+      } catch (e) { alert("저장 실패"); }
     };
   </script>
 </body>
