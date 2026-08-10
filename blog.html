@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 블로그 포스팅 자동 생성기</title>
+    <title>초코땡!!!</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
@@ -348,7 +348,7 @@ ${styleRefInput.value || "기본 스타일: 친근하고 밝은 톤, 이모지(�
                 const imageParts = await Promise.all(allFiles.map(fileToGenerativePart));
                 parts.push(...imageParts);
 
-                // API URL (Using 1.5 Flash for multimodal capabilities)
+                // API URL (안정적인 공식 모델 gemini-1.5-flash 적용)
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(apiUrl, {
@@ -361,8 +361,15 @@ ${styleRefInput.value || "기본 스타일: 친근하고 밝은 톤, 이모지(�
                 });
 
                 if (!response.ok) {
-                    const errText = await response.text();
-                    throw new Error(`API 요청 실패 (${response.status}): 유효하지 않은 키이거나 할당량을 초과했습니다.`);
+                    let errorMessage = '알 수 없는 오류가 발생했습니다.';
+                    try {
+                        const errData = await response.json();
+                        // 구글 서버가 보내는 진짜 에러 메시지를 추출
+                        errorMessage = errData.error?.message || response.statusText;
+                    } catch(e) {
+                        errorMessage = await response.text();
+                    }
+                    throw new Error(`API 실패 (${response.status}): ${errorMessage}`);
                 }
 
                 const data = await response.json();
