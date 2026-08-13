@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>우리부부 부동산 비교 플랫폼</title>
+  
+  <meta property="og:title" content="부동산 비교 플랫폼">
+  <meta property="og:description" content="우리 부부만의 공유 부동산 비교함">
+  <meta property="og:type" content="website">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; color: #0f172a; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .active-scale:active { transform: scale(0.95); }
+    .modal-enter { animation: modalFadeIn 0.2s ease-out forwards; }
+    @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  </style>
+</head>
+<body class="flex justify-center items-start min-h-screen">
+  <div class="w-full max-w-4xl bg-white min-h-screen sm:my-8 sm:rounded-[2rem] sm:shadow-2xl sm:border border-slate-200 relative flex flex-col overflow-hidden">
+    
+    <!-- Header -->
+    <header class="pt-6 pb-4 px-6 flex items-center justify-between border-b border-slate-100 bg-white sticky top-0 z-20">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-100">
+          <i class="fa-solid fa-house-chimney text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold text-slate-900">우리부부 부동산 드림홈</h1>
+          <p class="text-xs text-slate-500">함께 비교하고 기록하는 스마트 매물장</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span id="connection-status" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> 동기화 중
+        </span>
+      </div>
+    </header>
+
+    <!-- Sub-header / Filter & Search -->
+    <section class="px-6 py-4 bg-slate-50 border-b border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <div class="relative flex-grow sm:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          <input type="text" id="search-input" placeholder="지역, 아파트명, 특징 검색..." class="w-full bg-white rounded-xl pl-9 pr-4 py-2.5 border border-slate-200 text-xs outline-none focus:border-indigo-500 transition-colors">
+        </div>
+        <select id="filter-status" class="bg-white rounded-xl px-3 py-2.5 border border-slate-200 text-xs outline-none focus:border-indigo-500 transition-colors text-slate-700 font-medium">
+          <option value="all">전체 상태</option>
+          <option value="고민중">💭 고민중</option>
+          <option value="방문예정">📅 방문예정</option>
+          <option value="관심없음">❌ 제외</option>
+          <option value="계약기원">⭐ 1순위 후보</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+        <div class="text-xs font-semibold text-slate-500">
+          총 매물: <span id="total-count" class="text-indigo-600 font-bold">0</span>개
+        </div>
+        <button onclick="window.openAddModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-indigo-100 active-scale transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-plus"></i> 매물 추가
+        </button>
+      </div>
+    </section>
+
+    <!-- Property Cards List Area -->
+    <main class="flex-grow p-6 bg-slate-50/50 overflow-y-auto">
+      <div id="property-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Dynamic Cards Inserted Here -->
+      </div>
+      <div id="empty-state" class="hidden flex flex-col items-center justify-center py-20 text-center">
+        <div class="w-16 h-16 rounded-3xl bg-indigo-50 text-indigo-400 flex items-center justify-center text-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <h3 class="font-bold text-slate-700 text-sm mb-1">등록된 매물이 없습니다</h3>
+        <p class="text-xs text-slate-400 max-w-xs mb-4">우측 상단 '매물 추가' 버튼을 눌러 와이프와 함께 볼 부동산 링크와 특징을 기록해보세요!</p>
+        <button onclick="window.openAddModal()" class="bg-indigo-50 text-indigo-600 font-bold text-xs px-4 py-2 rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-colors">첫 매물 등록하기</button>
+      </div>
+    </main>
+
+    <!-- Footer Note -->
+    <footer class="py-3 px-6 bg-white border-t border-slate-100 text-center text-[11px] text-slate-400">
+      우리 부부의 행복한 보금자리 찾기 프로젝트 🏡
+    </footer>
+  </div>
+
+  <!-- Add/Edit Property Modal -->
+  <div id="property-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onclick="window.closeModal()"></div>
+    <div class="bg-white rounded-[2rem] w-full max-w-lg p-6 relative z-10 modal-enter border shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <h3 id="modal-title" class="text-base font-bold text-slate-900">새 매물 등록</h3>
+        <button onclick="window.closeModal()" class="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="edit-id">
+      
+      <div class="space-y-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">아파트/건물 이름 *</label>
+            <input type="text" id="input-title" placeholder="예: 힐스테이트 1단지" class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-indigo-500 focus:bg-white transition-colors text-xs">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">위치/지역</label>
+            <input type="text" id="input-location" placeholder="예: 서울시 강남구 역삼동" class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-indigo-500 focus:bg-white transition-colors text-xs">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">가격 (매매/전세/월세)</label>
+            <input type="text" id="input-price" placeholder="예: 매매 8억 5천 / 전세 5억" class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-indigo-500 focus:bg-white transition-colors text-xs">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">진행 상태</label>
+            <select id="input-status" class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-indigo-500 focus:bg-white transition-colors text-xs text-slate-700 font-medium">
+              <option value="고민중">💭 고민중</option>
+              <option value="방문예정">📅 방문예정</option>
+              <option value="관심없음">❌ 제외</option>
+              <option value="계약기원">⭐ 1순위 후보</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">부동산 링크 (네이버 부동산, 직방 등)</label>
+          <div class="flex gap-2">
+            <input type="url" id="input-link" placeholder="https://m.land.naver.com/..." class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-indigo-500 focus:bg-white transition-colors text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">특징 및 메모 (교통, 구조, 장단점 등)</label>
+          <textarea id="input-memo" rows="3" placeholder="예: 역세권 5분 거리, 남향이라 채광 좋음, 융자 조건 확인 필요 등등..." class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-indigo-500 focus:bg-white transition-colors text-xs resize-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2 border-t border-slate-100">
+        <button onclick="window.closeModal()" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition-colors">취소</button>
+        <button onclick="window.saveProperty()" id="btn-save" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl text-xs font-bold shadow-md shadow-indigo-200 transition-colors">저장하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Alert/Confirm Modal replacement -->
+  <div id="custom-modal" class="fixed inset-0 z-[120] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="window.closeCustomModal()"></div>
+    <div class="bg-white rounded-3xl w-full max-w-xs p-6 relative z-10 modal-enter border shadow-xl text-center">
+      <div id="custom-modal-icon" class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg mx-auto mb-3">
+        <i class="fa-solid fa-circle-exclamation"></i>
+      </div>
+      <h4 id="custom-modal-title" class="font-bold text-slate-900 text-sm mb-1">알림</h4>
+      <p id="custom-modal-message" class="text-xs text-slate-500 mb-5 leading-relaxed">메시지 내용</p>
+      <div id="custom-modal-buttons" class="flex gap-2">
+        <button onclick="window.closeCustomModal()" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold shadow-md shadow-indigo-100 hover:bg-indigo-700 transition-colors">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = 'choco-real-estate';
+    const app = initializeApp(JSON.parse('{"apiKey": "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo", "authDomain": "git-io-33713.firebaseapp.com", "projectId": "git-io-33713", "storageBucket": "git-io-33713.firebasestorage.app", "messagingSenderId": "488733080531", "appId": "1:488733080531:web:2a95f7c25856b078ce8d26"}'));
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let allProperties = [];
+
+    signInAnonymously(auth);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setupListener();
+      }
+    });
+
+    function setupListener() {
+      onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'properties'), (snap) => {
+        allProperties = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderProperties();
+      }, (error) => {
+        console.error("Firebase sync error:", error);
+      });
+    }
+
+    // UI Render Function
+    function renderProperties() {
+      const keyword = document.getElementById('search-input').value.toLowerCase();
+      const statusFilter = document.getElementById('filter-status').value;
+      const grid = document.getElementById('property-grid');
+      const emptyState = document.getElementById('empty-state');
+      
+      grid.innerHTML = '';
+
+      let filtered = allProperties.filter(p => {
+        const matchesKeyword = !keyword || 
+          (p.title && p.title.toLowerCase().includes(keyword)) ||
+          (p.location && p.location.toLowerCase().includes(keyword)) ||
+          (p.memo && p.memo.toLowerCase().includes(keyword)) ||
+          (p.price && p.price.toLowerCase().includes(keyword));
+        
+        const matchesStatus = statusFilter === 'all' || p.status === statusFilter;
+        return matchesKeyword && matchesStatus;
+      });
+
+      // 최신 등록순 정렬
+      filtered.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      document.getElementById('total-count').innerText = allProperties.length;
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        filtered.forEach(p => {
+          const card = document.createElement('div');
+          card.className = "bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group relative";
+          
+          let statusBadgeClass = "bg-indigo-50 text-indigo-600 border-indigo-100";
+          if (p.status === '계약기원') statusBadgeClass = "bg-amber-50 text-amber-600 border-amber-100";
+          if (p.status === '방문예정') statusBadgeClass = "bg-blue-50 text-blue-600 border-blue-100";
+          if (p.status === '관심없음') statusBadgeClass = "bg-slate-100 text-slate-500 border-slate-200";
+
+          card.innerHTML = `
+            <div>
+              <div class="flex justify-between items-start gap-2 mb-2">
+                <div>
+                  <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${statusBadgeClass} mb-1.5">${p.status || '고민중'}</span>
+                  <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">${escapeHtml(p.title || '제목 없음')}</h3>
+                </div>
+                <div class="flex items-center space-x-1 opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button onclick="window.editProperty('${p.id}')" title="수정" class="w-8 h-8 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-indigo-600 border border-slate-200 flex items-center justify-center text-xs transition-colors">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button onclick="window.deleteProperty('${p.id}')" title="삭제" class="w-8 h-8 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-rose-500 border border-slate-200 flex items-center justify-center text-xs transition-colors">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="space-y-1.5 mb-3 text-xs">
+                ${p.location ? `<div class="flex items-center text-slate-600"><i class="fa-solid fa-location-dot w-4 text-slate-400 mr-1.5"></i><span>${escapeHtml(p.location)}</span></div>` : ''}
+                ${p.price ? `<div class="flex items-center text-slate-800 font-bold"><i class="fa-solid fa-won-sign w-4 text-slate-400 mr-1.5"></i><span class="text-indigo-600">${escapeHtml(p.price)}</span></div>` : ''}
+              </div>
+
+              ${p.memo ? `<div class="bg-slate-50 rounded-xl p-3 text-xs text-slate-600 mb-3 whitespace-pre-wrap leading-relaxed border border-slate-100"><i class="fa-solid fa-quote-left text-slate-300 mr-1.5"></i>${escapeHtml(p.memo)}</div>` : ''}
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between mt-2">
+              <span class="text-[10px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${formatDate(p.createdAt)}</span>
+              ${p.link ? `<a href="${escapeHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 font-bold px-3 py-1.5 rounded-xl text-xs transition-colors flex items-center gap-1.5">매물 원본 링크 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : '<span class="text-[11px] text-slate-400">링크 없음</span>'}
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+    }
+
+    // Utility helpers
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function formatDate(ts) {
+      if (!ts) return '방금 전';
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    // Modal Controls
+    window.openAddModal = () => {
+      document.getElementById('modal-title').innerText = "새 매물 등록";
+      document.getElementById('edit-id').value = "";
+      document.getElementById('input-title').value = "";
+      document.getElementById('input-location').value = "";
+      document.getElementById('input-price').value = "";
+      document.getElementById('input-link').value = "";
+      document.getElementById('input-memo').value = "";
+      document.getElementById('input-status').value = "고민중";
+      document.getElementById('property-modal').classList.remove('hidden');
+      document.getElementById('property-modal').classList.add('flex');
+    };
+
+    window.closeModal = () => {
+      document.getElementById('property-modal').classList.remove('flex');
+      document.getElementById('property-modal').classList.add('hidden');
+    };
+
+    window.editProperty = (id) => {
+      const p = allProperties.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('modal-title').innerText = "매물 정보 수정";
+      document.getElementById('edit-id').value = id;
+      document.getElementById('input-title').value = p.title || '';
+      document.getElementById('input-location').value = p.location || '';
+      document.getElementById('input-price').value = p.price || '';
+      document.getElementById('input-link').value = p.link || '';
+      document.getElementById('input-memo').value = p.memo || '';
+      document.getElementById('input-status').value = p.status || '고민중';
+      document.getElementById('property-modal').classList.remove('hidden');
+      document.getElementById('property-modal').classList.add('flex');
+    };
+
+    window.saveProperty = async () => {
+      const title = document.getElementById('input-title').value.trim();
+      const location = document.getElementById('input-location').value.trim();
+      const price = document.getElementById('input-price').value.trim();
+      const link = document.getElementById('input-link').value.trim();
+      const memo = document.getElementById('input-memo').value.trim();
+      const status = document.getElementById('input-status').value;
+
+      if (!title) {
+        showCustomAlert("알림", "아파트/건물 이름을 입력해주세요.");
+        return;
+      }
+
+      try {
+        const id = document.getElementById('edit-id').value;
+        if (id) {
+          await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'properties', id), {
+            title, location, price, link, memo, status, updatedAt: Date.now()
+          });
+        } else {
+          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'properties'), {
+            title, location, price, link, memo, status, createdAt: Date.now()
+          });
+        }
+        window.closeModal();
+      } catch (e) {
+        console.error("Save error:", e);
+        showCustomAlert("오류", "저장에 실패했습니다. 다시 시도해주세요.");
+      }
+    };
+
+    window.deleteProperty = (id) => {
+      showCustomConfirm("매물 삭제", "정말 이 매물 정보를 삭제하시겠습니까?", async () => {
+        try {
+          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'properties', id));
+        } catch (e) {
+          console.error("Delete error:", e);
+          showCustomAlert("오류", "삭제에 실패했습니다.");
+        }
+      });
+    };
+
+    // Custom Alert/Confirm helpers
+    function showCustomAlert(title, message) {
+      document.getElementById('custom-modal-title').innerText = title;
+      document.getElementById('custom-modal-message').innerText = message;
+      document.getElementById('custom-modal-buttons').innerHTML = `
+        <button onclick="window.closeCustomModal()" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold shadow-md shadow-indigo-100 hover:bg-indigo-700 transition-colors">확인</button>
+      `;
+      document.getElementById('custom-modal').classList.remove('hidden');
+      document.getElementById('custom-modal').classList.add('flex');
+    }
+
+    function showCustomConfirm(title, message, onYes) {
+      document.getElementById('custom-modal-title').innerText = title;
+      document.getElementById('custom-modal-message').innerText = message;
+      document.getElementById('custom-modal').classList.remove('hidden');
+      document.getElementById('custom-modal').classList.add('flex');
+      
+      window.tempConfirmAction = async () => {
+        window.closeCustomModal();
+        if (onYes) await onYes();
+      };
+
+      document.getElementById('custom-modal-buttons').innerHTML = `
+        <button onclick="window.closeCustomModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition-colors">취소</button>
+        <button onclick="window.tempConfirmAction()" class="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold shadow-md shadow-rose-100 transition-colors">삭제</button>
+      `;
+    }
+
+    window.closeCustomModal = () => {
+      document.getElementById('custom-modal').classList.remove('flex');
+      document.getElementById('custom-modal').classList.add('hidden');
+    };
+
+    // Search and Filter Listeners
+    document.getElementById('search-input').addEventListener('input', renderProperties);
+    document.getElementById('filter-status').addEventListener('change', renderProperties);
+
+  </script>
+</body>
+</html>
