@@ -208,8 +208,23 @@
         return statusFilter === 'all' || p.status === statusFilter;
       });
 
-      // 최신 등록순 정렬
-      filtered.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      // 정렬 규칙 정의 (관심없음은 맨 아래로, 나머지는 최신 등록순)
+      const statusRank = {
+        '계약기원': 1,
+        '방문예정': 2,
+        '고민중': 3,
+        '관심없음': 4
+      };
+
+      filtered.sort((a, b) => {
+        const rankA = statusRank[a.status] || 3;
+        const rankB = statusRank[b.status] || 3;
+        
+        if (rankA !== rankB) {
+          return rankA - rankB; // 상태 우선순위 정렬
+        }
+        return (b.createdAt || 0) - (a.createdAt || 0); // 같은 상태면 최신순 정렬
+      });
 
       document.getElementById('total-count').innerText = allProperties.length;
 
