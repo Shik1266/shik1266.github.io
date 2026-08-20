@@ -52,16 +52,16 @@
 
     <!-- Main Content Area -->
     <main class="max-w-4xl mx-auto w-full p-4 sm:p-8 flex-1">
-        <div class="flex justify-between items-end mb-10">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
                 <div class="flex items-center gap-3">
                     <h2 class="serif text-3xl font-semibold text-[#2C302B]"><span id="current-day-title">행복한 이탈리아 1일차</span></h2>
-                    <button onclick="window.openEditDayTitleModal()" class="w-8 h-8 rounded-full bg-white border border-[#E8EAE3] text-[#737C6A] hover:text-[#5C6B46] hover:border-[#5C6B46] flex items-center justify-center text-xs shadow-sm transition-all cursor-pointer" title="날짜 제목 수정">
+                    <button onclick="window.openEditDayTitleModal()" class="w-8 h-8 rounded-full bg-white border border-[#E8EAE3] text-[#737C6A] hover:text-[#5C6B46] hover:border-[#5C6B46] flex items-center justify-center text-xs shadow-sm transition-all cursor-pointer shrink-0" title="날짜 제목 수정">
                         <i class="fa-solid fa-pen"></i>
                     </button>
                 </div>
             </div>
-            <button onclick="window.openAddModal()" class="bg-[#5C6B46] hover:bg-[#48543C] text-white px-5 py-2.5 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-1.5 cursor-pointer shrink-0 active-scale">
+            <button onclick="window.openAddModal()" class="bg-[#5C6B46] hover:bg-[#48543C] text-white px-5 py-2.5 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shrink-0 active-scale w-full sm:w-auto">
                 <i class="fa-solid fa-plus text-xs"></i>
                 일정 추가
             </button>
