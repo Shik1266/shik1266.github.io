@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호진 & 남희의 이탈리아 신혼여행 일정표</title>
+    
+    <!-- Open Graph (OG) Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="호진 & 남희의 이탈리아 신혼여행 ✈️">
+    <meta property="og:description" content="14일간의 로맨틱한 이탈리아 여정! 우리의 여정을 확인해보세요.">
+    <meta property="og:image" content="https://github.com/user-attachments/assets/04f2e4ea-1941-41b7-a2b2-fefbd4f0510c">
+    <meta property="og:url" content="https://your-wedding-url.com">
+    <meta property="og:site_name" content="Honeymoon in Italy">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #F7F8F6; color: #2C302B; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .active-scale:active { transform: scale(0.95); }
+        .modal-enter { animation: modalFadeIn 0.2s ease-out forwards; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    </style>
+</head>
+<body class="selection:bg-[#5C6B46] selection:text-white flex flex-col min-h-screen">
+
+    <!-- Header (모던 올리브 배너) -->
+    <header class="text-[#F4F5F0] pb-10 px-6 sm:px-10 rounded-b-[2.5rem] shadow-sm relative overflow-hidden h-[50vh] min-h-[450px] sm:min-h-[550px] flex items-end">
+        <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('https://github.com/user-attachments/assets/04f2e4ea-1941-41b7-a2b2-fefbd4f0510c');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#1F241A]/90 via-[#1F241A]/10 to-transparent z-0"></div>
+
+        <div class="max-w-4xl mx-auto w-full relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+            <div>
+                <span class="text-xs uppercase tracking-[0.2em] text-[#D3D8C9] font-medium block mb-3 drop-shadow-md">Honeymoon in Italy</span>
+                <h1 class="serif text-4xl sm:text-5xl font-semibold tracking-tight leading-tight drop-shadow-lg">호진 & 남희</h1>
+                <p class="text-[#E8EAE3] text-sm mt-3 font-light tracking-wide drop-shadow-md">14일간의 로맨틱한 이탈리아 여정</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Day Selector Tabs (Modern Pill shape) -->
+    <nav class="sticky top-0 z-20 glass border-b border-[#E8EAE3] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]">
+        <div class="max-w-4xl mx-auto px-4 overflow-x-auto flex gap-3 py-4 no-scrollbar" id="day-tabs">
+            <!-- 동적 생성되는 Day 버튼들 -->
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-4xl mx-auto w-full p-4 sm:p-8 flex-1">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <div class="flex items-center gap-3">
+                    <h2 class="serif text-3xl font-semibold text-[#2C302B]"><span id="current-day-title">행복한 이탈리아 1일차</span></h2>
+                    <button onclick="window.openEditDayTitleModal()" class="w-8 h-8 rounded-full bg-white border border-[#E8EAE3] text-[#737C6A] hover:text-[#5C6B46] hover:border-[#5C6B46] flex items-center justify-center text-xs shadow-sm transition-all cursor-pointer" title="날짜 제목 수정">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                </div>
+            </div>
+            <button onclick="window.openAddModal()" class="bg-[#5C6B46] hover:bg-[#48543C] text-white px-5 py-2.5 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-1.5 cursor-pointer shrink-0 active-scale">
+                <i class="fa-solid fa-plus text-xs"></i>
+                일정 추가
+            </button>
+        </div>
+
+        <!-- Itinerary List (Timeline Style) -->
+        <div id="itinerary-list" class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#DCE0D5] before:to-transparent">
+            <!-- 동적 생성되는 일정 카드들 -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 text-center text-xs text-[#8A9382] font-light">
+        <p class="serif italic text-lg mb-2 text-[#5C6B46]">Buon Viaggio</p>
+        <p>호진 & 남희의 아름다운 이탈리아 여행</p>
+    </footer>
+
+    <!-- Add/Edit Modal (Modern Minimalist) -->
+    <div id="schedule-modal" class="fixed inset-0 bg-[#2C302B]/40 backdrop-blur-md hidden items-center justify-center p-4 z-50 transition-opacity">
+        <div class="bg-white w-full max-w-md rounded-[2rem] p-7 sm:p-8 shadow-2xl relative border border-[#E8EAE3] modal-enter max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modal-title" class="serif text-2xl font-semibold text-[#2C302B]">새 일정 추가</h3>
+                <button type="button" onclick="window.closeModal()" class="text-[#A1A89A] hover:text-[#2C302B] transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="schedule-form" onsubmit="window.saveSchedule(event)" class="space-y-5">
+                <input type="hidden" id="edit-id">
+                
+                <!-- 시간 선택 (시 / 분) -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#737C6A] uppercase tracking-wider mb-2">Time (시 / 분)</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <select id="sched-hour" required class="w-full px-4 py-3 bg-[#F7F8F6] border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6B46]/50 transition-all cursor-pointer">
+                            <option value="" disabled selected>시 선택</option>
+                        </select>
+                        <select id="sched-minute" required class="w-full px-4 py-3 bg-[#F7F8F6] border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6B46]/50 transition-all cursor-pointer">
+                            <option value="" disabled selected>분 선택</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#737C6A] uppercase tracking-wider mb-2">Title (일정 이름)</label>
+                    <input type="text" id="sched-title" placeholder="콜로세움" required class="w-full px-4 py-3 bg-[#F7F8F6] border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6B46]/50 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#737C6A] uppercase tracking-wider mb-2">Location Map URL (구글 맵 링크 URL)</label>
+                    <input type="url" id="sched-map" placeholder="https://maps.app.goo.gl/..." class="w-full px-4 py-3 bg-[#F7F8F6] border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6B46]/50 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#737C6A] uppercase tracking-wider mb-2">Web Link (관련 링크 URL)</label>
+                    <input type="url" id="sched-link" placeholder="https://example.com" class="w-full px-4 py-3 bg-[#F7F8F6] border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6B46]/50 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#737C6A] uppercase tracking-wider mb-2">Details (상세 내용)</label>
+                    <textarea id="sched-desc" rows="3" placeholder="예약 바우처 확인, 미팅 장소 체크..." class="w-full px-4 py-3 bg-[#F7F8F6] border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6B46]/50 transition-all resize-none"></textarea>
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-3.5 bg-[#48543C] hover:bg-[#3A4330] text-white text-sm font-medium rounded-2xl shadow-lg hover:shadow-xl shadow-[#48543C]/20 transition-all duration-300 cursor-pointer active-scale">
+                        저장하기
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Day Title Modal -->
+    <div id="day-title-modal" class="fixed inset-0 bg-[#2C302B]/40 backdrop-blur-md hidden items-center justify-center p-4 z-50 transition-opacity">
+        <div class="bg-white w-full max-w-sm rounded-[2rem] p-7 shadow-2xl relative border border-[#E8EAE3] modal-enter">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="serif text-xl font-semibold text-[#2C302B]">날짜 제목 수정</h3>
+                <button type="button" onclick="window.closeEditDayTitleModal()" class="text-[#A1A89A] hover:text-[#2C302B] transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form onsubmit="window.saveDayTitle(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#737C6A] uppercase tracking-wider mb-2">Title</label>
+                    <input type="text" id="day-title-input" required class="w-full px-4 py-3 bg-[#F7F8F6] border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6B46]/50 transition-all">
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-3 bg-[#48543C] hover:bg-[#3A4330] text-white text-sm font-medium rounded-2xl shadow-md transition-all cursor-pointer">
+                        수정 완료
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Alert/Confirm Modal -->
+    <div id="custom-modal" class="fixed inset-0 z-[120] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="window.closeCustomModal()"></div>
+        <div class="bg-white rounded-3xl w-full max-w-xs p-6 relative z-10 modal-enter border shadow-xl text-center">
+            <div id="custom-modal-icon" class="w-12 h-12 rounded-full bg-[#5C6B46]/10 text-[#5C6B46] flex items-center justify-center text-lg mx-auto mb-3">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <h4 id="custom-modal-title" class="font-bold text-slate-900 text-sm mb-1">알림</h4>
+            <p id="custom-modal-message" class="text-xs text-slate-500 mb-5 leading-relaxed">메시지 내용</p>
+            <div id="custom-modal-buttons" class="flex gap-2">
+                <button onclick="window.closeCustomModal()" class="w-full py-2.5 rounded-xl bg-[#5C6B46] text-white text-xs font-bold shadow-md hover:bg-[#48543C] transition-colors">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK 및 연동 스크립트 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'hojin-namhee-italy-honeymoon-v7';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{"apiKey": "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo", "authDomain": "git-io-33713.firebaseapp.com", "projectId": "git-io-33713", "storageBucket": "git-io-33713.firebasestorage.app", "messagingSenderId": "488733080531", "appId": "1:488733080531:web:2a95f7c25856b078ce8d26"}');
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let allSchedules = [];
+        let dayTitlesData = {};
+        let currentDay = 1;
+
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (e) {
+                console.error("Auth error:", e);
+                await signInAnonymously(auth);
+            }
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setupListeners();
+            }
+        });
+
+        initAuth();
+
+        function setupListeners() {
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), (snap) => {
+                allSchedules = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderSchedules();
+            }, (error) => {
+                console.error("Firebase sync error:", error);
+            });
+
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'dayTitles'), (snap) => {
+                dayTitlesData = {};
+                snap.docs.forEach(d => {
+                    dayTitlesData[d.id] = d.data().title;
+                });
+                renderTabs();
+                renderSchedules();
+            }, (error) => {
+                console.error("Firebase title sync error:", error);
+            });
+        }
+
+        function populateTimeSelects() {
+            const hourSelect = document.getElementById('sched-hour');
+            const minuteSelect = document.getElementById('sched-minute');
+
+            if (hourSelect.children.length <= 1) {
+                for (let h = 0; h < 24; h++) {
+                    const hourStr = String(h).padStart(2, '0');
+                    const opt = document.createElement('option');
+                    opt.value = hourStr;
+                    opt.innerText = `${hourStr}시`;
+                    hourSelect.appendChild(opt);
+                }
+            }
+
+            if (minuteSelect.children.length <= 1) {
+                for (let m = 0; m < 60; m += 5) {
+                    const minStr = String(m).padStart(2, '0');
+                    const opt = document.createElement('option');
+                    opt.value = minStr;
+                    opt.innerText = `${minStr}분`;
+                    minuteSelect.appendChild(opt);
+                }
+            }
+        }
+
+        function renderTabs() {
+            const tabsContainer = document.getElementById('day-tabs');
+            tabsContainer.innerHTML = '';
+            for (let i = 1; i <= 14; i++) {
+                const btn = document.createElement('button');
+                btn.className = `px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 shrink-0 cursor-pointer ${
+                    currentDay === i 
+                    ? 'bg-[#5C6B46] text-white shadow-md shadow-[#5C6B46]/20 scale-105' 
+                    : 'bg-white text-[#737C6A] border border-[#E8EAE3] hover:bg-[#F7F8F6] hover:text-[#48543C]'
+                }`;
+                btn.innerText = `Day ${i}`;
+                btn.onclick = () => {
+                    currentDay = i;
+                    renderTabs();
+                    renderSchedules();
+                };
+                tabsContainer.appendChild(btn);
+            }
+        }
+
+        function renderSchedules() {
+            const daySchedules = allSchedules.filter(item => Number(item.day) === currentDay);
+            daySchedules.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+
+            const defaultTitle = `행복한 이탈리아 ${currentDay}일차`;
+            const currentTitle = dayTitlesData[`day_${currentDay}`] || defaultTitle;
+
+            document.getElementById('current-day-title').innerText = currentTitle;
+
+            const listContainer = document.getElementById('itinerary-list');
+            listContainer.innerHTML = '';
+
+            if (daySchedules.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-20 bg-white/50 rounded-[2rem] border border-dashed border-[#DCE0D5] mt-4">
+                        <div class="w-12 h-12 rounded-full bg-[#F7F8F6] flex items-center justify-center mx-auto mb-4">
+                            <i class="fa-solid fa-plus text-[#A1A89A]"></i>
+                        </div>
+                        <p class="text-[#737C6A] text-sm mb-1 font-medium">아직 일정이 없습니다</p>
+                        <p class="text-[#A1A89A] text-xs mb-4">새로운 일정을 추가해 두분이서 함께 계획해 보세요.</p>
+                        <button onclick="window.openAddModal()" class="text-[#5C6B46] font-medium text-sm hover:text-[#3A4330] transition-colors cursor-pointer border-b border-[#5C6B46]/30 pb-0.5">일정 추가하기</button>
+                    </div>
+                `;
+                return;
+            }
+
+            daySchedules.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'relative flex items-start group mb-8 md:mb-12';
+                
+                let mapHtml = '';
+                if (item.mapUrl) {
+                    mapHtml = `
+                        <a href="${escapeHtml(item.mapUrl)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-medium text-[#5C6B46] bg-[#5C6B46]/10 hover:bg-[#5C6B46]/20 px-3 py-1.5 rounded-xl transition-colors">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>구글 맵 보기</span>
+                        </a>
+                    `;
+                }
+
+                let linkHtml = '';
+                if (item.link) {
+                    linkHtml = `
+                        <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-medium text-[#5C6B46] bg-[#5C6B46]/10 hover:bg-[#5C6B46]/20 px-3 py-1.5 rounded-xl transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>웹 링크 열기</span>
+                        </a>
+                    `;
+                }
+
+                let actionLinksHtml = '';
+                if (mapHtml || linkHtml) {
+                    actionLinksHtml = `<div class="flex flex-wrap gap-2 mt-3">${mapHtml}${linkHtml}</div>`;
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#F7F8F6] bg-[#5C6B46] shadow-sm absolute left-0 md:left-1/2 -translate-x-px md:-translate-x-1/2 z-10 mt-2 md:mt-0">
+                        <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
+                    </div>
+                    
+                    <div class="w-[calc(100%-3.5rem)] ml-auto md:ml-0 md:w-[calc(50%-3rem)] md:odd:ml-auto md:even:mr-auto bg-white p-6 sm:p-7 rounded-[2rem] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.06)] border border-[#F2F4EF] hover:shadow-[0_8px_30px_-10px_rgba(0,0,0,0.1)] transition-all duration-300">
+                        <div class="flex items-start justify-between mb-3 gap-4">
+                            <div>
+                                <span class="serif text-2xl font-bold text-[#5C6B46] block mb-1 tracking-tight">${escapeHtml(item.time || '')}</span>
+                                <h3 class="font-semibold text-[#2C302B] text-lg tracking-tight">${escapeHtml(item.title || '')}</h3>
+                            </div>
+                            <div class="flex gap-2 bg-[#F7F8F6] p-1.5 rounded-full shrink-0">
+                                <button onclick="window.editSchedule('${item.id}')" class="w-8 h-8 flex items-center justify-center rounded-full text-[#737C6A] hover:bg-white hover:text-[#2C302B] hover:shadow-sm transition-all cursor-pointer" title="수정">
+                                    <i class="fa-solid fa-pen text-xs"></i>
+                                </button>
+                                <button onclick="window.deleteSchedule('${item.id}')" class="w-8 h-8 flex items-center justify-center rounded-full text-[#737C6A] hover:bg-white hover:text-red-500 hover:shadow-sm transition-all cursor-pointer" title="삭제">
+                                    <i class="fa-solid fa-trash text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-[#737C6A] text-sm whitespace-pre-line leading-relaxed font-light">${escapeHtml(item.desc || '')}</p>
+                        ${actionLinksHtml}
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        window.openAddModal = (editId = null) => {
+            populateTimeSelects();
+            document.getElementById('schedule-modal').classList.remove('hidden');
+            document.getElementById('schedule-modal').classList.add('flex');
+            
+            if (!editId) {
+                document.getElementById('modal-title').innerText = `Day ${currentDay} 새 일정 추가`;
+                document.getElementById('edit-id').value = '';
+                document.getElementById('sched-hour').value = '';
+                document.getElementById('sched-minute').value = '';
+                document.getElementById('sched-title').value = '';
+                document.getElementById('sched-map').value = '';
+                document.getElementById('sched-link').value = '';
+                document.getElementById('sched-desc').value = '';
+            }
+        };
+
+        window.closeModal = () => {
+            document.getElementById('schedule-modal').classList.remove('flex');
+            document.getElementById('schedule-modal').classList.add('hidden');
+        };
+
+        window.openEditDayTitleModal = () => {
+            const defaultTitle = `행복한 이탈리아 ${currentDay}일차`;
+            const currentTitle = dayTitlesData[`day_${currentDay}`] || defaultTitle;
+            document.getElementById('day-title-input').value = currentTitle;
+            document.getElementById('day-title-modal').classList.remove('hidden');
+            document.getElementById('day-title-modal').classList.add('flex');
+        };
+
+        window.closeEditDayTitleModal = () => {
+            document.getElementById('day-title-modal').classList.remove('flex');
+            document.getElementById('day-title-modal').classList.add('hidden');
+        };
+
+        window.saveDayTitle = async (e) => {
+            e.preventDefault();
+            const newTitle = document.getElementById('day-title-input').value.trim();
+            if (!newTitle) return;
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'dayTitles', `day_${currentDay}`), {
+                    title: newTitle,
+                    updatedAt: Date.now()
+                });
+                window.closeEditDayTitleModal();
+            } catch (e) {
+                console.error("Save day title error:", e);
+                showCustomAlert("오류", "제목 저장에 실패했습니다.");
+            }
+        };
+
+        window.saveSchedule = async (e) => {
+            e.preventDefault();
+            const editId = document.getElementById('edit-id').value;
+            const hour = document.getElementById('sched-hour').value;
+            const minute = document.getElementById('sched-minute').value;
+            const time = `${hour}:${minute}`;
+
+            const title = document.getElementById('sched-title').value.trim();
+            const mapUrl = document.getElementById('sched-map').value.trim();
+            const link = document.getElementById('sched-link').value.trim();
+            const desc = document.getElementById('sched-desc').value.trim();
+
+            if (!title) {
+                showCustomAlert("알림", "일정 이름을 입력해주세요.");
+                return;
+            }
+
+            try {
+                const scheduleData = {
+                    day: currentDay,
+                    time,
+                    title,
+                    mapUrl,
+                    link,
+                    desc,
+                    updatedAt: Date.now()
+                };
+
+                if (editId) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', editId), scheduleData);
+                } else {
+                    scheduleData.createdAt = Date.now();
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), scheduleData);
+                }
+                window.closeModal();
+            } catch (e) {
+                console.error("Save error:", e);
+                showCustomAlert("오류", "저장에 실패했습니다. 다시 시도해주세요.");
+            }
+        };
+
+        window.editSchedule = (id) => {
+            const item = allSchedules.find(i => i.id === id);
+            if (item) {
+                window.openAddModal(id);
+                document.getElementById('modal-title').innerText = '일정 수정하기';
+                document.getElementById('edit-id').value = item.id;
+                
+                if (item.time && item.time.includes(':')) {
+                    const [h, m] = item.time.split(':');
+                    document.getElementById('sched-hour').value = h;
+                    document.getElementById('sched-minute').value = m;
+                }
+
+                document.getElementById('sched-title').value = item.title || '';
+                document.getElementById('sched-map').value = item.mapUrl || '';
+                document.getElementById('sched-link').value = item.link || '';
+                document.getElementById('sched-desc').value = item.desc || '';
+            }
+        };
+
+        window.deleteSchedule = (id) => {
+            showCustomConfirm("일정 삭제", "이 일정을 삭제하시겠습니까?", async () => {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'schedules', id));
+                } catch (e) {
+                    console.error("Delete error:", e);
+                    showCustomAlert("오류", "삭제에 실패했습니다.");
+                }
+            });
+        };
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        function showCustomAlert(title, message) {
+            document.getElementById('custom-modal-title').innerText = title;
+            document.getElementById('custom-modal-message').innerText = message;
+            document.getElementById('custom-modal-buttons').innerHTML = `
+                <button onclick="window.closeCustomModal()" class="w-full py-2.5 rounded-xl bg-[#5C6B46] text-white text-xs font-bold shadow-md hover:bg-[#48543C] transition-colors">확인</button>
+            `;
+            document.getElementById('custom-modal').classList.remove('hidden');
+            document.getElementById('custom-modal').classList.add('flex');
+        }
+
+        function showCustomConfirm(title, message, onYes) {
+            document.getElementById('custom-modal-title').innerText = title;
+            document.getElementById('custom-modal-message').innerText = message;
+            document.getElementById('custom-modal').classList.remove('hidden');
+            document.getElementById('custom-modal').classList.add('flex');
+            
+            window.tempConfirmAction = async () => {
+                window.closeCustomModal();
+                if (onYes) await onYes();
+            };
+
+            document.getElementById('custom-modal-buttons').innerHTML = `
+                <button onclick="window.closeCustomModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition-colors">취소</button>
+                <button onclick="window.tempConfirmAction()" class="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold shadow-md hover:bg-rose-600 transition-colors">삭제</button>
+            `;
+        }
+
+        window.closeCustomModal = () => {
+            document.getElementById('custom-modal').classList.remove('flex');
+            document.getElementById('custom-modal').classList.add('hidden');
+        };
+
+        window.onload = function() {
+            renderTabs();
+            renderSchedules();
+        };
+    </script>
+</body>
+</html>
