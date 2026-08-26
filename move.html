@@ -3,164 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>초코땡 이사 준비</title>
+  <title>초록이네 이사 준비</title>
   
-  <meta property="og:title" content="초코땡 이사 준비">
-  <meta property="og:description" content="우리 부부만의 스마트 이사 체크리스트">
+  <meta property="og:title" content="초록이네 이사 준비">
+  <meta property="og:description" content="식초 부부만의 스마트한 이사 체크리스트">
   <meta property="og:type" content="website">
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Pretendard Font -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; color: #0f172a; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .active-scale:active { transform: scale(0.95); }
     .modal-enter { animation: modalFadeIn 0.2s ease-out forwards; }
     @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   </style>
 </head>
-<body class="flex justify-center items-start min-h-screen">
-  
-  <!-- 커스텀 모달 (브라우저 alert 대체) -->
-  <div id="custom-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="window.closeCustomModal()"></div>
-    <div class="bg-white rounded-3xl w-full max-w-xs p-6 relative z-10 modal-enter border shadow-2xl text-center">
-      <div id="modal-icon" class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3 text-xl">
-        <i class="fa-solid fa-circle-exclamation"></i>
-      </div>
-      <h3 id="modal-msg-title" class="text-base font-bold text-slate-800 mb-1">알림</h3>
-      <p id="modal-msg-body" class="text-xs text-slate-500 mb-5 leading-relaxed"></p>
-      <div id="modal-buttons" class="flex gap-2">
-        <button onclick="window.closeCustomModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-xs font-bold transition-colors">확인</button>
-      </div>
-    </div>
-  </div>
+<body class="flex justify-center items-start min-h-screen p-0 sm:p-6">
 
-  <!-- 앱 전체 래퍼 (모바일 퍼스트 세로형) -->
-  <div class="w-full max-w-md bg-white min-h-screen sm:my-8 sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200 relative flex flex-col overflow-hidden">
+  <!-- 메인 모바일 콘테이너 (아이폰 비율 및 모바일 최적화) -->
+  <div class="w-full max-w-md bg-white min-h-screen sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200/80 relative flex flex-col overflow-hidden">
     
-    <!-- 상단 헤더 & 이사 D-Day 카운터 -->
-    <header class="pt-6 pb-4 px-5 border-b border-slate-100 bg-white/90 backdrop-blur-md sticky top-0 z-30">
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-100">
-            <i class="fa-solid fa-truck-moving text-sm"></i>
-          </div>
-          <div>
-            <h1 class="text-base font-extrabold text-slate-900 tracking-tight">초코땡 이사 준비</h1>
-            <p class="text-[10px] font-medium text-slate-400">현식 ❤️ 초록 부부 통합 체크리스트</p>
-          </div>
+    <!-- 상단 헤더 -->
+    <header class="pt-6 pb-4 px-5 flex items-center justify-between border-b border-slate-100 flex-shrink-0 bg-white z-10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-400 flex items-center justify-center text-white shadow-md shadow-rose-200">
+          <i class="fa-solid fa-house-chimney text-sm"></i>
         </div>
-        <div class="flex items-center gap-1.5">
-          <span id="sync-status" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" title="실시간 동기화 중"></span>
+        <div>
+          <h1 class="text-base font-extrabold text-slate-900 leading-tight">연두네 이사 준비</h1>
+          <p id="dday-display" class="text-[11px] font-bold text-rose-500 mt-0.5">이사 D-DAY 계산 중...</p>
         </div>
       </div>
-
-      <!-- 이사 D-Day 배너 (10월 7일 고정) -->
-      <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-3 text-white flex items-center justify-between shadow-md shadow-emerald-100">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-xs">
-            <i class="fa-solid fa-house-chimney"></i>
-          </div>
-          <div>
-            <p class="text-[10px] font-medium text-emerald-100">설레는 이사일</p>
-            <p class="text-xs font-bold">10월 7일 (수)</p>
-          </div>
-        </div>
-        <div id="dday-badge" class="px-3 py-1 rounded-xl bg-white text-emerald-700 text-xs font-black shadow-sm">
-          D-00
+      <div class="flex items-center gap-2">
+        <!-- 사용법 가이드 버튼 -->
+        <button onclick="window.openGuideModal()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs transition-colors">
+          <i class="fa-solid fa-question"></i>
+        </button>
+        <div class="w-9 h-9 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 text-sm">
+          <i class="fa-solid fa-heart"></i>
         </div>
       </div>
     </header>
 
-    <!-- 메인 컨텐츠 영역 (2행 상하 분할 구조) -->
-    <section class="flex-grow flex flex-col gap-3 p-4 bg-slate-50/60 overflow-y-auto no-scrollbar pb-24">
+    <!-- 2행 구조 (상하 반반 분할) 콘텐츠 영역 -->
+    <section class="flex-grow flex flex-col p-4 gap-4 overflow-y-auto bg-slate-50/60">
       
       <!-- 1행: 현식's 할 일 (블루 테마) -->
-      <div id="col-현식" class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex flex-col min-h-[220px]">
-        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
+      <div id="col-현식" class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex flex-col relative">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 flex-shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-blue-500 shadow-sm shadow-blue-200"></span>
             <h2 class="text-xs font-extrabold text-slate-800">현식's 할 일</h2>
           </div>
           <span id="count-현식" class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold">0개</span>
         </div>
-        <div id="list-현식" class="flex-grow space-y-2"></div>
-        <button onclick="window.openTaskModal('현식')" class="mt-3 w-full py-2.5 border border-dashed border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 text-slate-500 hover:text-blue-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1">
+        <!-- 3개 정도 높이만 보이도록 제한 및 내부 스크롤 적용 -->
+        <div id="list-현식" class="max-h-[210px] overflow-y-auto space-y-2 pr-1 custom-scrollbar"></div>
+        <div class="absolute bottom-[52px] left-4 right-4 h-6 bg-gradient-to-t from-white to-transparent pointer-events-none rounded-b-xl flex items-end justify-center pb-0.5 scroll-indicator-현식 hidden">
+          <i class="fa-solid fa-chevron-down text-[10px] text-slate-300 animate-bounce"></i>
+        </div>
+        <button onclick="window.openTaskModal('현식')" class="mt-3 w-full py-2.5 border border-dashed border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 text-slate-500 hover:text-blue-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 flex-shrink-0">
           <i class="fa-solid fa-plus text-[10px]"></i> 현식 할 일 추가
         </button>
       </div>
 
       <!-- 2행: 초록's 할 일 (올초록 테마) -->
-      <div id="col-초록" class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex flex-col min-h-[220px]">
-        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
+      <div id="col-초록" class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex flex-col relative">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 flex-shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-200"></span>
             <h2 class="text-xs font-extrabold text-slate-800">초록's 할 일</h2>
           </div>
           <span id="count-초록" class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold">0개</span>
         </div>
-        <div id="list-초록" class="flex-grow space-y-2"></div>
-        <button onclick="window.openTaskModal('초록')" class="mt-3 w-full py-2.5 border border-dashed border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50 text-slate-500 hover:text-emerald-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1">
+        <!-- 3개 정도 높이만 보이도록 제한 및 내부 스크롤 적용 -->
+        <div id="list-초록" class="max-h-[210px] overflow-y-auto space-y-2 pr-1 custom-scrollbar"></div>
+        <div class="absolute bottom-[52px] left-4 right-4 h-6 bg-gradient-to-t from-white to-transparent pointer-events-none rounded-b-xl flex items-end justify-center pb-0.5 scroll-indicator-초록 hidden">
+          <i class="fa-solid fa-chevron-down text-[10px] text-slate-300 animate-bounce"></i>
+        </div>
+        <button onclick="window.openTaskModal('초록')" class="mt-3 w-full py-2.5 border border-dashed border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50 text-slate-500 hover:text-emerald-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 flex-shrink-0">
           <i class="fa-solid fa-plus text-[10px]"></i> 초록 할 일 추가
         </button>
       </div>
 
     </section>
 
-    <!-- 우측 하단 빠른 추가 플로팅 버튼 -->
-    <button onclick="window.openTaskModal('초록')" class="absolute bottom-6 right-6 w-14 h-14 bg-emerald-600 text-white rounded-full shadow-lg shadow-emerald-200 flex items-center justify-center active-scale transition-transform text-xl z-20 hover:bg-emerald-700">
-      <i class="fa-solid fa-plus"></i>
-    </button>
   </div>
 
   <!-- 할 일 추가/수정 모달 -->
   <div id="task-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
     <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="window.closeTaskModal()"></div>
     <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative z-10 modal-enter border shadow-xl">
-      <h3 id="modal-title" class="text-base font-bold mb-4 text-slate-800">할 일 추가</h3>
+      <h3 id="modal-title" class="text-base font-extrabold mb-4 text-slate-800">할 일 추가</h3>
       <input type="hidden" id="edit-id">
-      
+      <input type="hidden" id="edit-assignee">
       <div class="space-y-4 mb-6">
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">담당자</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" onclick="window.selectAssignee('현식')" id="btn-assign-현식" class="py-2.5 rounded-xl border text-xs font-bold transition-all">현식</button>
-            <button type="button" onclick="window.selectAssignee('초록')" id="btn-assign-초록" class="py-2.5 rounded-xl border text-xs font-bold transition-all">초록</button>
-          </div>
-          <input type="hidden" id="input-assignee" value="초록">
+          <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">내용</label>
+          <input type="text" id="input-task-title" placeholder="예: 가전제품 이전 설치 예약" class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-indigo-400 focus:bg-white transition-colors text-sm text-slate-800">
         </div>
-
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">할 일 내용</label>
-          <input type="text" id="input-title" placeholder="예: 이사 업체 계약 확인" class="w-full bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 outline-none focus:border-emerald-400 focus:bg-white transition-colors text-xs text-slate-800">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">목표 날짜 (선택)</label>
-          <input type="date" id="input-date" class="w-full bg-slate-50 rounded-xl px-3 py-3 border border-slate-200 outline-none focus:border-emerald-400 focus:bg-white transition-colors text-xs text-slate-700">
+          <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">날짜 (선택)</label>
+          <input type="date" id="input-task-date" class="w-full bg-slate-50 rounded-xl px-3 py-3 border border-slate-200 outline-none focus:border-indigo-400 focus:bg-white transition-colors text-sm text-slate-700">
         </div>
       </div>
-
       <div class="flex gap-2">
         <button onclick="window.closeTaskModal()" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition-colors">취소</button>
-        <button onclick="window.saveTask()" id="btn-save" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-xs font-bold shadow-md shadow-emerald-200 transition-colors">저장하기</button>
+        <button onclick="window.saveTask()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl text-xs font-bold shadow-md transition-colors">확인</button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase 및 애플리케이션 로직 스크립트 -->
+  <!-- 사용법 가이드 모달 -->
+  <div id="guide-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="window.closeGuideModal()"></div>
+    <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative z-10 modal-enter border shadow-xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-indigo-500"></i> 사용법 가이드
+        </h3>
+        <button onclick="window.closeGuideModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs text-slate-600 leading-relaxed mb-6">
+        <div class="flex items-start gap-2.5 bg-slate-50 p-2.5 rounded-2xl">
+          <i class="fa-solid fa-calendar-days text-rose-500 mt-0.5"></i>
+          <div><strong class="text-slate-800">이사 D-Day:</strong> 상단에 10월 7일 이사일까지 남은 일수가 실시간으로 표시됩니다.</div>
+        </div>
+        <div class="flex items-start gap-2.5 bg-slate-50 p-2.5 rounded-2xl">
+          <i class="fa-solid fa-fire text-amber-500 mt-0.5"></i>
+          <div><strong class="text-slate-800">날짜 임박 강조:</strong> 이사 날짜가 오늘이거나 3일 이내로 남은 항목은 빨강/주황색 계열로 눈에 띄게 강조됩니다.</div>
+        </div>
+        <div class="flex items-start gap-2.5 bg-slate-50 p-2.5 rounded-2xl">
+          <i class="fa-solid fa-arrows-up-down text-blue-500 mt-0.5"></i>
+          <div><strong class="text-slate-800">우선순위 조정:</strong> 각 항목의 <i class="fa-solid fa-grip-vertical text-[10px]"></i> 아이콘을 드래그하여 원하는 순서로 바꿀 수 있습니다.</div>
+        </div>
+        <div class="flex items-start gap-2.5 bg-slate-50 p-2.5 rounded-2xl">
+          <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+          <div><strong class="text-slate-800">완료 처리:</strong> 체크박스를 누르면 완료되며 자동으로 목록 맨 아래로 이동합니다.</div>
+        </div>
+      </div>
+      <button onclick="window.closeGuideModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl text-xs font-bold transition-colors">확인</button>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'choco-moving-app';
     const firebaseConfig = JSON.parse('{"apiKey": "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo", "authDomain": "git-io-33713.firebaseapp.com", "projectId": "git-io-33713", "storageBucket": "git-io-33713.firebasestorage.app", "messagingSenderId": "488733080531", "appId": "1:488733080531:web:2a95f7c25856b078ce8d26"}');
     
     const app = initializeApp(firebaseConfig);
@@ -168,58 +166,72 @@
     const db = getFirestore(app);
 
     let allTasks = [];
-    let draggedId = null;
 
-    // 이사 D-Day 계산 (10월 7일)
-    function updateMoveDday() {
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      let moveDate = new Date(currentYear, 9, 7); // 9 = 10월
+    // D-Day 계산 및 상단 표시
+    function updateDday() {
+      const today = new Date();
+      // 올해 기준 10월 7일 (지났으면 내년으로 설정 가능하나 기본 고정 10월 7일)
+      const currentYear = today.getFullYear();
+      let movingDate = new Date(currentYear, 9, 7); // 월은 0부터 시작하므로 9 = 10월
       
-      // 이미 올해 10월 7일이 지났다면 내년으로 설정할 수도 있지만 기본 올해 기준
-      const diffTime = moveDate - new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      // 이미 지났다면 내년 10월 7일로 계산할 수도 있음
+      const diffTime = movingDate - new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      const badge = document.getElementById('dday-badge');
+      const ddayEl = document.getElementById('dday-display');
       if (diffDays > 0) {
-        badge.innerText = `D-${diffDays}`;
+        ddayEl.innerText = `이사 D-${diffDays} (10월 7일)`;
       } else if (diffDays === 0) {
-        badge.innerText = `오늘 이사 D-Day!`;
+        ddayEl.innerText = `드디어 오늘이 이사일입니다! 🎉`;
       } else {
-        badge.innerText = `이사 완료 (D+${Math.abs(diffDays)})`;
+        ddayEl.innerText = `이사 완료 D+${Math.abs(diffDays)}`;
       }
     }
-    updateMoveDday();
+    updateDday();
 
-    signInAnonymously(auth).catch(err => console.error("Auth error:", err));
+    signInAnonymously(auth);
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setupFirestoreListener();
+        setupListener();
       }
     });
 
-    function setupFirestoreListener() {
-      // 최상단 'move' 컬렉션 참조
-      const colRef = collection(db, 'move');
-      onSnapshot(colRef, (snapshot) => {
-        allTasks = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-        allTasks.sort((a, b) => (a.order || 0) - (b.order || 0));
-        render();
+    // 최상단 'move' 컬렉션 사용 요청 반영
+    function setupListener() {
+      onSnapshot(collection(db, 'move'), (snapshot) => {
+        allTasks = snapshot.docs.map(docSnap => ({
+          id: docSnap.id,
+          ...docSnap.data()
+        }));
+        renderAll();
       }, (error) => {
-        console.error("Firestore sync error:", error);
+        console.error("Firestore Error:", error);
       });
     }
 
-    window.selectAssignee = (name) => {
-      document.getElementById('input-assignee').value = name;
-      const isH = name === '현식';
-      const isC = name === '초록';
+    // 날짜 임박 여부 계산 (오늘 기준 3일 이내 남았거나 지난 경우)
+    function getUrgencyBadge(dateStr) {
+      if (!dateStr) return '';
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const targetDate = new Date(dateStr);
+      targetDate.setHours(0,0,0,0);
+      
+      const diffTime = targetDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      document.getElementById('btn-assign-현식').className = `py-2.5 rounded-xl border text-xs font-bold transition-all ${isH ? 'bg-blue-500 border-blue-500 text-white shadow-md shadow-blue-100' : 'border-slate-200 text-slate-600'}`;
-      document.getElementById('btn-assign-초록').className = `py-2.5 rounded-xl border text-xs font-bold transition-all ${isC ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-100' : 'border-slate-200 text-slate-600'}`;
-    };
+      if (diffDays < 0) {
+        return `<span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-slate-100 text-slate-500">기한 초과</span>`;
+      } else if (diffDays === 0) {
+        return `<span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-rose-500 text-white animate-pulse">오늘까지</span>`;
+      } else if (diffDays <= 3) {
+        return `<span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-rose-100 text-rose-600">D-${diffDays}</span>`;
+      } else {
+        return `<span class="px-1.5 py-0.5 rounded text-[9px] font-medium bg-slate-100 text-slate-500">${dateStr.replace(/^\d{4}-/, '')}</span>`;
+      }
+    }
 
-    function render() {
+    function renderAll() {
       renderColumn('현식', 'list-현식', 'count-현식');
       renderColumn('초록', 'list-초록', 'count-초록');
     }
@@ -227,7 +239,7 @@
     function renderColumn(assigneeName, containerId, countId) {
       const tasks = allTasks.filter(t => t.assignee === assigneeName);
       
-      // 완료된 항목은 하단으로, 미완료는 상단 (순서값 기준 정렬)
+      // 정렬: 완료되지 않은 항목 우선, 완료된 항목은 하단으로 + order 순서
       tasks.sort((a, b) => {
         if (a.completed !== b.completed) return a.completed ? 1 : -1;
         return (a.order || 0) - (b.order || 0);
@@ -237,6 +249,17 @@
 
       const container = document.getElementById(containerId);
       container.innerHTML = '';
+
+      // 스크롤 인디케이터 제어 (항목이 3개 이상일 때 스크롤 힌트 표시)
+      const indicatorClass = `scroll-indicator-${assigneeName}`;
+      const indicator = document.querySelector(`.${indicatorClass}`);
+      if (indicator) {
+        if (tasks.length > 3) {
+          indicator.classList.remove('hidden');
+        } else {
+          indicator.classList.add('hidden');
+        }
+      }
 
       if (tasks.length === 0) {
         container.innerHTML = `
@@ -248,103 +271,80 @@
         return;
       }
 
-      const today = new Date();
-      today.setHours(0,0,0,0);
+      tasks.forEach((task, index) => {
+        const itemEl = document.createElement('div');
+        itemEl.className = `flex items-center justify-between p-2.5 rounded-2xl border transition-all ${
+          task.completed 
+            ? 'bg-slate-50 border-slate-100 opacity-60' 
+            : 'bg-white border-slate-100 shadow-sm hover:border-slate-200'
+        }`;
+        
+        itemEl.draggable = true;
+        itemEl.dataset.id = task.id;
 
-      tasks.forEach((task) => {
-        const item = document.createElement('div');
-        item.className = `group flex items-center justify-between p-3 rounded-2xl border transition-all bg-white shadow-sm ${task.completed ? 'opacity-50 bg-slate-50 border-slate-100' : 'border-slate-200/80 hover:border-emerald-200'}`;
-        item.draggable = !task.completed;
-        item.dataset.id = task.id;
-
-        let dateBadgeHtml = '';
-        if (task.date) {
-          const taskDate = new Date(task.date);
-          taskDate.setHours(0,0,0,0);
-          const diffTime = taskDate - today;
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-          let badgeColor = 'bg-slate-100 text-slate-600 border-slate-200';
-          let badgeText = task.date;
-
-          if (diffDays < 0) {
-            badgeColor = 'bg-slate-100 text-slate-400 border-slate-200 line-through';
-            badgeText = `D+${Math.abs(diffDays)}`;
-          } else if (diffDays === 0) {
-            badgeColor = 'bg-rose-500 text-white border-rose-600 shadow-sm shadow-rose-200 animate-pulse font-bold';
-            badgeText = '오늘 D-Day!';
-          } else if (diffDays <= 3) {
-            badgeColor = 'bg-rose-50 text-rose-600 border-rose-200 font-bold';
-            badgeText = `D-${diffDays}`;
-          } else if (diffDays <= 7) {
-            badgeColor = 'bg-amber-50 text-amber-600 border-amber-200';
-            badgeText = `D-${diffDays}`;
-          } else {
-            badgeColor = 'bg-emerald-50/70 text-emerald-600 border-emerald-100';
-            badgeText = task.date;
+        // 드래그 앤 드롭 이벤트
+        itemEl.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', task.id);
+        });
+        itemEl.addEventListener('dragover', (e) => e.preventDefault());
+        itemEl.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          const draggedId = e.dataTransfer.getData('text/plain');
+          if (draggedId === task.id) return;
+          
+          const draggedTask = allTasks.find(t => t.id === draggedId);
+          if (draggedTask && draggedTask.assignee === assigneeName) {
+            draggedTask.order = index;
+            try {
+              await updateDoc(doc(db, 'move', draggedId), { order: index });
+            } catch (err) {
+              console.error("Reorder error:", err);
+            }
           }
+        });
 
-          dateBadgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] border ${badgeColor}"><i class="fa-regular fa-calendar-days text-[9px]"></i> ${badgeText}</span>`;
-        } else {
-          dateBadgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] bg-slate-50 text-slate-400 border border-slate-100">날짜 미지정</span>`;
-        }
+        const urgencyBadge = getUrgencyBadge(task.date);
 
-        item.innerHTML = `
-          <div class="flex items-center gap-2 flex-grow min-w-0">
-            <div class="cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 transition-colors" title="순서 변경">
-              <i class="fa-solid fa-grip-vertical text-[10px]"></i>
-            </div>
-            <button onclick="window.toggleComplete('${task.id}', ${!task.completed})" class="w-5 h-5 rounded-md border flex items-center justify-center transition-all flex-shrink-0 ${task.completed ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300 hover:border-emerald-400 bg-white'}">
-              ${task.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
-            </button>
-            <div class="min-w-0 flex-grow">
+        itemEl.innerHTML = `
+          <div class="flex items-center gap-2.5 overflow-hidden flex-grow">
+            <span class="cursor-grab text-slate-300 hover:text-slate-500 text-xs py-1"><i class="fa-solid fa-grip-vertical"></i></span>
+            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="window.toggleTask('${task.id}')" class="w-4 h-4 rounded text-indigo-600 focus:ring-0 cursor-pointer flex-shrink-0">
+            <div class="overflow-hidden">
               <p class="text-xs font-bold truncate ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${task.title}</p>
-              <div class="flex items-center gap-1 mt-1">
-                ${dateBadgeHtml}
+              <div class="flex items-center gap-1.5 mt-0.5">
+                ${urgencyBadge}
+                ${!task.date ? '<span class="text-[9px] text-slate-400 font-medium">날짜 미지정</span>' : ''}
               </div>
             </div>
           </div>
-          <div class="flex items-center gap-1 ml-2 flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
-            <button onclick="window.openTaskModal(null, '${task.id}')" class="w-6 h-6 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-emerald-600 hover:border-emerald-200 flex items-center justify-center transition-all"><i class="fa-solid fa-pen text-[9px]"></i></button>
-            <button onclick="window.deleteTask('${task.id}')" class="w-6 h-6 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-rose-500 hover:border-rose-200 flex items-center justify-center transition-all"><i class="fa-solid fa-trash text-[9px]"></i></button>
+          <div class="flex items-center gap-1 flex-shrink-0 ml-2">
+            <button onclick="window.editTask('${task.id}')" class="w-7 h-7 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center text-[10px] transition-colors"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="window.deleteTask('${task.id}')" class="w-7 h-7 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-400 hover:text-rose-600 flex items-center justify-center text-[10px] transition-colors"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
-
-        item.addEventListener('dragstart', (e) => {
-          draggedId = task.id;
-          item.classList.add('opacity-40');
-        });
-        item.addEventListener('dragend', (e) => {
-          draggedId = null;
-          item.classList.remove('opacity-40');
-        });
-        item.addEventListener('dragover', (e) => {
-          e.preventDefault();
-        });
-        item.addEventListener('drop', (e) => {
-          e.preventDefault();
-          if (!draggedId || draggedId === task.id) return;
-          reorderTasks(draggedId, task.id, assigneeName);
-        });
-
-        container.appendChild(item);
+        container.appendChild(itemEl);
       });
     }
 
-    window.openTaskModal = (defaultAssignee = '초록', id = null) => {
-      document.getElementById('edit-id').value = id || '';
-      if (id) {
-        const task = allTasks.find(t => t.id === id);
-        if (!task) return;
-        document.getElementById('modal-title').innerText = "할 일 수정";
-        window.selectAssignee(task.assignee || defaultAssignee);
-        document.getElementById('input-title').value = task.title || '';
-        document.getElementById('input-date').value = task.date || '';
+    // 모달 제어 함수들
+    window.openGuideModal = () => document.getElementById('guide-modal').classList.remove('hidden');
+    window.closeGuideModal = () => document.getElementById('guide-modal').classList.add('hidden');
+
+    window.openTaskModal = (assignee, taskId = '') => {
+      document.getElementById('edit-assignee').value = assignee;
+      document.getElementById('edit-id').value = taskId;
+      
+      if (taskId) {
+        document.getElementById('modal-title').innerText = `${assignee} 할 일 수정`;
+        const task = allTasks.find(t => t.id === taskId);
+        if (task) {
+          document.getElementById('input-task-title').value = task.title;
+          document.getElementById('input-task-date').value = task.date || '';
+        }
       } else {
-        document.getElementById('modal-title').innerText = "할 일 추가";
-        window.selectAssignee(defaultAssignee);
-        document.getElementById('input-title').value = '';
-        document.getElementById('input-date').value = '';
+        document.getElementById('modal-title').innerText = `${assignee} 할 일 추가`;
+        document.getElementById('input-task-title').value = '';
+        document.getElementById('input-task-date').value = '';
       }
       document.getElementById('task-modal').classList.remove('hidden');
     };
@@ -353,47 +353,54 @@
       document.getElementById('task-modal').classList.add('hidden');
     };
 
+    window.editTask = (id) => {
+      const task = allTasks.find(t => t.id === id);
+      if (task) {
+        window.openTaskModal(task.assignee, id);
+      }
+    };
+
+    // 저장 버튼 클릭 시 팝업 즉시 닫히도록 개선
     window.saveTask = async () => {
       const id = document.getElementById('edit-id').value;
-      const assignee = document.getElementById('input-assignee').value;
-      const title = document.getElementById('input-title').value.trim();
-      const date = document.getElementById('input-date').value;
+      const assignee = document.getElementById('edit-assignee').value;
+      const title = document.getElementById('input-task-title').value.trim();
+      const date = document.getElementById('input-task-date').value;
 
       if (!title) {
-        showCustomModal("입력 오류", "할 일 내용을 입력해주세요.");
-        return;
+        return; // 빈 내용 방지
       }
 
+      // 모달 즉시 닫기
+      window.closeTaskModal();
+
       try {
-        const colRef = collection(db, 'move');
         if (id) {
-          await updateDoc(doc(db, 'move', id), {
-            assignee, title, date
-          });
+          await updateDoc(doc(db, 'move', id), { title, date });
         } else {
           const assigneeTasks = allTasks.filter(t => t.assignee === assignee);
-          const maxOrder = assigneeTasks.length > 0 ? Math.max(...assigneeTasks.map(t => t.order || 0)) : 0;
-          await addDoc(colRef, {
+          const newOrder = assigneeTasks.length;
+          await addDoc(collection(db, 'move'), {
             assignee,
             title,
             date,
             completed: false,
-            order: maxOrder + 1,
-            createdAt: Date.now()
+            order: newOrder
           });
         }
-        window.closeTaskModal();
       } catch (e) {
         console.error("Save error:", e);
-        showCustomModal("저장 실패", "데이터 저장 중 오류가 발생했습니다.");
       }
     };
 
-    window.toggleComplete = async (id, status) => {
+    window.toggleTask = async (id) => {
+      const task = allTasks.find(t => t.id === id);
+      if (!task) return;
+      const newCompleted = !task.completed;
+      task.completed = newCompleted;
+      renderAll(); // 즉시 UI 반영
       try {
-        await updateDoc(doc(db, 'move', id), {
-          completed: status
-        });
+        await updateDoc(doc(db, 'move', id), { completed: newCompleted });
       } catch (e) {
         console.error("Toggle error:", e);
       }
@@ -405,39 +412,6 @@
       } catch (e) {
         console.error("Delete error:", e);
       }
-    };
-
-    async function reorderTasks(fromId, toId, assigneeName) {
-      const assigneeTasks = allTasks.filter(t => t.assignee === assigneeName);
-      const fromIdx = assigneeTasks.findIndex(t => t.id === fromId);
-      const toIdx = assigneeTasks.findIndex(t => t.id === toId);
-      if (fromIdx < 0 || toIdx < 0) return;
-
-      const [moved] = assigneeTasks.splice(fromIdx, 1);
-      assigneeTasks.splice(toIdx, 0, moved);
-
-      try {
-        for (let i = 0; i < assigneeTasks.length; i++) {
-          const t = assigneeTasks[i];
-          if (t.order !== i) {
-            await updateDoc(doc(db, 'move', t.id), {
-              order: i
-            });
-          }
-        }
-      } catch (e) {
-        console.error("Reorder error:", e);
-      }
-    }
-
-    function showCustomModal(title, body) {
-      document.getElementById('modal-msg-title').innerText = title;
-      document.getElementById('modal-msg-body').innerText = body;
-      document.getElementById('custom-modal').classList.remove('hidden');
-    }
-
-    window.closeCustomModal = () => {
-      document.getElementById('custom-modal').classList.add('hidden');
     };
   </script>
 </body>
