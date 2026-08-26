@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>초록이네 이사 준비</title>
+  <title>초코땡 이사 준비</title>
   
-  <meta property="og:title" content="초록이네 이사 준비">
-  <meta property="og:description" content="식초 부부만의 스마트한 이사 체크리스트">
+  <meta property="og:title" content="초코땡 이사 준비">
+  <meta property="og:description" content="우리 부부만의 스마트한 이사 체크리스트">
   <meta property="og:type" content="website">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -21,11 +21,25 @@
     .active-scale:active { transform: scale(0.95); }
     .modal-enter { animation: modalFadeIn 0.2s ease-out forwards; }
     @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes pulseText { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
+    .loading-text-anim { animation: pulseText 1s infinite ease-in-out; }
   </style>
 </head>
 <body class="flex justify-center items-start min-h-screen p-0 sm:p-6">
 
-  <!-- 메인 모바일 콘테이너 (아이폰 비율 및 모바일 최적화) -->
+  <div id="loading-screen" class="fixed inset-0 z-[200] bg-white flex flex-col items-center justify-center transition-opacity duration-300">
+    <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-rose-500 to-pink-400 flex items-center justify-center text-white shadow-xl shadow-rose-200 mb-6 animate-bounce">
+      <i class="fa-solid fa-house-chimney text-2xl"></i>
+    </div>
+    <h2 class="text-lg font-extrabold text-slate-800 mb-2">초코땡 이사 준비 로딩중</h2>
+    <div id="loading-word" class="text-rose-500 font-bold text-sm loading-text-anim mb-6">초록</div>
+    
+    <!-- 프로그레스바 -->
+    <div class="w-48 h-2 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+      <div id="loading-bar" class="h-full bg-gradient-to-r from-rose-500 to-pink-500 w-0 transition-all duration-300 rounded-full"></div>
+    </div>
+  </div>
+
   <div class="w-full max-w-md bg-white min-h-screen sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200/80 relative flex flex-col overflow-hidden">
     
     <!-- 상단 헤더 -->
@@ -35,7 +49,7 @@
           <i class="fa-solid fa-house-chimney text-sm"></i>
         </div>
         <div>
-          <h1 class="text-base font-extrabold text-slate-900 leading-tight">연두네 이사 준비</h1>
+          <h1 class="text-base font-extrabold text-slate-900 leading-tight">초코땡 이사 준비</h1>
           <p id="dday-display" class="text-[11px] font-bold text-rose-500 mt-0.5">이사 D-DAY 계산 중...</p>
         </div>
       </div>
@@ -158,6 +172,40 @@
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+    // 로딩 프로그레스바 및 "초록"/"연두" 텍스트 토글 애니메이션 구현
+    let loadingProgress = 0;
+    const words = ["초록", "연두"];
+    let wordIdx = 0;
+    const loadingWordEl = document.getElementById('loading-word');
+    const loadingBarEl = document.getElementById('loading-bar');
+    const loadingScreenEl = document.getElementById('loading-screen');
+
+    const wordInterval = setInterval(() => {
+      wordIdx = (wordIdx + 1) % words.length;
+      if (loadingWordEl) loadingWordEl.innerText = words[wordIdx];
+    }, 400);
+
+    const progressInterval = setInterval(() => {
+      loadingProgress += Math.floor(Math.random() * 25) + 15;
+      if (loadingProgress >= 100) {
+        loadingProgress = 100;
+        clearInterval(progressInterval);
+      }
+      if (loadingBarEl) loadingBarEl.style.width = `${loadingProgress}%`;
+    }, 150);
+
+    function hideLoadingScreen() {
+      clearInterval(wordInterval);
+      clearInterval(progressInterval);
+      if (loadingBarEl) loadingBarEl.style.width = `100%`;
+      setTimeout(() => {
+        if (loadingScreenEl) {
+          loadingScreenEl.style.opacity = '0';
+          setTimeout(() => loadingScreenEl.remove(), 300);
+        }
+      }, 300);
+    }
+
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'choco-moving-app';
     const firebaseConfig = JSON.parse('{"apiKey": "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo", "authDomain": "git-io-33713.firebaseapp.com", "projectId": "git-io-33713", "storageBucket": "git-io-33713.firebasestorage.app", "messagingSenderId": "488733080531", "appId": "1:488733080531:web:2a95f7c25856b078ce8d26"}');
     
@@ -166,25 +214,26 @@
     const db = getFirestore(app);
 
     let allTasks = [];
+    let isInitialLoaded = false;
 
     // D-Day 계산 및 상단 표시
     function updateDday() {
       const today = new Date();
-      // 올해 기준 10월 7일 (지났으면 내년으로 설정 가능하나 기본 고정 10월 7일)
       const currentYear = today.getFullYear();
       let movingDate = new Date(currentYear, 9, 7); // 월은 0부터 시작하므로 9 = 10월
       
-      // 이미 지났다면 내년 10월 7일로 계산할 수도 있음
       const diffTime = movingDate - new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
       const ddayEl = document.getElementById('dday-display');
-      if (diffDays > 0) {
-        ddayEl.innerText = `이사 D-${diffDays} (10월 7일)`;
-      } else if (diffDays === 0) {
-        ddayEl.innerText = `드디어 오늘이 이사일입니다! 🎉`;
-      } else {
-        ddayEl.innerText = `이사 완료 D+${Math.abs(diffDays)}`;
+      if (ddayEl) {
+        if (diffDays > 0) {
+          ddayEl.innerText = `이사 D-${diffDays} (10월 7일)`;
+        } else if (diffDays === 0) {
+          ddayEl.innerText = `드디어 오늘이 이사일입니다! 🎉`;
+        } else {
+          ddayEl.innerText = `이사 완료 D+${Math.abs(diffDays)}`;
+        }
       }
     }
     updateDday();
@@ -196,7 +245,7 @@
       }
     });
 
-    // 최상단 'move' 컬렉션 사용 요청 반영
+    // 최상단 'move' 컬렉션 연동
     function setupListener() {
       onSnapshot(collection(db, 'move'), (snapshot) => {
         allTasks = snapshot.docs.map(docSnap => ({
@@ -204,12 +253,21 @@
           ...docSnap.data()
         }));
         renderAll();
+        
+        if (!isInitialLoaded) {
+          isInitialLoaded = true;
+          hideLoadingScreen();
+        }
       }, (error) => {
         console.error("Firestore Error:", error);
+        if (!isInitialLoaded) {
+          isInitialLoaded = true;
+          hideLoadingScreen();
+        }
       });
     }
 
-    // 날짜 임박 여부 계산 (오늘 기준 3일 이내 남았거나 지난 경우)
+    // 날짜 임박 여부 계산
     function getUrgencyBadge(dateStr) {
       if (!dateStr) return '';
       const today = new Date();
@@ -239,18 +297,18 @@
     function renderColumn(assigneeName, containerId, countId) {
       const tasks = allTasks.filter(t => t.assignee === assigneeName);
       
-      // 정렬: 완료되지 않은 항목 우선, 완료된 항목은 하단으로 + order 순서
       tasks.sort((a, b) => {
         if (a.completed !== b.completed) return a.completed ? 1 : -1;
         return (a.order || 0) - (b.order || 0);
       });
 
-      document.getElementById(countId).innerText = `${tasks.length}개`;
+      const countEl = document.getElementById(countId);
+      if (countEl) countEl.innerText = `${tasks.length}개`;
 
       const container = document.getElementById(containerId);
+      if (!container) return;
       container.innerHTML = '';
 
-      // 스크롤 인디케이터 제어 (항목이 3개 이상일 때 스크롤 힌트 표시)
       const indicatorClass = `scroll-indicator-${assigneeName}`;
       const indicator = document.querySelector(`.${indicatorClass}`);
       if (indicator) {
@@ -282,7 +340,6 @@
         itemEl.draggable = true;
         itemEl.dataset.id = task.id;
 
-        // 드래그 앤 드롭 이벤트
         itemEl.addEventListener('dragstart', (e) => {
           e.dataTransfer.setData('text/plain', task.id);
         });
@@ -326,7 +383,6 @@
       });
     }
 
-    // 모달 제어 함수들
     window.openGuideModal = () => document.getElementById('guide-modal').classList.remove('hidden');
     window.closeGuideModal = () => document.getElementById('guide-modal').classList.add('hidden');
 
@@ -360,18 +416,14 @@
       }
     };
 
-    // 저장 버튼 클릭 시 팝업 즉시 닫히도록 개선
     window.saveTask = async () => {
       const id = document.getElementById('edit-id').value;
       const assignee = document.getElementById('edit-assignee').value;
       const title = document.getElementById('input-task-title').value.trim();
       const date = document.getElementById('input-task-date').value;
 
-      if (!title) {
-        return; // 빈 내용 방지
-      }
+      if (!title) return;
 
-      // 모달 즉시 닫기
       window.closeTaskModal();
 
       try {
@@ -398,7 +450,7 @@
       if (!task) return;
       const newCompleted = !task.completed;
       task.completed = newCompleted;
-      renderAll(); // 즉시 UI 반영
+      renderAll();
       try {
         await updateDoc(doc(db, 'move', id), { completed: newCompleted });
       } catch (e) {
