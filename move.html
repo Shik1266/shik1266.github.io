@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
-    body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; color: #0f172a; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .active-scale:active { transform: scale(0.95); }
@@ -42,61 +42,79 @@
     </div>
   </div>
 
-  <!-- 앱 전체 래퍼 -->
-  <div class="w-full max-w-md sm:max-w-4xl bg-white min-h-screen sm:my-8 sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200 relative flex flex-col overflow-hidden">
+  <!-- 앱 전체 래퍼 (모바일 퍼스트 세로형) -->
+  <div class="w-full max-w-md bg-white min-h-screen sm:my-8 sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200 relative flex flex-col overflow-hidden">
     
-    <!-- 상단 헤더 -->
-    <header class="pt-6 pb-4 px-5 flex items-center justify-between border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-30">
-      <div class="flex items-center gap-2.5">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-100">
-          <i class="fa-solid fa-truck-moving text-sm"></i>
+    <!-- 상단 헤더 & 이사 D-Day 카운터 -->
+    <header class="pt-6 pb-4 px-5 border-b border-slate-100 bg-white/90 backdrop-blur-md sticky top-0 z-30">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-100">
+            <i class="fa-solid fa-truck-moving text-sm"></i>
+          </div>
+          <div>
+            <h1 class="text-base font-extrabold text-slate-900 tracking-tight">초코땡 이사 준비</h1>
+            <p class="text-[10px] font-medium text-slate-400">현식 ❤️ 초록 부부 통합 체크리스트</p>
+          </div>
         </div>
-        <div>
-          <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">초코땡 이사 준비</h1>
-          <p class="text-[11px] font-medium text-slate-400">현식 ❤️ 초록 부부 통합 체크리스트</p>
+        <div class="flex items-center gap-1.5">
+          <span id="sync-status" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" title="실시간 동기화 중"></span>
         </div>
       </div>
-      <div class="flex items-center gap-2">
-        <span id="sync-status" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" title="실시간 동기화 중"></span>
+
+      <!-- 이사 D-Day 배너 (10월 7일 고정) -->
+      <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-3 text-white flex items-center justify-between shadow-md shadow-emerald-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-xs">
+            <i class="fa-solid fa-house-chimney"></i>
+          </div>
+          <div>
+            <p class="text-[10px] font-medium text-emerald-100">설레는 이사일</p>
+            <p class="text-xs font-bold">10월 7일 (수)</p>
+          </div>
+        </div>
+        <div id="dday-badge" class="px-3 py-1 rounded-xl bg-white text-emerald-700 text-xs font-black shadow-sm">
+          D-00
+        </div>
       </div>
     </header>
 
-    <!-- 메인 컨텐츠 영역 (데스크탑 및 모바일 2분할 균형 배치) -->
-    <section class="flex-grow grid grid-cols-2 gap-3 sm:gap-5 p-3 sm:p-5 bg-slate-50/50 overflow-y-auto no-scrollbar pb-24">
+    <!-- 메인 컨텐츠 영역 (2행 상하 분할 구조) -->
+    <section class="flex-grow flex flex-col gap-3 p-4 bg-slate-50/60 overflow-y-auto no-scrollbar pb-24">
       
-      <!-- 현식's 컬럼 -->
-      <div id="col-현식" class="col-card bg-white rounded-3xl p-3 sm:p-4 border border-slate-200/80 shadow-sm flex flex-col">
+      <!-- 1행: 현식's 할 일 (블루 테마) -->
+      <div id="col-현식" class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex flex-col min-h-[220px]">
         <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-200"></span>
-            <h2 class="text-xs sm:text-sm font-extrabold text-slate-800">현식's 할 일</h2>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-blue-500 shadow-sm shadow-blue-200"></span>
+            <h2 class="text-xs font-extrabold text-slate-800">현식's 할 일</h2>
           </div>
-          <span id="count-현식" class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[10px] sm:text-[11px] font-bold">0개</span>
+          <span id="count-현식" class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold">0개</span>
         </div>
-        <div id="list-현식" class="flex-grow space-y-2 min-h-[160px]"></div>
-        <button onclick="window.openTaskModal('현식')" class="mt-3 w-full py-2 border border-dashed border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 text-slate-500 hover:text-blue-600 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1">
-          <i class="fa-solid fa-plus text-[9px]"></i> 할 일 추가
+        <div id="list-현식" class="flex-grow space-y-2"></div>
+        <button onclick="window.openTaskModal('현식')" class="mt-3 w-full py-2.5 border border-dashed border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 text-slate-500 hover:text-blue-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1">
+          <i class="fa-solid fa-plus text-[10px]"></i> 현식 할 일 추가
         </button>
       </div>
 
-      <!-- 초록's 컬럼 (올초록 테마) -->
-      <div id="col-초록" class="col-card bg-white rounded-3xl p-3 sm:p-4 border border-slate-200/80 shadow-sm flex flex-col">
+      <!-- 2행: 초록's 할 일 (올초록 테마) -->
+      <div id="col-초록" class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex flex-col min-h-[220px]">
         <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-200"></span>
-            <h2 class="text-xs sm:text-sm font-extrabold text-slate-800">초록's 할 일</h2>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-200"></span>
+            <h2 class="text-xs font-extrabold text-slate-800">초록's 할 일</h2>
           </div>
-          <span id="count-초록" class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] sm:text-[11px] font-bold">0개</span>
+          <span id="count-초록" class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold">0개</span>
         </div>
-        <div id="list-초록" class="flex-grow space-y-2 min-h-[160px]"></div>
-        <button onclick="window.openTaskModal('초록')" class="mt-3 w-full py-2 border border-dashed border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50 text-slate-500 hover:text-emerald-600 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1">
-          <i class="fa-solid fa-plus text-[9px]"></i> 할 일 추가
+        <div id="list-초록" class="flex-grow space-y-2"></div>
+        <button onclick="window.openTaskModal('초록')" class="mt-3 w-full py-2.5 border border-dashed border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50 text-slate-500 hover:text-emerald-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1">
+          <i class="fa-solid fa-plus text-[10px]"></i> 초록 할 일 추가
         </button>
       </div>
 
     </section>
 
-    <!-- 우측 하단 빠른 추가 버튼 -->
+    <!-- 우측 하단 빠른 추가 플로팅 버튼 -->
     <button onclick="window.openTaskModal('초록')" class="absolute bottom-6 right-6 w-14 h-14 bg-emerald-600 text-white rounded-full shadow-lg shadow-emerald-200 flex items-center justify-center active-scale transition-transform text-xl z-20 hover:bg-emerald-700">
       <i class="fa-solid fa-plus"></i>
     </button>
@@ -113,8 +131,8 @@
         <div>
           <label class="block text-xs font-semibold text-slate-500 mb-1 ml-1">담당자</label>
           <div class="grid grid-cols-2 gap-2">
-            <button type="button" onclick="window.selectAssignee('현식')" id="btn-assign-현식" class="py-2.5 rounded-xl border border-slate-200 text-xs font-bold transition-all text-slate-600">현식</button>
-            <button type="button" onclick="window.selectAssignee('초록')" id="btn-assign-초록" class="py-2.5 rounded-xl border border-slate-200 text-xs font-bold transition-all text-slate-600">초록</button>
+            <button type="button" onclick="window.selectAssignee('현식')" id="btn-assign-현식" class="py-2.5 rounded-xl border text-xs font-bold transition-all">현식</button>
+            <button type="button" onclick="window.selectAssignee('초록')" id="btn-assign-초록" class="py-2.5 rounded-xl border text-xs font-bold transition-all">초록</button>
           </div>
           <input type="hidden" id="input-assignee" value="초록">
         </div>
@@ -152,6 +170,27 @@
     let allTasks = [];
     let draggedId = null;
 
+    // 이사 D-Day 계산 (10월 7일)
+    function updateMoveDday() {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      let moveDate = new Date(currentYear, 9, 7); // 9 = 10월
+      
+      // 이미 올해 10월 7일이 지났다면 내년으로 설정할 수도 있지만 기본 올해 기준
+      const diffTime = moveDate - new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      const badge = document.getElementById('dday-badge');
+      if (diffDays > 0) {
+        badge.innerText = `D-${diffDays}`;
+      } else if (diffDays === 0) {
+        badge.innerText = `오늘 이사 D-Day!`;
+      } else {
+        badge.innerText = `이사 완료 (D+${Math.abs(diffDays)})`;
+      }
+    }
+    updateMoveDday();
+
     signInAnonymously(auth).catch(err => console.error("Auth error:", err));
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -188,6 +227,7 @@
     function renderColumn(assigneeName, containerId, countId) {
       const tasks = allTasks.filter(t => t.assignee === assigneeName);
       
+      // 완료된 항목은 하단으로, 미완료는 상단 (순서값 기준 정렬)
       tasks.sort((a, b) => {
         if (a.completed !== b.completed) return a.completed ? 1 : -1;
         return (a.order || 0) - (b.order || 0);
@@ -200,9 +240,9 @@
 
       if (tasks.length === 0) {
         container.innerHTML = `
-          <div class="text-center py-8 flex flex-col items-center justify-center text-slate-400">
-            <i class="fa-regular fa-clipboard text-xl mb-1.5 opacity-60"></i>
-            <p class="text-[10px] sm:text-[11px]">등록된 할 일이 없습니다.</p>
+          <div class="text-center py-6 flex flex-col items-center justify-center text-slate-400">
+            <i class="fa-regular fa-clipboard text-xl mb-1 opacity-60"></i>
+            <p class="text-[11px]">등록된 할 일이 없습니다.</p>
           </div>
         `;
         return;
@@ -213,7 +253,7 @@
 
       tasks.forEach((task) => {
         const item = document.createElement('div');
-        item.className = `group flex items-center justify-between p-2.5 rounded-2xl border transition-all bg-white shadow-sm ${task.completed ? 'opacity-50 bg-slate-50 border-slate-100' : 'border-slate-200/80 hover:border-emerald-200'}`;
+        item.className = `group flex items-center justify-between p-3 rounded-2xl border transition-all bg-white shadow-sm ${task.completed ? 'opacity-50 bg-slate-50 border-slate-100' : 'border-slate-200/80 hover:border-emerald-200'}`;
         item.draggable = !task.completed;
         item.dataset.id = task.id;
 
@@ -244,29 +284,29 @@
             badgeText = task.date;
           }
 
-          dateBadgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[9px] border ${badgeColor}"><i class="fa-regular fa-calendar-days text-[8px]"></i> ${badgeText}</span>`;
+          dateBadgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] border ${badgeColor}"><i class="fa-regular fa-calendar-days text-[9px]"></i> ${badgeText}</span>`;
         } else {
-          dateBadgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[9px] bg-slate-50 text-slate-400 border border-slate-100">날짜 미지정</span>`;
+          dateBadgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] bg-slate-50 text-slate-400 border border-slate-100">날짜 미지정</span>`;
         }
 
         item.innerHTML = `
-          <div class="flex items-center gap-1.5 flex-grow min-w-0">
+          <div class="flex items-center gap-2 flex-grow min-w-0">
             <div class="cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 transition-colors" title="순서 변경">
-              <i class="fa-solid fa-grip-vertical text-[9px]"></i>
+              <i class="fa-solid fa-grip-vertical text-[10px]"></i>
             </div>
             <button onclick="window.toggleComplete('${task.id}', ${!task.completed})" class="w-5 h-5 rounded-md border flex items-center justify-center transition-all flex-shrink-0 ${task.completed ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300 hover:border-emerald-400 bg-white'}">
-              ${task.completed ? '<i class="fa-solid fa-check text-[9px]"></i>' : ''}
+              ${task.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
             </button>
             <div class="min-w-0 flex-grow">
-              <p class="text-[11px] font-bold truncate ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${task.title}</p>
-              <div class="flex items-center gap-1 mt-0.5">
+              <p class="text-xs font-bold truncate ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${task.title}</p>
+              <div class="flex items-center gap-1 mt-1">
                 ${dateBadgeHtml}
               </div>
             </div>
           </div>
-          <div class="flex items-center gap-0.5 ml-1 flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
-            <button onclick="window.openTaskModal(null, '${task.id}')" class="w-5 h-5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-emerald-600 hover:border-emerald-200 flex items-center justify-center transition-all"><i class="fa-solid fa-pen text-[7px]"></i></button>
-            <button onclick="window.deleteTask('${task.id}')" class="w-5 h-5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-rose-500 hover:border-rose-200 flex items-center justify-center transition-all"><i class="fa-solid fa-trash text-[7px]"></i></button>
+          <div class="flex items-center gap-1 ml-2 flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
+            <button onclick="window.openTaskModal(null, '${task.id}')" class="w-6 h-6 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-emerald-600 hover:border-emerald-200 flex items-center justify-center transition-all"><i class="fa-solid fa-pen text-[9px]"></i></button>
+            <button onclick="window.deleteTask('${task.id}')" class="w-6 h-6 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-rose-500 hover:border-rose-200 flex items-center justify-center transition-all"><i class="fa-solid fa-trash text-[9px]"></i></button>
           </div>
         `;
 
