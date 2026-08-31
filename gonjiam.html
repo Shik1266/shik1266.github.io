@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>곤지암 1박2일 가족 여행</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 0; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .modal-enter { animation: modalFadeIn 0.2s ease-out forwards; }
+    @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  </style>
+</head>
+<body class="flex justify-center items-start min-h-screen p-0 sm:p-6 bg-slate-100">
+
+  <!-- 사용자 선택 화면 (2열 배치) -->
+  <div id="user-select-screen" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl modal-enter border border-slate-100 flex flex-col max-h-[90vh]">
+      <div class="text-center mb-5">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-200 mx-auto mb-3">
+          <i class="fa-solid fa-mountain-sun text-2xl"></i>
+        </div>
+        <h2 class="text-xl font-extrabold text-slate-800">곤지암 가족 여행</h2>
+        <p class="text-xs text-slate-500 mt-1">투표와 의견을 나눌 본인의 이름을 선택해주세요!</p>
+        <p class="text-[11px] font-bold text-emerald-600 mt-1">🗓️ 일정: 9월 6일(토) ~ 9월 7일(일)</p>
+      </div>
+
+      <div class="overflow-y-auto custom-scrollbar flex-grow pr-1 mb-2">
+        <div class="grid grid-cols-2 gap-2.5">
+          <!-- 1행: 할아버지 / 할머니 -->
+          <button onclick="window.selectUser('시아 할아버지')" class="text-left px-3.5 py-3 rounded-2xl bg-blue-50/70 hover:bg-blue-100 text-slate-800 font-bold text-xs flex items-center justify-between transition-colors border border-blue-100 shadow-sm">
+            <span>시아 할아버지</span>
+            <i class="fa-solid fa-chevron-right text-blue-400 text-[10px]"></i>
+          </button>
+          <button onclick="window.selectUser('연두 할머니')" class="text-left px-3.5 py-3 rounded-2xl bg-rose-50/70 hover:bg-rose-100 text-slate-800 font-bold text-xs flex items-center justify-between transition-colors border border-rose-100 shadow-sm">
+            <span>연두 할머니</span>
+            <i class="fa-solid fa-chevron-right text-rose-400 text-[10px]"></i>
+          </button>
+
+          <!-- 2행: 엄마 / 엄마 -->
+          <button onclick="window.selectUser('시아엄마')" class="text-left px-3.5 py-3 rounded-2xl bg-blue-50/70 hover:bg-blue-100 text-slate-800 font-bold text-xs flex items-center justify-between transition-colors border border-blue-100 shadow-sm">
+            <span>시아엄마</span>
+            <i class="fa-solid fa-chevron-right text-blue-400 text-[10px]"></i>
+          </button>
+          <button onclick="window.selectUser('연두엄마')" class="text-left px-3.5 py-3 rounded-2xl bg-rose-50/70 hover:bg-rose-100 text-slate-800 font-bold text-xs flex items-center justify-between transition-colors border border-rose-100 shadow-sm">
+            <span>연두엄마</span>
+            <i class="fa-solid fa-chevron-right text-rose-400 text-[10px]"></i>
+          </button>
+
+          <!-- 3행: 아빠 / 아빠 -->
+          <button onclick="window.selectUser('시아 아빠')" class="text-left px-3.5 py-3 rounded-2xl bg-blue-50/70 hover:bg-blue-100 text-slate-800 font-bold text-xs flex items-center justify-between transition-colors border border-blue-100 shadow-sm">
+            <span>시아 아빠</span>
+            <i class="fa-solid fa-chevron-right text-blue-400 text-[10px]"></i>
+          </button>
+          <button onclick="window.selectUser('연두 아빠')" class="text-left px-3.5 py-3 rounded-2xl bg-rose-50/70 hover:bg-rose-100 text-slate-800 font-bold text-xs flex items-center justify-between transition-colors border border-rose-100 shadow-sm">
+            <span>연두 아빠</span>
+            <i class="fa-solid fa-chevron-right text-rose-400 text-[10px]"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 앱 화면 -->
+  <div id="main-app" class="w-full max-w-md bg-white min-h-screen sm:min-h-[850px] sm:rounded-[2.5rem] sm:shadow-2xl sm:border border-slate-200/80 relative flex flex-col overflow-hidden hidden">
+    
+    <header class="pt-6 pb-4 px-5 flex items-center justify-between border-b border-slate-100 flex-shrink-0 bg-white z-10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-emerald-200">
+          <i class="fa-solid fa-mountain-sun text-sm"></i>
+        </div>
+        <div>
+          <h1 class="text-base font-extrabold text-slate-900 leading-tight">곤지암 1박 2일 여행</h1>
+          <p class="text-[11px] font-bold text-emerald-600 mt-0.5">9.6(토) ~ 9.7(일)</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-user text-[10px] text-emerald-500"></i>
+          <span id="current-user-display">사용자</span>
+        </div>
+        <button onclick="window.switchUser()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs transition-colors" title="사용자 변경">
+          <i class="fa-solid fa-rotate"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- 숙소 정보 배너 (링크 포함) -->
+    <div class="px-5 pt-3 pb-1 flex-shrink-0">
+      <a href="https://m.konjiamresort.co.kr/condo/condoNobbleC.dev#" target="_blank" class="block bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-3.5 text-white shadow-md hover:opacity-95 transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-white">
+              <i class="fa-solid fa-hotel text-xs"></i>
+            </div>
+            <div>
+              <p class="text-[10px] text-emerald-100 font-semibold">숙소 정보</p>
+              <h3 class="text-xs font-extrabold">곤지암 리조트 노블 콘도 ↗</h3>
+            </div>
+          </div>
+          <span class="text-[11px] bg-white/20 px-2.5 py-1 rounded-lg font-bold">상세보기</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 날짜 탭 (1일차 / 2일차) -->
+    <div class="flex border-b border-slate-100 bg-slate-50/50 p-2 gap-2 flex-shrink-0">
+      <button onclick="window.setDayTab('day1')" id="tab-day1" class="flex-1 py-2 rounded-2xl text-xs font-extrabold transition-all bg-white shadow-sm text-emerald-600 border border-slate-200/60">
+        1일차 (9월 6일 토요일)
+      </button>
+      <button onclick="window.setDayTab('day2')" id="tab-day2" class="flex-1 py-2 rounded-2xl text-xs font-bold transition-all text-slate-500 hover:bg-white/50">
+        2일차 (9월 7일 일요일)
+      </button>
+    </div>
+
+    <!-- 고정 카테고리 및 의견 투표 목록 영역 -->
+    <section class="flex-grow flex flex-col p-4 gap-3 overflow-y-auto bg-slate-50/60 custom-scrollbar pb-24">
+      <div class="px-1">
+        <h2 id="day-title" class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">1일차 필수 투표 항목</h2>
+        <p class="text-[11px] text-slate-400 mt-0.5">각 항목별로 원하는 의견을 등록하고 투표해 주세요!</p>
+      </div>
+
+      <div id="schedule-list" class="space-y-3">
+        <!-- 동적 렌더링 -->
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'gonjiam-trip-v3';
+    const firebaseConfig = JSON.parse('{"apiKey": "AIzaSyBnjCWfcbvrvadmQ3bjoRJTD-rXSKzp_Bo", "authDomain": "git-io-33713.firebaseapp.com", "projectId": "git-io-33713", "storageBucket": "git-io-33713.firebasestorage.app", "messagingSenderId": "488733080531", "appId": "1:488733080531:web:2a95f7c25856b078ce8d26"}');
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const siaFamilyNames = ["시아 할아버지", "시아엄마", "시아 아빠"];
+    const yeondooFamilyNames = ["연두 할머니", "연두엄마", "연두 아빠"];
+
+    // 요청하신 고정 카테고리 정의 (1일차 4개, 2일차 3개)
+    const defaultCategories = [
+      { id: 'day1_departure', day: 'day1', title: '출발 시간', desc: '몇 시에 출발하면 좋을까요?', options: [] },
+      { id: 'day1_lunch', day: 'day1', title: '점심 메뉴', desc: '점심 식사로 무엇을 먹을까요?', options: [] },
+      { id: 'day1_dinner', day: 'day1', title: '저녁 메뉴', desc: '저녁 바비큐 또는 식사 메뉴', options: [] },
+      { id: 'day1_activity', day: 'day1', title: '도착 후 놀거리', desc: '화담숲 산책, 리조트 휴식 등', options: [] },
+      { id: 'day2_lunch', day: 'day2', title: '점심 메뉴', desc: '둘째 날 점심 식사 장소 및 메뉴', options: [] },
+      { id: 'day2_visit', day: 'day2', title: '들를 곳', desc: '귀가 전 들를 카페나 관광지', options: [] },
+      { id: 'day2_return', day: 'day2', title: '귀가 시간', desc: '집으로 출발할 시간', options: [] }
+    ];
+
+    let currentUser = localStorage.getItem('gonjiam_current_user') || '';
+    let currentDayTab = 'day1';
+    let categories = [];
+
+    function renderUserSelect() {
+      if (currentUser) {
+        document.getElementById('user-select-screen').classList.add('hidden');
+        document.getElementById('main-app').classList.remove('hidden');
+        document.getElementById('current-user-display').innerText = currentUser;
+      } else {
+        document.getElementById('user-select-screen').classList.remove('hidden');
+        document.getElementById('main-app').classList.add('hidden');
+      }
+    }
+
+    window.selectUser = (name) => {
+      currentUser = name;
+      localStorage.setItem('gonjiam_current_user', name);
+      document.getElementById('user-select-screen').classList.add('hidden');
+      document.getElementById('main-app').classList.remove('hidden');
+      document.getElementById('current-user-display').innerText = currentUser;
+      renderCategories();
+    };
+
+    window.switchUser = () => {
+      localStorage.removeItem('gonjiam_current_user');
+      currentUser = '';
+      renderUserSelect();
+    };
+
+    signInAnonymously(auth).then(() => {
+      setupListener();
+    }).catch(err => {
+      console.error("Auth error:", err);
+      setupListener();
+    });
+
+    function setupListener() {
+      onSnapshot(collection(db, 'gonjiam_fixed_v3'), (snapshot) => {
+        const dataMap = {};
+        snapshot.docs.forEach(docSnap => {
+          dataMap[docSnap.id] = docSnap.data();
+        });
+
+        categories = defaultCategories.map(cat => {
+          return dataMap[cat.id] ? { id: cat.id, ...dataMap[cat.id] } : cat;
+        });
+
+        if (snapshot.docs.length === 0) {
+          defaultCategories.forEach(async (cat) => {
+            await setDoc(doc(db, 'gonjiam_fixed_v3', cat.id), {
+              day: cat.day,
+              title: cat.title,
+              desc: cat.desc,
+              options: []
+            });
+          });
+        }
+
+        renderCategories();
+      }, (error) => {
+        console.error("Firestore 에러:", error);
+      });
+    }
+
+    window.setDayTab = (day) => {
+      currentDayTab = day;
+      const tab1 = document.getElementById('tab-day1');
+      const tab2 = document.getElementById('tab-day2');
+      const dayTitle = document.getElementById('day-title');
+
+      if (day === 'day1') {
+        tab1.className = "flex-1 py-2 rounded-2xl text-xs font-extrabold transition-all bg-white shadow-sm text-emerald-600 border border-slate-200/60";
+        tab2.className = "flex-1 py-2 rounded-2xl text-xs font-bold transition-all text-slate-500 hover:bg-white/50";
+        dayTitle.innerText = "1일차 필수 투표 항목";
+      } else {
+        tab2.className = "flex-1 py-2 rounded-2xl text-xs font-extrabold transition-all bg-white shadow-sm text-emerald-600 border border-slate-200/60";
+        tab1.className = "flex-1 py-2 rounded-2xl text-xs font-bold transition-all text-slate-500 hover:bg-white/50";
+        dayTitle.innerText = "2일차 필수 투표 항목";
+      }
+      renderCategories();
+    };
+
+    function renderCategories() {
+      const container = document.getElementById('schedule-list');
+      if (!container) return;
+
+      const filtered = categories.filter(c => c.day === currentDayTab);
+
+      container.innerHTML = filtered.map(item => {
+        const options = item.options || [];
+
+        return `
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm flex flex-col gap-3">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-xs font-extrabold text-slate-900">${item.title}</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5">${item.desc}</p>
+              </div>
+            </div>
+
+            <!-- 의견 등록 입력창 -->
+            <div class="flex gap-1.5">
+              <input type="text" id="input-opt-${item.id}" placeholder="의견을 적어주세요 (예: 11시 출발)" class="flex-grow bg-slate-50 rounded-xl px-3 py-2 border border-slate-200 outline-none focus:border-emerald-400 focus:bg-white text-xs text-slate-800">
+              <button onclick="window.addOption('${item.id}')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm transition-all flex-shrink-0">
+                의견추가
+              </button>
+            </div>
+
+            <!-- 등록된 의견 및 투표 리스트 -->
+            <div class="space-y-2 mt-1">
+              ${options.length === 0 ? `
+                <div class="text-center py-3 text-slate-300 text-[11px] italic bg-slate-50/60 rounded-xl">
+                  등록된 의견이 없습니다. 첫 의견을 남겨보세요!
+                </div>
+              ` : options.map((opt, optIdx) => {
+                const voters = opt.voters || [];
+                const hasVoted = voters.includes(currentUser);
+                const leftVoters = voters.filter(name => siaFamilyNames.includes(name));
+                const rightVoters = voters.filter(name => yeondooFamilyNames.includes(name));
+
+                return `
+                  <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-bold">${opt.author || '가족'}</span>
+                        <span class="text-xs font-bold text-slate-800">${opt.text}</span>
+                      </div>
+                      <div class="flex items-center gap-1.5">
+                        <button onclick="window.toggleOptionVote('${item.id}', ${optIdx})" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition-all ${
+                          hasVoted 
+                            ? 'bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200' 
+                            : 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-sm'
+                        }">
+                          ${hasVoted ? '✓ 투표취소' : '👍 투표'}
+                        </button>
+                        ${opt.author === currentUser ? `
+                          <button onclick="window.deleteOption('${item.id}', ${optIdx})" class="text-slate-300 hover:text-rose-500 text-xs px-1" title="의견 삭제">
+                            <i class="fa-solid fa-xmark"></i>
+                          </button>
+                        ` : ''}
+                      </div>
+                    </div>
+
+                    <!-- 투표자 표시 (시아네 / 연두네 구분) -->
+                    <div class="flex items-center justify-between pt-1 border-t border-slate-200/50 text-[10px]">
+                      <div class="flex flex-wrap gap-1 items-center flex-1">
+                        ${leftVoters.length > 0 ? leftVoters.map(n => `<span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-bold">${n}</span>`).join('') : '<span class="text-slate-300 italic">시아네 대기</span>'}
+                      </div>
+                      <div class="w-[1px] h-3 bg-slate-300 mx-2"></div>
+                      <div class="flex flex-wrap gap-1 justify-end items-center flex-1">
+                        ${rightVoters.length > 0 ? rightVoters.map(n => `<span class="px-1.5 py-0.5 bg-rose-100 text-rose-700 rounded font-bold">${n}</span>`).join('') : '<span class="text-slate-300 italic">연두네 대기</span>'}
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.addOption = async (itemId) => {
+      const inputEl = document.getElementById(`input-opt-${itemId}`);
+      const val = inputEl.value.trim();
+      if (!val) return;
+
+      const item = categories.find(c => c.id === itemId);
+      if (!item) return;
+
+      const options = [...(item.options || []), { text: val, author: currentUser, voters: currentUser ? [currentUser] : [] }];
+
+      try {
+        await updateDoc(doc(db, 'gonjiam_fixed_v3', itemId), { options });
+        inputEl.value = '';
+      } catch (e) {
+        console.error("의견 추가 에러:", e);
+      }
+    };
+
+    window.toggleOptionVote = async (itemId, optIdx) => {
+      if (!currentUser) {
+        renderUserSelect();
+        return;
+      }
+
+      const item = categories.find(c => c.id === itemId);
+      if (!item) return;
+
+      const options = [...(item.options || [])];
+      const targetOpt = options[optIdx];
+      if (!targetOpt) return;
+
+      let voters = [...(targetOpt.voters || [])];
+      if (voters.includes(currentUser)) {
+        voters = voters.filter(n => n !== currentUser);
+      } else {
+        voters.push(currentUser);
+      }
+      targetOpt.voters = voters;
+
+      try {
+        await updateDoc(doc(db, 'gonjiam_fixed_v3', itemId), { options });
+      } catch (e) {
+        console.error("투표 에러:", e);
+      }
+    };
+
+    window.deleteOption = async (itemId, optIdx) => {
+      const item = categories.find(c => c.id === itemId);
+      if (!item) return;
+
+      const options = [...(item.options || [])];
+      const targetOpt = options[optIdx];
+      if (!targetOpt) return;
+
+      if (targetOpt.author && targetOpt.author !== currentUser) {
+        return;
+      }
+
+      options.splice(optIdx, 1);
+
+      try {
+        await updateDoc(doc(db, 'gonjiam_fixed_v3', itemId), { options });
+      } catch (e) {
+        console.error("삭제 에러:", e);
+      }
+    };
+
+    renderUserSelect();
+  </script>
+</body>
+</html>
