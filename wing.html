@@ -10,24 +10,42 @@
         body {
             font-family: 'Pretendard', sans-serif;
             background-color: #f8fafc;
-            overflow-x: hidden;
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
         }
-        @keyframes fly {
+        @keyframes fly1 {
             0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(150px, -120px) rotate(45deg); }
-            50% { transform: translate(-100px, 80px) rotate(-30deg); }
-            75% { transform: translate(120px, 150px) rotate(15deg); }
+            30% { transform: translate(250px, -180px) rotate(45deg); }
+            70% { transform: translate(-200px, 150px) rotate(-30deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
         }
-        .mosquito {
+        @keyframes fly2 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-220px, -150px) rotate(-45deg); }
+            65% { transform: translate(180px, 200px) rotate(30deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        @keyframes fly3 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            40% { transform: translate(150px, 220px) rotate(60deg); }
+            80% { transform: translate(-180px, -120px) rotate(-60deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        .mosquito-wrap {
             position: absolute;
             cursor: pointer;
-            transition: transform 0.1s ease;
-            animation: fly 3s infinite ease-in-out;
             z-index: 50;
             user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
         }
+        .m1 { animation: fly1 2.5s infinite ease-in-out; top: 20%; left: 30%; }
+        .m2 { animation: fly2 3.2s infinite ease-in-out; top: 50%; left: 60%; }
+        .m3 { animation: fly3 2.8s infinite ease-in-out; top: 70%; left: 20%; }
+
         @keyframes glitch {
             0% { transform: translate(0) }
             20% { transform: translate(-10px, 10px) }
@@ -41,16 +59,16 @@
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen justify-between select-none">
+<body class="flex flex-col h-screen justify-between select-none relative">
 
-    <header class="bg-indigo-600 text-white p-4 shadow-md flex justify-between items-center">
+    <header class="bg-indigo-600 text-white p-4 shadow-md flex justify-between items-center z-10">
         <h1 class="text-lg font-bold flex items-center gap-2">
             🦟 모기 대화 전문 AI 번역기 <span class="text-xs bg-indigo-500 px-2 py-0.5 rounded-full">v2.5 Pro</span>
         </h1>
         <div class="text-sm opacity-80">마이크 활성화됨</div>
     </header>
 
-    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full">
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full z-10">
         <div class="bg-white rounded-2xl shadow-xl p-6 w-full text-center relative border border-indigo-100">
             <div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl shadow-inner animate-pulse">
                 🎙️
@@ -58,26 +76,41 @@
             <h2 class="text-xl font-extrabold text-gray-800 mb-2">모기 소리 수신 중...</h2>
             <p class="text-sm text-gray-500 mb-6">주변의 "웽~" 소리를 분석하여 모기의 심리 상태를 실시간으로 번역합니다.</p>
 
-            <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200 min-h-[90px] flex flex-col items-center justify-center">
+            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 min-h-[90px] flex flex-col items-center justify-center">
                 <div id="translation-text" class="text-indigo-600 font-bold text-lg">"오늘 피 맛 좀 괜찮을까?"</div>
                 <div class="text-xs text-gray-400 mt-1">AI 신뢰도: 98.4%</div>
             </div>
-
-            <button onclick="startMosquitoHunt()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:opacity-95 transition transform active:scale-95">
-                🎯 내 주변 모기 퇴치하기 (미니게임)
-            </button>
         </div>
     </main>
 
-    <div id="game-area" class="fixed inset-0 pointer-events-none hidden z-40 overflow-hidden">
-        <div id="target-mosquito" class="mosquito text-5xl pointer-events-auto" style="top: 30%; left: 40%;" onclick="triggerScare()">
-            🦟
+    <div id="game-area" class="fixed inset-0 pointer-events-none z-40 overflow-hidden">
+        <!-- 모기 1 -->
+        <div class="mosquito-wrap m1 pointer-events-auto" onclick="triggerScare()" style="top: 25%; left: 30%;">
+            <div class="bg-black/80 text-white text-[14px] px-3 py-1 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
+                나잡아봐라~ㅄ아 😛
+            </div>
+            <div class="text-4xl">🦟</div>
+        </div>
+
+        <!-- 모기 2 -->
+        <div class="mosquito-wrap m2 pointer-events-auto" onclick="triggerScare()" style="top: 55%; left: 65%;">
+            <div class="bg-black/80 text-white text-[14px] px-3 py-1 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
+                ㅄ아 집에언제가게? 🏠
+            </div>
+            <div class="text-4xl">🦟</div>
+        </div>
+
+        <!-- 모기 3 -->
+        <div class="mosquito-wrap m3 pointer-events-auto" onclick="triggerScare()" style="top: 70%; left: 20%;">
+            <div class="bg-black/80 text-white text-[14px] px-3 py-1 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
+                나잡아봐라~ㅄ아 😎
+            </div>
+            <div class="text-4xl">🦟</div>
         </div>
     </div>
 
     <div id="scare-overlay" class="fixed inset-0 bg-black z-50 hidden flex flex-col items-center justify-center text-center p-4">
         <div id="screamer-box" class="relative max-w-lg w-full flex flex-col items-center">
-            <!-- 요청하신 모모귀신 이미지 적용 -->
             <img src="https://mblogthumb-phinf.pstatic.net/MjAxODA4MTZfNjcg/MDAxNTM0MzUwMzI1NDQx.kbJWCHlf_LhKaU8GvcHex0DQw8HgIdF08hLfBzZ0onUg.MTiQo4irq-ty83mUUrTKF98pNxb99vn3TisizsNh8Ugg.JPEG.monguee5/%EB%AA%A8%EB%AA%A8%EA%B7%80%EC%8B%A0_%EB%AA%A8%EB%AA%A8%EC%A0%84%ED%99%94%EB%B2%88%ED%98%B8%EA%B4%B4%EB%8B%B4_momoghost_%EB%AA%A8%EB%AA%A8%EA%B7%80%EC%8B%A0%EC%A7%84%EC%8B%A4%ED%97%88%EA%B5%AC_04.jpg?type=w420" alt="귀신" class="w-72 h-72 md:w-96 md:h-96 object-cover rounded-2xl shadow-2xl border-4 border-red-600 mx-auto">
             <h1 class="text-3xl md:text-5xl font-black text-red-500 mt-6 tracking-widest animate-bounce">
                 모기 잡았다! ㅋㅋㅋ 속았지?
@@ -103,21 +136,7 @@
             document.getElementById('translation-text').innerText = translations[randomIndex];
         }, 2500);
 
-        function startMosquitoHunt() {
-            const gameArea = document.getElementById('game-area');
-            gameArea.classList.remove('hidden');
-            
-            window.mosquitoInterval = setInterval(() => {
-                const mosquito = document.getElementById('target-mosquito');
-                const randomX = Math.random() * (window.innerWidth - 100);
-                const randomY = Math.random() * (window.innerHeight - 100);
-                mosquito.style.left = randomX + 'px';
-                mosquito.style.top = randomY + 'px';
-            }, 1200);
-        }
-
         function triggerScare() {
-            clearInterval(window.mosquitoInterval);
             document.getElementById('game-area').classList.add('hidden');
             
             const scareOverlay = document.getElementById('scare-overlay');
