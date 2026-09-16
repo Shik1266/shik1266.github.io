@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 실시간 모기 언어 번역기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+        @keyframes fly {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(150px, -120px) rotate(45deg); }
+            50% { transform: translate(-100px, 80px) rotate(-30deg); }
+            75% { transform: translate(120px, 150px) rotate(15deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        .mosquito {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            animation: fly 3s infinite ease-in-out;
+            z-index: 50;
+            user-select: none;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-10px, 10px) }
+            40% { transform: translate(-10px, -10px) }
+            60% { transform: translate(10px, 10px) }
+            80% { transform: translate(10px, -10px) }
+            100% { transform: translate(0) }
+        }
+        .screamer-shake {
+            animation: glitch 0.1s infinite;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between select-none">
+
+    <header class="bg-indigo-600 text-white p-4 shadow-md flex justify-between items-center">
+        <h1 class="text-lg font-bold flex items-center gap-2">
+            🦟 모기 대화 전문 AI 번역기 <span class="text-xs bg-indigo-500 px-2 py-0.5 rounded-full">v2.5 Pro</span>
+        </h1>
+        <div class="text-sm opacity-80">마이크 활성화됨</div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full">
+        <div class="bg-white rounded-2xl shadow-xl p-6 w-full text-center relative border border-indigo-100">
+            <div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl shadow-inner animate-pulse">
+                🎙️
+            </div>
+            <h2 class="text-xl font-extrabold text-gray-800 mb-2">모기 소리 수신 중...</h2>
+            <p class="text-sm text-gray-500 mb-6">주변의 "웽~" 소리를 분석하여 모기의 심리 상태를 실시간으로 번역합니다.</p>
+
+            <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200 min-h-[90px] flex flex-col items-center justify-center">
+                <div id="translation-text" class="text-indigo-600 font-bold text-lg">"오늘 피 맛 좀 괜찮을까?"</div>
+                <div class="text-xs text-gray-400 mt-1">AI 신뢰도: 98.4%</div>
+            </div>
+
+            <button onclick="startMosquitoHunt()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:opacity-95 transition transform active:scale-95">
+                🎯 내 주변 모기 퇴치하기 (미니게임)
+            </button>
+        </div>
+    </main>
+
+    <div id="game-area" class="fixed inset-0 pointer-events-none hidden z-40 overflow-hidden">
+        <div id="target-mosquito" class="mosquito text-5xl pointer-events-auto" style="top: 30%; left: 40%;" onclick="triggerScare()">
+            🦟
+        </div>
+    </div>
+
+    <div id="scare-overlay" class="fixed inset-0 bg-black z-50 hidden flex flex-col items-center justify-center text-center p-4">
+        <div id="screamer-box" class="relative max-w-lg w-full flex flex-col items-center">
+            <!-- 요청하신 모모귀신 이미지 적용 -->
+            <img src="https://mblogthumb-phinf.pstatic.net/MjAxODA4MTZfNjcg/MDAxNTM0MzUwMzI1NDQx.kbJWCHlf_LhKaU8GvcHex0DQw8HgIdF08hLfBzZ0onUg.MTiQo4irq-ty83mUUrTKF98pNxb99vn3TisizsNh8Ugg.JPEG.monguee5/%EB%AA%A8%EB%AA%A8%EA%B7%80%EC%8B%A0_%EB%AA%A8%EB%AA%A8%EC%A0%84%ED%99%94%EB%B2%88%ED%98%B8%EA%B4%B4%EB%8B%B4_momoghost_%EB%AA%A8%EB%AA%A8%EA%B7%80%EC%8B%A0%EC%A7%84%EC%8B%A4%ED%97%88%EA%B5%AC_04.jpg?type=w420" alt="귀신" class="w-72 h-72 md:w-96 md:h-96 object-cover rounded-2xl shadow-2xl border-4 border-red-600 mx-auto">
+            <h1 class="text-3xl md:text-5xl font-black text-red-500 mt-6 tracking-widest animate-bounce">
+                모기 잡았다! ㅋㅋㅋ 속았지?
+            </h1>
+            <p class="text-white text-lg mt-3">친구에게 이 화면을 그대로 넘겨주세요!</p>
+            <button onclick="resetPrank()" class="mt-6 bg-white text-black font-bold px-6 py-3 rounded-full hover:bg-gray-200 transition">
+                다시 장난치기
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const translations = [
+            "\"여기 혈관 맛집이네 흡혈 마렵다\"",
+            "\"앗 인간이 깨어난다 도망쳐!\"",
+            "\"간지럽혀 줄 테니까 가만히 있어라\"",
+            "\"오늘 밤 모기향 조심해야겠군\"",
+            "\"친구들 다 불러서 야식 파티 열어야지\""
+        ];
+
+        setInterval(() => {
+            const randomIndex = Math.floor(Math.random() * translations.length);
+            document.getElementById('translation-text').innerText = translations[randomIndex];
+        }, 2500);
+
+        function startMosquitoHunt() {
+            const gameArea = document.getElementById('game-area');
+            gameArea.classList.remove('hidden');
+            
+            window.mosquitoInterval = setInterval(() => {
+                const mosquito = document.getElementById('target-mosquito');
+                const randomX = Math.random() * (window.innerWidth - 100);
+                const randomY = Math.random() * (window.innerHeight - 100);
+                mosquito.style.left = randomX + 'px';
+                mosquito.style.top = randomY + 'px';
+            }, 1200);
+        }
+
+        function triggerScare() {
+            clearInterval(window.mosquitoInterval);
+            document.getElementById('game-area').classList.add('hidden');
+            
+            const scareOverlay = document.getElementById('scare-overlay');
+            const screamerBox = document.getElementById('screamer-box');
+            
+            scareOverlay.classList.remove('hidden');
+            screamerBox.classList.add('screamer-shake');
+
+            if (navigator.vibrate) {
+                navigator.vibrate([300, 100, 300, 100, 500]);
+            }
+        }
+
+        function resetPrank() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
