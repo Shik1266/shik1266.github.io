@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 실시간 모기 언어 번역기</title>
+    
+    <!-- 평범한 서비스처럼 보이도록 속이는 OG 태그 -->
+    <meta property="og:title" content="AI 실시간 모기 언어 번역기 v2.5">
+    <meta property="og:description" content="주변 모기의 소리를 분석하여 심리 상태를 실시간으로 번역해주는 스마트 어플리케이션입니다.">
+    <meta property="og:image" content="https://placehold.co/600x400/indigo/white?text=AI+Mosquito+Translator">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -86,15 +92,15 @@
     <div id="game-area" class="fixed inset-0 pointer-events-none z-40 overflow-hidden">
         <!-- 모기 1 -->
         <div class="mosquito-wrap m1 pointer-events-auto" onclick="triggerScare()" style="top: 25%; left: 30%;">
-            <div class="bg-black/80 text-white text-[14px] px-3 py-1 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
+            <div class="bg-black/80 text-white text-[15px] px-3.5 py-1.5 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
                 나잡아봐라~ㅄ아 😛
             </div>
             <div class="text-4xl">🦟</div>
         </div>
 
-        <!-- 모기 2 -->
+        <!-- 모기 2 (요청하신 문구 반영) -->
         <div class="mosquito-wrap m2 pointer-events-auto" onclick="triggerScare()" style="top: 55%; left: 65%;">
-            <div class="bg-black/80 text-white text-[14px] px-3 py-1 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
+            <div class="bg-black/80 text-white text-[15px] px-3.5 py-1.5 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
                 ㅄ아 집에언제가게? 🏠
             </div>
             <div class="text-4xl">🦟</div>
@@ -102,7 +108,7 @@
 
         <!-- 모기 3 -->
         <div class="mosquito-wrap m3 pointer-events-auto" onclick="triggerScare()" style="top: 70%; left: 20%;">
-            <div class="bg-black/80 text-white text-[14px] px-3 py-1 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
+            <div class="bg-black/80 text-white text-[15px] px-3.5 py-1.5 rounded-full mb-1 whitespace-nowrap font-extrabold animate-pulse">
                 나잡아봐라~ㅄ아 😎
             </div>
             <div class="text-4xl">🦟</div>
